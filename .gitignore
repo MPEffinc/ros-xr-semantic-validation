@@ -1,0 +1,50 @@
+# --- Secrets / credentials: never commit ---
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+id_ecdsa*
+*credentials*
+*.secret
+.env
+.env.*
+
+# --- Vendored/pinned upstream clones ---
+# These are full git checkouts of third-party repositories pinned to the
+# exact commit hashes already documented in semantic_validation/results/
+# (EVIDENCE_LEDGER.md and the per-stack result docs). They are reproducible
+# via the documented `<repo-url>@<commit>` and are not tracked here to avoid
+# committing nested .git directories, third-party history, and large vendored
+# binaries (Unity packages, model assets, git pack files).
+frameworks/
+semantic_validation/targets/
+
+# --- Large raw hardware-capture logs ---
+# semantic_validation/logs/quest_hw/ contains the raw canonical Quest 3
+# hardware-run JSONL captures (~307MB total; one file exceeds GitHub's
+# 100MB per-file limit). These stay local only. Every canonical result
+# document that cites them (SPES_QUEST_HW_RESULT.md, SPES_HW_REANALYSIS.md,
+# EVIDENCE_LEDGER.md) references their path for local reproduction; do not
+# re-scope this rule to other semantic_validation/logs/ subdirectories
+# without checking size first.
+semantic_validation/logs/quest_hw/
+
+# --- Build artifacts / caches ---
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+build/
+install/
+log/
+*.egg-info/
+Library/
+Temp/
+Obj/
+.pytest_cache/
+
+# --- Editor / OS cruft ---
+.DS_Store
+*.swp

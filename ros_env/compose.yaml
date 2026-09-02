@@ -1,0 +1,18 @@
+services:
+  ros:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ros-xr-humble:local
+    working_dir: /workspace/ros2_ws
+    volumes:
+      - ./ros2_ws:/workspace/ros2_ws
+      - ./security:/workspace/security:ro
+      - ./run_feasibility.sh:/workspace/run_feasibility.sh:ro
+    environment:
+      ROS_LOCALHOST_ONLY: "1"
+      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+    stdin_open: true
+    tty: true
+    command: bash
+    restart: "no"
