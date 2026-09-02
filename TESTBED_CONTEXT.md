@@ -77,6 +77,17 @@ natively on the Pi and via the Desktop's `ros_env` Docker container
 talker/listener verified PASS in both directions** — this is
 infrastructure evidence, not a semantic-validation finding.
 
+**`semantic_robot_sink` dummy endpoint built and verified**
+(`semantic_validation/testbed/pi_ws/src/semantic_robot_endpoint/`, deployed
+and colcon-built on the Pi): subscribes to `/robot_target_pose`
+(PoseStamped), `/left_controller_odom` + `/right_controller_odom`
+(Odometry, matching PickNik's topic names), and `/tf`; logs every reception
+to JSONL with wall/monotonic time, header stamp, frame ids, pose, and a
+per-topic counter. No actuator, no semantic gating —
+`accept_decision` is hardcoded `ACCEPTED_NO_SEMANTIC_GATING`. Smoke-tested
+end-to-end from the Desktop container over the dedicated link for all three
+message types.
+
 ## Current topology (as of 2026-09-02)
 
 - Desktop `cclab`: Ubuntu 24.04.3, x86_64. Three physical Ethernet NICs:

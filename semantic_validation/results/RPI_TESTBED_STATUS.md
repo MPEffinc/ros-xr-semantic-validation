@@ -163,6 +163,7 @@ Desktop usb0 (10.55.0.1) <--USB gadget--> Pi usb0 (10.55.0.2)
     - Desktop talker → Pi listener: 9/9 `Hello World` messages received, in order, arrival ~0.4–0.7 ms after publish.
     - Pi talker → Desktop listener: 9/9 messages received, in order, similar latency.
     - This is `ACTUAL_ROS_RUNTIME` evidence for infrastructure purposes (DDS discovery + pub/sub transport across the dedicated Ethernet) — **not** a semantic-validation finding; no XR data was involved in this test.
+12. **`semantic_robot_sink` dummy endpoint: built and verified on the Pi.** Source lives in-repo at `semantic_validation/testbed/pi_ws/src/semantic_robot_endpoint/` (ament_python package), deployed to `~/ros2_ws/src/` on the Pi and built with `colcon build --symlink-install`. Subscribes to a generic `PoseStamped` target-pose topic (`/robot_target_pose`, param-configurable), the two PickNik controller-odometry topics (`/left_controller_odom`, `/right_controller_odom`), and `/tf`; logs every reception to JSONL under `~/semantic_robot_endpoint_logs/` with receive wall/monotonic time, topic, message type, header stamp, frame/child-frame id, position, orientation (or the full transform list for `/tf`), a per-topic receive counter, and an explicit `accept_decision`. **It performs no actuator control and no semantic validation or gating** — `accept_decision` is hardcoded to `ACCEPTED_NO_SEMANTIC_GATING` precisely so its output is never mistaken for a semantic finding. One-shot smoke test from the Desktop container (`ros2 topic pub --once`) confirmed correct field extraction for all three message types over the dedicated Ethernet link.
 
 ## Commands (reproducible)
 
@@ -210,6 +211,16 @@ ros2 run demo_nodes_cpp listener
 docker compose -f ros_env/compose.yaml exec -T ros bash -c \
   'source /opt/ros/humble/setup.bash; ros2 run demo_nodes_cpp talker'
 #   ...and the reverse direction (talker on Pi, listener on Desktop container).
+
+# Deploy + build + run semantic_robot_sink on the Pi
+scp -r semantic_validation/testbed/pi_ws/src/semantic_robot_endpoint rosxr:~/ros2_ws/src/
+ssh rosxr 'source /opt/ros/humble/setup.bash && cd ~/ros2_ws && colcon build --symlink-install --packages-select semantic_robot_endpoint'
+ssh rosxr 'source /opt/ros/humble/setup.bash && source ~/ros2_ws/install/setup.bash && ros2 run semantic_robot_endpoint semantic_robot_sink'
+
+# Smoke-test publish from the Desktop container, any of the three types, e.g.:
+docker compose -f ros_env/compose.yaml exec -T ros bash -c \
+  "source /opt/ros/humble/setup.bash; ros2 topic pub --once /robot_target_pose geometry_msgs/msg/PoseStamped \
+   '{header: {frame_id: base_link}, pose: {position: {x: 1.0, y: 2.0, z: 0.5}, orientation: {w: 1.0}}}'"
 ```
 
 ## Research Relevance
