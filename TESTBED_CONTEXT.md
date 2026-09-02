@@ -43,7 +43,7 @@ Linux Desktop
    |
    | dedicated Ethernet / DDS   (Desktop enp3s0f0 or enp3s0f1 -> Pi eth0)
    v
-Raspberry Pi 4 (rosxr-pi, Ubuntu 22.04 ARM64, ROS 2 Humble)
+Raspberry Pi 4 (rosxr, Ubuntu 22.04 ARM64, ROS 2 Humble native apt)
    |
    semantic_robot_sink / dummy robot controller
    X no physical robot/actuator
@@ -56,11 +56,26 @@ Purpose: give Spes/PickNik/Quest2ROS2 a common, physically-separate robot-side
 ROS endpoint so an actual XR hardware transition can be correlated against
 actual downstream ROS reception — not just a server callback on the same box.
 
-**Standardization decision (2026-09-02):** current Pi OS (Ubuntu 20.04.5) will
-be reimaged to Ubuntu 22.04 ARM64, hostname changed to `rosxr-pi` (avoids the
-`worker1.local` mDNS collision below). Plan:
+**Standardization decision (2026-09-02, approved):** current Pi OS (Ubuntu
+20.04.5) will be reimaged to Ubuntu 22.04 ARM64, hostname changed to `rosxr`
+(avoids the `worker1.local` mDNS collision below), ROS 2 Humble via native
+apt on the Pi. Dedicated Ethernet: Desktop `enp3s0f0` = `10.10.10.1/24` <->
+Pi `eth0` = `10.10.10.2/24`, no gateway either side. USB gadget
+(`10.55.0.1`/`10.55.0.2`) kept as the permanent management/recovery SSH path.
+`enp4s0` research LAN is never touched. Plan:
 `semantic_validation/results/RPI_REIMAGE_PLAN.md`. Not performed
-automatically — physical SD-card reflash is a user action.
+automatically — physical SD-card reflash and cabling are user actions.
+**Reimage flashed and verified booted 2026-09-02** (see
+`semantic_validation/results/RPI_REIMAGE_RESULT.md` and
+`RPI_TESTBED_STATUS.md`): official Ubuntu 22.04.5 arm64, hostname `rosxr`,
+user `cclab` key-only SSH (`ssh rosxr`, alias in `~/.ssh/config`). Dedicated
+Ethernet is live on **`enp3s0f1`** (not `f0` as originally planned — both
+were equivalent free ports; the user cabled `f1`), Desktop
+`10.10.10.1/24` ↔ Pi `10.10.10.2/24`, no gateway. ROS 2 Humble installed
+natively on the Pi and via the Desktop's `ros_env` Docker container
+(`network_mode: host` now, was bridge-only). **Cross-host ROS 2/DDS
+talker/listener verified PASS in both directions** — this is
+infrastructure evidence, not a semantic-validation finding.
 
 ## Current topology (as of 2026-09-02)
 
@@ -99,24 +114,25 @@ automatically — physical SD-card reflash is a user action.
 - mDNS collision on the research LAN identified and avoided.
 - `semantic_validation/results/RPI_TESTBED_STATUS.md` written with full detail.
 
-## Blocked / needs your decision
+## Blocked / needs your action (still open)
 
-1. Pi reimage (Ubuntu 22.04 ARM64, hostname `rosxr-pi`) is a physical
-   SD-card-flash action — see `RPI_REIMAGE_PLAN.md`.
-2. Dedicated Ethernet cable from Pi `eth0` to Desktop `enp3s0f0`/`enp3s0f1` —
-   physical cabling action, no new hardware needed.
-3. Desktop `cclab` is not in the `docker` group (socket is `root:docker`) —
-   needed to run the Desktop's `ros_env` Humble container; fix is
-   `sudo usermod -aG docker cclab` + re-login; not done automatically.
-   (Pi-side Docker is no longer relevant — Pi will be reimaged.)
-4. Git/GitHub: `.git/` is an empty, uninitialized directory; `gh` CLI is
-   **not installed**. A `.gitignore` has been drafted and written (excludes
-   vendored upstream clones, the oversized raw `quest_hw` hardware logs —
-   one file exceeds GitHub's 100MB limit — build caches, and
-   credential-shaped files; estimated trackable size ~23MB of 715MB).
-   Still need your go-ahead for: `git init` + first commit, installing `gh`,
-   `gh auth login`, and creating/connecting a private GitHub repo
-   (proposed name: `ros-xr-semantic-validation`).
+1. Pi reimage (Ubuntu 22.04 ARM64, hostname `rosxr`) — physical
+   SD-card-flash action, not yet done (Pi still answers as `worker1`/20.04.5
+   over USB). See `RPI_REIMAGE_PLAN.md`.
+2. Dedicated Ethernet cable from Pi `eth0` to Desktop `enp3s0f0` — physical
+   cabling action, not yet done (`enp3s0f0` still NO-CARRIER).
+3. Desktop `cclab` is still not in the `docker` group (socket is
+   `root:docker`, `docker info` still permission-denied) — needed to run the
+   Desktop's `ros_env` Humble container. Fix: `sudo usermod -aG docker cclab`
+   + re-login; not done automatically.
+
+## Resolved this session
+
+- Git repository initialized, `.gitignore` applied, baseline commit
+  `2f40905d728dc83334c3d5940f1ddf337aea4cc5` pushed to the new private
+  GitHub repo `https://github.com/MPEffinc/ros-xr-semantic-validation`
+  (branch `main`, local/remote SHA confirmed identical). `gh` CLI is
+  installed and authenticated as `MPEffinc`.
 
 ## Key file paths
 
@@ -126,6 +142,9 @@ automatically — physical SD-card reflash is a user action.
 - `semantic_validation/results/PICKNIK_HW_READY.md` — prepared PickNik hardware harness
 - `semantic_validation/results/RPI_TESTBED_STATUS.md` — full Pi/Desktop testbed detail
 - `semantic_validation/results/RPI_REIMAGE_PLAN.md` — Pi reimage target/procedure
-- `.gitignore` — drafted, not yet used in a commit
+- `.gitignore` — applied in the baseline commit
 
-Git: not yet initialized this session (see blocker 4 above) — no commit SHA to record.
+Git: initialized, branch `main`, baseline commit
+`2f40905d728dc83334c3d5940f1ddf337aea4cc5`, pushed to
+`https://github.com/MPEffinc/ros-xr-semantic-validation` (private).
+Local/remote SHA confirmed identical.

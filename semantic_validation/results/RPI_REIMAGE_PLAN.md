@@ -19,7 +19,7 @@ data exists on the current SD card (confirmed empty home directory, no
 | --- | --- |
 | Hardware | Raspberry Pi 4 Model B |
 | OS image | Ubuntu Server 22.04 LTS, 64-bit ARM (arm64) |
-| Hostname | `rosxr-pi` (changed from `worker1` — avoids the mDNS collision with an unrelated `worker1.local` device already observed on the research LAN) |
+| Hostname | `rosxr` (changed from `worker1` — avoids the mDNS collision with an unrelated `worker1.local` device already observed on the research LAN) |
 | User | `cclab` |
 | SSH | enabled at first boot (via Raspberry Pi Imager's OS customization, or cloud-init `user-data`) |
 | Wired networking | enabled, DHCP by default (static assignment decided later, see Networking below) |
@@ -31,7 +31,7 @@ data exists on the current SD card (confirmed empty home directory, no
 Raspberry Pi Imager (`rpi-imager`) supports Ubuntu Server 22.04 LTS (arm64)
 directly and has a built-in "Edit Settings" step that can pre-configure:
 
-- hostname (`rosxr-pi`)
+- hostname (`rosxr`)
 - username/password or SSH public key for `cclab`
 - enable SSH (public-key only recommended — reuse the existing
   `~/.ssh/id_ed25519_worker1.pub` or generate a fresh key for the reimaged
@@ -50,15 +50,14 @@ on first boot over whichever network path comes up (see Networking below).
   manual USB-gadget re-setup step separate from ROS/DDS networking (out of
   scope for this plan — SSH over a directly-connected wired port is the
   simpler first path).
-- **Dedicated Ethernet (ROS/DDS data plane):** connect the Pi's `eth0` port
-  directly to one of the Desktop's two currently **unused** onboard Ethernet
-  ports — `enp3s0f0` or `enp3s0f1` (Intel 82576 Gigabit, confirmed
-  `DOWN`/`NO-CARRIER`, not part of the research LAN). This avoids the shared
-  research LAN entirely (where the `worker1.local` mDNS collision was found)
-  and needs no new USB-Ethernet adapter, since a second onboard NIC port is
-  already free. Static IPs for this link (proposed, not yet applied):
-  `10.10.10.1/24` on the Desktop side, `10.10.10.2/24` on the Pi side, no
-  default gateway on either end of this link.
+- **Dedicated Ethernet (ROS/DDS data plane) — approved:** connect the Pi's
+  `eth0` port directly to the Desktop's **`enp3s0f0`** (Intel 82576 Gigabit,
+  confirmed `DOWN`/`NO-CARRIER` as of the last check, not part of the
+  research LAN). This avoids the shared research LAN entirely (where the
+  `worker1.local` mDNS collision was found) and needs no new USB-Ethernet
+  adapter. Approved static IPs (not yet applied — link not physically up on
+  either end): Desktop `enp3s0f0` = `10.10.10.1/24`, Pi `eth0` =
+  `10.10.10.2/24`, **no default gateway** on either side of this interface.
 
 ## Minimal post-reimage verification (for the user to run)
 
@@ -66,7 +65,7 @@ After first boot, from the Desktop:
 
 ```bash
 # If SSH key was pre-provisioned during imaging:
-ssh cclab@rosxr-pi.local 'hostname; lsb_release -a; uname -m; uptime'
+ssh cclab@rosxr.local 'hostname; lsb_release -a; uname -m; uptime'
 
 # Or via a directly-known IP if mDNS is not yet resolved:
 ssh cclab@<pi-ip> 'hostname; lsb_release -a; uname -m; uptime'
@@ -75,7 +74,7 @@ ssh cclab@<pi-ip> 'hostname; lsb_release -a; uname -m; uptime'
 Expected output:
 
 ```text
-rosxr-pi
+rosxr
 Ubuntu 22.04.x LTS
 aarch64
 ```
@@ -83,23 +82,22 @@ aarch64
 Then confirm storage and network baseline:
 
 ```bash
-ssh cclab@rosxr-pi.local 'df -h /; ip -br addr; ip -br link'
+ssh cclab@rosxr.local 'df -h /; ip -br addr; ip -br link'
 ```
 
 ## ROS 2 Humble install (after verification, not part of imaging)
 
-Two options, to decide once the OS is confirmed:
+**Decided:** native apt install (`ros-humble-ros-base` per the official
+`packages.ros.org` apt repo for Jammy arm64) — matches "robot-side SBC"
+realism most closely. The Desktop side uses the existing `ros_env` Docker
+Humble container instead (Ubuntu 24.04 has no native Humble apt package), so
+the two hosts do not need matching ROS install methods — only matching
+`ROS_DOMAIN_ID`/RMW settings for DDS discovery to work across the dedicated
+Ethernet link.
 
-1. **Native apt install** (`ros-humble-ros-base` per the official
-   `packages.ros.org` apt repo for Jammy arm64) — matches "robot-side SBC"
-   realism most closely.
-2. **Docker container**, reusing the same `ros_env/Dockerfile` approach as
-   the Desktop, if native install has any arm64-specific friction — keeps
-   Desktop and Pi ROS environments consistent.
-
-Neither is performed by this plan; both require the OS to be confirmed
-working first, and the native option needs no `sudo`-restricted step beyond
-what the user already controls on their own freshly-imaged Pi.
+Not performed by this plan; requires the OS to be confirmed working first.
+No `sudo`-restricted step here is beyond what the user already controls on
+their own freshly-imaged Pi.
 
 ## Explicitly out of scope for this reimage
 

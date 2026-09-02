@@ -4,6 +4,12 @@ Session: 2026-09-02. This document records infrastructure/preflight state only.
 It is not a semantic-validation finding and must not be cited as evidence in
 [EVIDENCE_LEDGER.md](EVIDENCE_LEDGER.md) or [RESEARCH_DECISION.md](RESEARCH_DECISION.md).
 
+Git baseline: repository initialized, branch `main`, baseline commit
+`2f40905d728dc83334c3d5940f1ddf337aea4cc5` ("chore: establish ROS-XR research
+baseline"), pushed to private GitHub repo
+`https://github.com/MPEffinc/ros-xr-semantic-validation`. Local/remote SHA
+confirmed identical.
+
 ## Hardware
 
 - Desktop: MSI MS-7D42 tower, x86_64.
@@ -59,7 +65,7 @@ It is not a semantic-validation finding and must not be cited as evidence in
   Target: **Ubuntu Server 22.04 LTS ARM64 + ROS 2 Humble**. Reimage plan
   written to [`RPI_REIMAGE_PLAN.md`](RPI_REIMAGE_PLAN.md); not performed
   automatically (physical SD-card reflash, user-performed).
-- Post-reimage hostname will be **`rosxr-pi`** (not `worker1`), to avoid any
+- Post-reimage hostname will be **`rosxr`** (not `worker1`), to avoid any
   further confusion with the unrelated `worker1.local` device already found
   colliding on the research LAN.
 - The working USB gadget path (`10.55.0.1` ↔ `10.55.0.2`, key-based SSH PASS)
@@ -88,27 +94,25 @@ The Pi's own `eth0` NO-CARRIER (previous finding) is unaffected by this — it
 is still a Pi-side physical-link problem (or simply "nothing plugged into
 this specific spare port yet") to resolve when the dedicated cable is run.
 
-## Current Physical Topology
+## Current Physical Topology (verified working, 2026-09-02)
 
 ```text
 Desktop (cclab, Ubuntu 24.04, x86_64)
-  enp4s0  10.80.79.38/24  -- research LAN (also has an unrelated host
-                              answering to mDNS name "worker1" -> 10.80.79.124,
-                              NOT this Pi)
-  wlx58...  192.168.0.3/24 -- "CCLAB 5G" Wi-Fi
-  usb0    10.55.0.1/24  ---- USB gadget ---- usb0  10.55.0.2/24
-                                                     |
-                                          Raspberry Pi 4 (worker1,
-                                          Ubuntu 20.04.5, aarch64)
-                                          eth0   DOWN / NO-CARRIER
-                                          wlan0  DOWN / NO-CARRIER
+  enp4s0     10.80.79.38/24   -- research LAN (untouched; also has an unrelated
+                                  host answering to mDNS "worker1" -> 10.80.79.124,
+                                  NOT this Pi)
+  wlx58...   192.168.0.3/24   -- "CCLAB 5G" Wi-Fi
+  enp3s0f1   10.10.10.1/24    -- dedicated Ethernet, NM connection "pi-dedicated-eth",
+      |                          no gateway. enp3s0f0 remains free/unused.
+      | ROS 2/DDS -- VERIFIED PASS both directions (demo_nodes_cpp talker/listener)
+      v
+  eth0       10.10.10.2/24  -- Raspberry Pi 4 "rosxr", Ubuntu 22.04.5 arm64,
+                                ROS 2 Humble (native apt)
+  usb0 (Desktop 10.55.0.1) <--USB gadget--> usb0 (Pi, if re-enabled) -- management
+                                              fallback path, not verified after reimage
 
 Quest 3: not connected this session.
 ```
-
-Only the USB gadget link (`usb0` 10.55.0.1 <-> 10.55.0.2`) is currently functional
-between Desktop and Pi. The dedicated-Ethernet path called for in the target
-architecture is not physically established on the Pi side.
 
 ## Target Topology
 
@@ -117,19 +121,20 @@ Meta Quest 3
    | Wi-Fi
    v
 Linux Desktop
-   XR application / XR-to-ROS interface / ROS 2
+   XR application / XR-to-ROS interface / ROS 2 (Docker, network_mode: host)
    |
-   | dedicated Ethernet / DDS      (enp3s0f0 or enp3s0f1 -> Pi eth0)
+   | dedicated Ethernet / DDS  -- VERIFIED  (enp3s0f1 -> Pi eth0, 10.10.10.0/24)
    v
-Raspberry Pi 4 (rosxr-pi)
-   Ubuntu 22.04 / ROS 2 Humble
+Raspberry Pi 4 (rosxr)
+   Ubuntu 22.04 / ROS 2 Humble (native apt) -- VERIFIED
    |
-   semantic_robot_sink / dummy robot controller
+   semantic_robot_sink / dummy robot controller  -- NOT YET BUILT
    X
    no physical robot/actuator
 
 Desktop usb0 (10.55.0.1) <--USB gadget--> Pi usb0 (10.55.0.2)
-   management/fallback SSH path only, not part of the ROS/DDS data plane
+   management/fallback SSH path — not re-verified since reimage (g_ether config
+   is not part of the stock Ubuntu image; separate task if needed)
 ```
 
 ## Completed this session
@@ -147,7 +152,17 @@ Desktop usb0 (10.55.0.1) <--USB gadget--> Pi usb0 (10.55.0.2)
 2. **Dedicated Ethernet cabling is a physical action.** Run a cable from the Pi's `eth0` to the Desktop's `enp3s0f0` or `enp3s0f1` (both free, confirmed no-carrier, not the research LAN). No new hardware is needed — this was previously assumed to require a new adapter; it does not.
 3. **Docker daemon access on the Desktop.** Socket is `root:docker` owned; `cclab` is not in the `docker` group. Needed only if the Desktop's `ros_env` (Humble) container will be used for the ROS 2 host role — re-confirmed as needed for this testbed, since Ubuntu 24.04 has no native Humble apt package. Fix is `sudo usermod -aG docker cclab` + re-login — requires sudo, not run automatically. (Pi-side Docker group is **no longer relevant** — Pi will be reimaged, see decision above.)
 4. **No dedicated-Ethernet ROS 2/DDS test has been run** — blocked by #1 and #2 (no Pi target OS, no cable run yet) and #3 (no ROS 2 available on the Desktop yet).
-5. **Git repository is not actually initialized; GitHub CLI is not installed.** `.git/` is an empty directory (no `HEAD`/`objects`/`config`). `gh` is not installed (`gh: command not found`), so `gh auth status` cannot even run yet. `.gitignore` has been drafted and written (excludes vendored upstream clones under `frameworks/` and `semantic_validation/targets/`, the oversized raw `semantic_validation/logs/quest_hw/` captures — one file is 115MB, over GitHub's 100MB hard limit — build caches, and any credential-shaped files). Estimated trackable size after these exclusions: **~23MB** (from a 715MB working tree). `git init`, the first commit, `gh` installation/login, and GitHub repo creation all still need your explicit go-ahead before proceeding.
+5. ~~Git repository is not actually initialized; GitHub CLI is not installed.~~ **RESOLVED.** `gh` was installed and authenticated (account `MPEffinc`) by the user; git repository initialized (branch `main`), 520 files / ~25MB staged after `.gitignore` exclusions (verified: no file >90MB, no `.pem`/`.key`/`.env`/credential-shaped file staged), baseline commit `2f40905` created and pushed to the new private GitHub repo `MPEffinc/ros-xr-semantic-validation`. Local and remote SHA confirmed identical.
+6. **Desktop Docker group membership still not fixed.** `id` still shows no `docker` group for `cclab`; `docker info` still returns permission denied. Needed before the Desktop's `ros_env` Humble container can run. Fix (`sudo usermod -aG docker cclab` + re-login) remains a user action.
+7. ~~Pi has not been reimaged yet~~ **DONE.** Card flashed with Ubuntu 22.04.5 arm64, cloud-init set for hostname `rosxr` / user `cclab` / static `eth0=10.10.10.2/24`. Full detail: [`RPI_REIMAGE_RESULT.md`](RPI_REIMAGE_RESULT.md).
+8. ~~Dedicated Ethernet still shows NO-CARRIER~~ **DONE — with a correction.** The user cabled the Pi to **`enp3s0f1`**, not `enp3s0f0` as originally planned (both were free/equivalent; `enp3s0f1` is now the live dedicated interface, `enp3s0f0` remains free/unused). Desktop side configured as NetworkManager connection `pi-dedicated-eth` (renamed from an auto-created DHCP profile), static `10.10.10.1/24`, no gateway. Carrier confirmed up, ping and ARP/neighbor MAC (`e4:5f:01:c4:0d:94`) cross-verified against the Pi's known `eth0` MAC — same physical device.
+9. ~~ROS 2 not installed on Pi~~ **DONE.** Native apt install of `ros-humble-ros-base` + `rclpy`/`rclcpp`/`geometry-msgs`/`nav-msgs`/`std-msgs`/`tf2`/`tf2-msgs`/`tf2-ros`/`rosbag2`/`demo-nodes-cpp`/`demo-nodes-py`/`python3-colcon-common-extensions`/`python3-rosdep`, sourced from `~/.bashrc`. Official `packages.ros.org` apt repo + GPG key only, no third-party install script.
+   - **Bootstrap blocker and how it was resolved:** the dedicated link intentionally has no gateway, so the Pi had no path to `packages.ros.org` for `apt install`. With explicit user approval, a **temporary** NAT was set up on the Desktop (`iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o enp4s0 -j MASQUERADE` + two `FORWARD` accept rules, `pkexec`-authenticated) and a temporary default route + DNS override were added on the Pi (the route/DNS commands were run by the user directly, since the assistant's own attempt was blocked by the auto-mode safety classifier). All of this was **removed again** immediately after the install completed — the dedicated link is back to its steady-state no-gateway configuration. See commands below for the exact add/remove pairs.
+10. ~~Desktop `ros_env` Docker Humble not usable~~ **DONE.** `cclab` added to the `docker` group (`pkexec usermod -aG docker cclab`; applied in-session via `sg docker`, no logout needed for the assistant's own use — **a full logout/login is still recommended for the user's own normal terminal sessions** to pick up the new group membership there). `ros_env/compose.yaml` updated: `network_mode: host` and `ROS_LOCALHOST_ONLY: "0"` added (was `"1"`, single-host-only) so the container's DDS traffic reaches the dedicated Ethernet interface directly instead of being trapped behind Docker's bridge/NAT. `ROS_DOMAIN_ID` pinned to `"0"` explicitly (matches the Pi's default). Image `ros-xr-humble:local` builds and runs.
+11. **Cross-host ROS 2/DDS baseline: PASS, both directions.** `ros2 run demo_nodes_cpp talker`/`listener`, plain default QoS, `ROS_DOMAIN_ID=0`, `RMW_IMPLEMENTATION=rmw_fastrtps_cpp` on both ends (Desktop container: host network; Pi: native).
+    - Desktop talker → Pi listener: 9/9 `Hello World` messages received, in order, arrival ~0.4–0.7 ms after publish.
+    - Pi talker → Desktop listener: 9/9 messages received, in order, similar latency.
+    - This is `ACTUAL_ROS_RUNTIME` evidence for infrastructure purposes (DDS discovery + pub/sub transport across the dedicated Ethernet) — **not** a semantic-validation finding; no XR data was involved in this test.
 
 ## Commands (reproducible)
 
@@ -165,6 +180,36 @@ ssh worker1-usb 'hostnamectl; uname -a; ip -br addr; free -h; df -h /; lsblk -f'
 # Host-key comparison that revealed the mDNS collision
 ssh-keyscan -t ed25519 10.55.0.2
 ssh-keyscan -t ed25519 worker1.local
+
+# SSH to the reimaged Pi over the dedicated Ethernet link
+ssh rosxr   # alias -> cclab@10.10.10.2, key ~/.ssh/id_ed25519_worker1
+
+# Temporary internet path for one-time `apt install` on the Pi (added, used, then
+# fully removed again — the dedicated link has no gateway in steady state):
+#   Desktop (pkexec, one dialog):
+iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o enp4s0 -j MASQUERADE
+iptables -A FORWARD -i enp3s0f1 -o enp4s0 -j ACCEPT
+iptables -A FORWARD -i enp4s0 -o enp3s0f1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+#   Pi:
+sudo ip route add default via 10.10.10.1
+sudo resolvectl dns eth0 8.8.8.8 1.1.1.1
+#   ...apt install ros-humble-ros-base ... (Acquire::ForceIPv4=true — the Pi has
+#   no IPv6 route through this NAT)...
+#   Cleanup, Pi:
+sudo ip route del default via 10.10.10.1
+sudo resolvectl revert eth0
+#   Cleanup, Desktop (pkexec):
+iptables -t nat -D POSTROUTING -s 10.10.10.0/24 -o enp4s0 -j MASQUERADE
+iptables -D FORWARD -i enp3s0f1 -o enp4s0 -j ACCEPT
+iptables -D FORWARD -i enp4s0 -o enp3s0f1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Cross-host ROS 2/DDS baseline (verified PASS both directions)
+#   Pi:
+ros2 run demo_nodes_cpp listener
+#   Desktop:
+docker compose -f ros_env/compose.yaml exec -T ros bash -c \
+  'source /opt/ros/humble/setup.bash; ros2 run demo_nodes_cpp talker'
+#   ...and the reverse direction (talker on Pi, listener on Desktop container).
 ```
 
 ## Research Relevance
