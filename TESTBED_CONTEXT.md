@@ -147,6 +147,23 @@ message types.
 
 ## Key file paths
 
+**Start here (2026-09-07 framework audit):**
+
+- `semantic_validation/results/FRAMEWORK_RESEARCH_UTILITY_AUDIT.md` — main audit, four-axis model, claim-utility matrix, selection-bias check
+- `semantic_validation/results/FRAMEWORK_POPULATION_MATRIX.md` — 18 identities × four axes × I1–I5 disposition
+- `semantic_validation/results/FRAMEWORK_LINEAGE_MATRIX.md` — architecture families and shared-lineage guard
+- `semantic_validation/results/FRAMEWORK_TESTBED_ADAPTATION_PLAN.md` — what to run next, with a safety register of launch files that must never be run
+- `semantic_validation/results/RESEARCH_ITEM_REASSESSMENT.md` — paper shape and decision
+- `semantic_validation/frameworks/<name>/RESEARCH_UTILITY.md` — per-framework reports
+- `semantic_validation/methodology/` — V2 evidence levels, event model, selection policy
+
+**Latest runtime results (both robot-free, E2, no Quest):**
+
+- `semantic_validation/results/QUEST2ROS2_ROS_RUNTIME.md` — actual ROS 2 transport with the pinned production node
+- `semantic_validation/results/QUEST2ROS2_SIMULATIONINPUT_PI.md` — in-repo simulator → production node → DDS → Pi, 619/619
+
+**Prior canonical:**
+
 - `semantic_validation/results/EVIDENCE_LEDGER.md` — canonical findings ledger
 - `semantic_validation/results/RESEARCH_DECISION.md` — GO/NOT-STRONG-GO rubric
 - `semantic_validation/results/MANUAL_REQUIRED.md` — exact remaining manual/hardware steps

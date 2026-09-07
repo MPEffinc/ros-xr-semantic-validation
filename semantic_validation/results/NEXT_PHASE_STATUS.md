@@ -1,5 +1,18 @@
 # Next-Phase Status — Quest-less Multi-Framework Preparation V3
 
+> **2026-09-07 update (Claude Code handoff session).** The population tables below are superseded
+> by [FRAMEWORK_POPULATION_MATRIX.md](FRAMEWORK_POPULATION_MATRIX.md); the audit and decision are
+> superseded by [FRAMEWORK_RESEARCH_UTILITY_AUDIT.md](FRAMEWORK_RESEARCH_UTILITY_AUDIT.md) and
+> [RESEARCH_ITEM_REASSESSMENT.md](RESEARCH_ITEM_REASSESSMENT.md). Two blockers recorded below are
+> now resolved: Docker daemon access works via `sg docker`, and Quest2ROS2 actual ROS 2 transport
+> has been executed. `GO — NOT STRONG GO` still holds; no E5/E6 evidence was created.
+>
+> New since this file was written: six frameworks audited against pinned source
+> (Docker_Teleop, OpenVR UR5e, Quest2ROS2 re-audit, OpenArmX, VR-hand-bridge, Nakama);
+> [QUEST2ROS2_ROS_RUNTIME.md](QUEST2ROS2_ROS_RUNTIME.md) upgraded to `PASS`;
+> [QUEST2ROS2_SIMULATIONINPUT_PI.md](QUEST2ROS2_SIMULATIONINPUT_PI.md) added (619/619 to the Pi);
+> next actions in [FRAMEWORK_TESTBED_ADAPTATION_PLAN.md](FRAMEWORK_TESTBED_ADAPTATION_PLAN.md).
+
 ## Decision
 
 **`GO — NOT STRONG GO` 유지.** This session created no E5/E6 evidence.  Quest-less work now

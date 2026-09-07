@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
@@ -141,11 +142,15 @@ def main():
     node = SemanticRobotSink()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
+        # SIGINT/SIGTERM during a timed observation run is the normal exit path.
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        # rclpy may already have shut the context down when spin() was
+        # interrupted by a signal; shutting down twice raises RCLError.
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':
