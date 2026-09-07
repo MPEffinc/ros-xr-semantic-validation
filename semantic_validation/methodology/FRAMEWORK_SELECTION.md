@@ -24,9 +24,9 @@ negative semantic finding이 아니다.
 | --- | --- | --- | --- |
 | Spes | `SpesRobotics/teleop` | local pinned checkout `c5d808155a87` verified | WebXR/WSS source map과 existing hardware boundary를 V2로 migrate |
 | PickNik | `PickNikRobotics/meta_quest_teleoperation` | local pinned checkout `bbaef0762fdb` verified | Unity/ROS-TCP source map, disposable staging, existing sideband harness 활용 |
-| LTS | `lts0429/teleoperation` | identity re-verification pending | URL/branch/control path 확인 전 clone/build 금지 |
-| AgileX | `agilexrobotics/QuestArmTeleop` | identity re-verification pending | URL/branch/control path 확인 전 clone/build 금지 |
-| Legged | `leggedrobotics/unity_ros_teleoperation` | identity re-verification pending | URL/branch/control path 확인 전 clone/build 금지 |
+| LTS | `lts0429/teleoperation` | public upstream `main@65ce76c9b92d` verified | public APK XR semantic source is absent; keep `SOURCE_PATH_UNCONFIRMED` |
+| AgileX | `agilexrobotics/QuestArmTeleop` | public upstream `ros2@145b80360cf2` verified | public host path is auditable, bundled APK source is not; keep `SOURCE_PATH_UNCONFIRMED` |
+| Legged | `leggedrobotics/unity_ros_teleoperation` | public upstream `main@0edde9493721` verified | telemetry path is mapped, original control-producing consumer is not; keep `SOURCE_PATH_UNCONFIRMED` |
 | NU-MECH | Quest/hand-tracking ROS 2 candidate | candidate name/repository pending | source identity 확인 전 `CANDIDATE_IDENTITY_UNCONFIRMED` |
 
 Existing Quest2ROS2와 NVIDIA/Isaac local checkouts are comparative/positive-control

@@ -19,6 +19,15 @@ id_ecdsa*
 # committing nested .git directories, third-party history, and large vendored
 # binaries (Unity packages, model assets, git pack files).
 frameworks/
+# V2 framework work products are authored metadata and source-audit records, not vendored
+# upstream source. Keep the former versioned while an optional per-framework `upstream/`
+# checkout remains ignored.
+!semantic_validation/frameworks/
+!semantic_validation/frameworks/*/
+!semantic_validation/frameworks/*/*.md
+!semantic_validation/frameworks/*/manifest.yaml
+!semantic_validation/frameworks/*/PINNED_REVISION
+semantic_validation/frameworks/*/upstream/
 semantic_validation/targets/
 
 # --- Large raw hardware-capture logs ---
