@@ -2,111 +2,133 @@
 
 ## Result
 
-**`BLOCKED_ENV` — actual ROS 2 transport was not executed in this session.**
+**`PASS` — actual ROS 2 transport with the actual pinned production node was executed.**
 
-The current unprivileged shell can run the Docker client, but cannot connect to
-the configured Docker daemon socket.  Per the experiment rules, no `sudo`,
-socket permission change, group change, or approval request was attempted.
-Consequently, the existing `F-Q2R-001/002` evidence level remains
-`CONFIRMED_RUNTIME_SYNTHETIC_SOURCE`; it is **not** upgraded to
-`ACTUAL ROS2 TRANSPORT + ACTUAL NODE` by this run.
+Canonical run: `quest2ros2_ros_runtime_20260907T050835Z`
+(2026-09-07 05:08:35 UTC / 14:08:35 KST).
 
-Canonical probe run:
-`quest2ros2_ros_runtime_20260831T150939Z` (2026-08-31 15:09:39 UTC,
-2026-09-01 00:09:39 KST).
+Classification under [EVIDENCE_LEVELS_V2](../methodology/EVIDENCE_LEVELS_V2.md):
 
-## Environment evidence
-
-| Check | Observation | Status |
+| Axis | Value | Reason |
 | --- | --- | --- |
-| `id` | `uid=1000(cclab) gid=1000(cclab) groups=1000(cclab),65534(nogroup)` | observed |
-| Docker socket | `/var/run/docker.sock`, `srw-rw----`, `nobody:nogroup`, mode `0660` | observed |
-| Docker client | 29.1.3, API 1.52, default context | available |
-| `docker info` | `permission denied while trying to connect to the docker API` | `BLOCKED_ENV` |
-| `docker images` | same daemon permission failure | inventory unavailable, not evidence of absence |
-| `docker ps -a` | same daemon permission failure | inventory unavailable, not evidence of absence |
-| Docker Compose | 2.40.3; `ros_env/compose.yaml` parses successfully | client/config available |
-| Compose project state | daemon socket `operation not permitted` | runtime state unavailable |
-| Host `ros2` / `colcon` | not found in `PATH` | no host fallback |
-| Expected Compose image | config names `ros-xr-humble:local` | configured only; installed-image presence unverified |
-| Quest2ROS2 target | `07aaf65149c9e29103f1fc61deb466cef8a55cef` | clean before and after |
+| Evidence level | **E2 `SYNTHETIC_RUNTIME`** | the pose source is a synthetic publisher, not an actual Quest or the Quest2ROS2 Unity frontend |
+| Qualifier | **actual ROS 2 transport + actual production node** | the previous `BLOCKED_ENV` limitation on `F-Q2R-001/002` is resolved |
+| Semantic disposition (I3 source time) | **`DROPPED` / re-generated** | 7/7 cases: `source_stamp_preserved=false` |
+| Semantic disposition (I2 frame provenance) | **`DROPPED` / replaced** | 7/7 cases: `source_frame_preserved=false`, substituted with configured `bh_robot_base` |
+| Downstream consequence | **`NATIVE_CONSUMER_ACCEPTED`** | the framework's own production consumer node accepted the input and published its control target |
 
-The raw command outputs, return codes, identity, socket metadata, Compose
-configuration, and target provenance are preserved in
-[`environment.jsonl`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260831T150939Z/environment.jsonl).
-The machine-readable disposition is
-[`summary.json`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260831T150939Z/summary.json).
+This is the project's first `NATIVE_CONSUMER_ACCEPTED` observation. It is **not** E5/E6:
+the input never came from actual XR hardware, so no native XR claim is created. It also
+never reached an actuator: the original CLIK controller and gripper action server were
+absent (see Downstream boundary below).
 
-## Requested transport and age sweep
+## Environment and isolation
 
-The requested path was prepared but not executed:
+| Check | Observation |
+| --- | --- |
+| Docker daemon | accessible (`docker_daemon_accessible: true`) |
+| Container network | `none` |
+| Robot / driver / gripper hardware | `robot_or_driver_used: false` |
+| Target repository | `Taokt/Quest2ROS2@07aaf65149c9e29103f1fc61deb466cef8a55cef` |
+| Target worktree | clean **before and after** (`target_clean_before/after: true`) |
+| Production callback | `production_callback_delegated_unchanged: true`; side-band records only an entry timestamp before calling the unchanged `super()._pose_callback` |
+
+Immediately before this run, the same harness recorded `BLOCKED_ENV` at
+`quest2ros2_ros_runtime_20260907T050818Z` because that process had no effective
+`docker` group membership. Both directories are retained: the blocked one documents the
+exact blocking condition, the later one is canonical. The 2026-08-31 blocked probe
+(`quest2ros2_ros_runtime_20260831T150939Z`) is likewise retained as history.
+
+## Executed path
 
 ```text
-synthetic PoseStamped publisher
-  -> actual RightArmController ROS subscription / production callback
-  -> actual target PoseStamped publisher
-  -> dummy target subscriber
+synthetic PoseStamped publisher (age/frame sweep)
+ -> actual ROS 2 subscription of the pinned production node
+    q2r2_bringup.right_arm_controller.RightArmController  ("right_kuka_arm_controller")
+    input topic: /q2r_right_hand_pose
+ -> unchanged production _pose_callback
+ -> actual production target publisher
+    output topic: /bh_robot/right_arm_clik_controller/target_frame
+ -> dummy target subscriber (observation only)
 ```
 
-| Input | Actual ROS arrival | Callback consumption | Output stamp/frame/pose |
-| --- | --- | --- | --- |
-| now - 10 ms | `NOT_EXECUTED` | `NOT_EXECUTED` | `NOT_EXECUTED` |
-| now - 100 ms | `NOT_EXECUTED` | `NOT_EXECUTED` | `NOT_EXECUTED` |
-| now - 500 ms | `NOT_EXECUTED` | `NOT_EXECUTED` | `NOT_EXECUTED` |
-| now - 1 s | `NOT_EXECUTED` | `NOT_EXECUTED` | `NOT_EXECUTED` |
-| now - 3 s | `NOT_EXECUTED` | `NOT_EXECUTED` | `NOT_EXECUTED` |
-| now - 10 s | `NOT_EXECUTED` | `NOT_EXECUTED` | `NOT_EXECUTED` |
-| now + 1 s | `NOT_EXECUTED` | `NOT_EXECUTED` | `NOT_EXECUTED` |
+A dummy static TF `bh_robot_base <- right_arm_link_ee` was supplied as a fixture.
 
-Frame-provenance inputs `xr_controller_A`, `xr_controller_B`,
-`old_reference_space`, and `new_reference_space` likewise remain
-`NOT_EXECUTED` on actual ROS transport.  No result from the older callback-only
-test was copied into these cells.
+## Age and frame-provenance sweep — actual transport
 
-## Robot-free rerun harness
+| Trial | Requested input age | Published? | Source stamp preserved? | Source frame preserved? | Input frame → output frame |
+| --- | ---: | --- | --- | --- | --- |
+| `age_10ms` | 10 ms old | yes | no | no | `xr_controller_A` → `bh_robot_base` |
+| `age_100ms` | 100 ms old | yes | no | no | `xr_controller_B` → `bh_robot_base` |
+| `age_500ms` | 500 ms old | yes | no | no | `old_reference_space` → `bh_robot_base` |
+| `age_1s` | 1 s old | yes | no | no | `new_reference_space` → `bh_robot_base` |
+| `age_3s` | 3 s old | yes | no | no | `xr_controller_A` → `bh_robot_base` |
+| `age_10s` | 10 s old | yes | no | no | `old_reference_space` → `bh_robot_base` |
+| `future_1s` | 1 s in the future | yes | no | no | `new_reference_space` → `bh_robot_base` |
 
-Two Quest2ROS2-only harnesses are ready:
+Aggregates recorded by the harness: `all_age_cases_published: true`,
+`all_source_stamps_replaced: true`,
+`all_source_frames_replaced_with_configured_base: true`,
+`frame_provenance_sweep_complete: true`, `trial_count: 7`.
 
-- [`run_quest2ros2_ros_runtime.py`](../harness/run_quest2ros2_ros_runtime.py)
-  performs all environment probes, preserves raw output, copies the pinned
-  target into a temporary workspace, and starts the test only if the daemon is
-  accessible.
-- [`quest2ros2_ros_transport_node.py`](../harness/quest2ros2_ros_transport_node.py)
-  supplies a dummy static TF, publishes the seven timestamp cases through
-  actual ROS topics, records actual subscription arrival and callback entry,
-  delegates to the unchanged production callback, and captures the actual
-  target subscriber output.
+The callback-only E2 result in [QUEST2ROS2_STALE_RESTAMP.md](QUEST2ROS2_STALE_RESTAMP.md)
+is therefore reproduced across an actual DDS boundary and the actual node, rather than
+against test doubles.
 
-The container run is constrained to `--network none`, `--cap-drop ALL`,
-`no-new-privileges`, no device mounts, no host networking, and no robot or
-driver.  The callback wrapper records only a side-band entry timestamp before
-calling `super()._pose_callback`; the upstream control calculation and output
-publisher are not replaced.  The target checkout is copied rather than built
-in place.
+## Downstream boundary — exactly where this stops
 
-Syntax validation passed for both Python files.  Container execution remains
-unverified because it is downstream of the Docker access blocker.
+- The node logged `Waiting for gripper action server:
+  /bh_robot/right_arm_gripper_action_controller/gripper_cmd`; that server was **not**
+  present. The original gripper path was not exercised.
+- The original CLIK controller that consumes
+  `/bh_robot/right_arm_clik_controller/target_frame` was **not** running; a dummy
+  subscriber observed the topic instead.
+- Therefore `NATIVE_CONSUMER_ACCEPTED` applies to the arm-controller node itself
+  (it accepted input and emitted a control target). It does **not** mean the robot's
+  own controller accepted a command, and it is **not** `ACTUATOR_STUB_COMMAND` or any
+  actuator claim.
 
-Rerun, without privileged changes, from an environment that already has
-authorized daemon access:
+## What this does and does not support
+
+Supports:
+
+- Under actual ROS 2 transport, the pinned production consumer publishes a control
+  target for inputs aged 10 ms to 10 s and for a 1 s future stamp, with no observed
+  age gate at this boundary.
+- Source stamp and input `frame_id` are not carried into the emitted control target.
+
+Does not support:
+
+- Any claim about the actual Quest2ROS2 Unity/Quest frontend, which is not exercised
+  here and whose XR-side semantics remain a black box in this repository.
+- Any claim that a physical or simulated robot moved, or that a real robot controller
+  accepted the target.
+- Any upgrade of `F-Q2R-001/002` to E5/E6.
+
+## Reproduce
 
 ```bash
 cd /home/cclab/ros_xr
-python3 semantic_validation/harness/run_quest2ros2_ros_runtime.py
+sg docker -c "python3 semantic_validation/harness/run_quest2ros2_ros_runtime.py"
 ```
 
-The harness creates a new immutable evidence directory under
-`semantic_validation/logs/quest2ros2_ros_runtime/` and reports `PASS`,
-`DISPROVED`, `FAIL`, or `BLOCKED_ENV`.  A future `PASS` is required before any
-Quest2ROS2 finding is relabeled as actual ROS 2 transport evidence.
+The harness re-probes the environment, copies the pinned target into a temporary
+workspace, runs the container with `--network none`, `--cap-drop ALL`, and
+`no-new-privileges`, and writes a new immutable evidence directory under
+`semantic_validation/logs/quest2ros2_ros_runtime/`.
+
+Artifacts for the canonical run:
+[`summary.json`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/summary.json),
+[`transport_summary.json`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/transport_summary.json),
+[`transport.jsonl`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/transport.jsonl),
+[`environment.jsonl`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/environment.jsonl),
+[`container.stdout.txt`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/container.stdout.txt),
+[`container.stderr.txt`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/container.stderr.txt).
 
 ## Scope boundary
 
-- No actual Quest input was used.
+- No actual Quest input was used; no XR runtime was executed.
 - No robot, robot controller, gripper server, or hardware driver was connected.
-- No Docker container was started in the canonical blocked run.
-- No image/container inventory can be inferred from a permission-denied query.
+- The container had no network access to the host or the dedicated research link.
 - No upstream file changed; the pinned target was clean before and after.
-- This result neither confirms nor disproves the callback-level stale re-stamp
-  finding over DDS.  It records an environment blocker and a safe executable
-  path for the missing validation.
+- Pi `semantic_robot_sink` was not involved in this run.

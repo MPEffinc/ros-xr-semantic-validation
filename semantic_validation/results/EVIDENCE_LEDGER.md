@@ -101,21 +101,21 @@ Canonical actual-hardware run은 `spes_quest_hw_20260831T001349Z`, canonical aut
 
 ## F-Q2R-001
 
-- **Claim:** Unchanged Quest2ROS2 arm callback consumes 10 ms–10 s old and 1 s future stamps without age validation and regenerates output at callback-time `now`; a 3 s stale trajectory reaches the publish test double.
-- **Evidence level:** **`RUNTIME_SYNTHETIC`**. Actual ROS transport **`BLOCKED_ENV`**, not `ACTUAL_ROS_RUNTIME`.
-- **Repository/revision/path:** `https://github.com/Taokt/Quest2ROS2.git@07aaf65149c9e29103f1fc61deb466cef8a55cef`; `q2r2_bringup/robot_arm_controller_base.py:166-208,211-306`.
-- **Command:** `PYTHONPATH=/tmp/ros_xr_semantic_deps python3 semantic_validation/harness/quest2ros2_stale_restamp.py --output <jsonl>`; retry `python3 semantic_validation/harness/run_quest2ros2_ros_runtime.py`.
-- **Raw:** [`quest2ros2_stale_restamp.jsonl`](../logs/no_quest/no_quest_20260830T142000Z/quest2ros2_stale_restamp.jsonl), retry [`environment.jsonl`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260831T150939Z/environment.jsonl), [`summary.json`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260831T150939Z/summary.json).
-- **Limitation:** Callback inputs/messages/TF/publisher are test doubles; Docker daemon permission denied, host ROS absent, so DDS/node/subscriber not run. Actual XR producer semantics unknown.
-- **Next evidence:** Authorized daemon/ROS environment: synthetic PoseStamped→actual node→actual publisher→dummy subscriber, then separately actual XR producer.
+- **Claim:** Unchanged Quest2ROS2 arm callback consumes 10 ms–10 s old and 1 s future stamps without age validation and regenerates output at callback-time `now`; a 3 s stale trajectory reaches the publish test double. **Reproduced 2026-09-07 over actual ROS 2 transport with the actual pinned production node:** 7/7 age cases published, no age gate observed at that boundary.
+- **Evidence level:** **E2 `SYNTHETIC_RUNTIME`, now with actual ROS 2 transport + actual production node.** The earlier `BLOCKED_ENV` limitation is resolved. Downstream consequence is `NATIVE_CONSUMER_ACCEPTED` (the framework's own `RightArmController` accepted input and published its control target); it is **not** E5/E6 because the source is synthetic, and **not** an actuator claim.
+- **Repository/revision/path:** `https://github.com/Taokt/Quest2ROS2.git@07aaf65149c9e29103f1fc61deb466cef8a55cef`; `q2r2_bringup/robot_arm_controller_base.py:166-208,211-306`; node `q2r2_bringup.right_arm_controller.RightArmController`, in `/q2r_right_hand_pose`, out `/bh_robot/right_arm_clik_controller/target_frame`.
+- **Command:** `PYTHONPATH=/tmp/ros_xr_semantic_deps python3 semantic_validation/harness/quest2ros2_stale_restamp.py --output <jsonl>`; actual transport `sg docker -c "python3 semantic_validation/harness/run_quest2ros2_ros_runtime.py"`.
+- **Raw:** callback-only [`quest2ros2_stale_restamp.jsonl`](../logs/no_quest/no_quest_20260830T142000Z/quest2ros2_stale_restamp.jsonl); actual transport [`transport_summary.json`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/transport_summary.json), [`transport.jsonl`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/transport.jsonl), [`summary.json`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050835Z/summary.json); prior blockers [`20260831T150939Z`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260831T150939Z/summary.json), [`20260907T050818Z`](../logs/quest2ros2_ros_runtime/quest2ros2_ros_runtime_20260907T050818Z/summary.json).
+- **Limitation:** The pose source is a synthetic publisher, not the Quest2ROS2 Unity/Quest frontend, whose XR-side semantics remain unaudited. The original CLIK controller and gripper action server were absent (`Waiting for gripper action server`), so the framework's own downstream controller never consumed the target; a dummy subscriber observed it. Container ran with `--network none`; no robot or driver.
+- **Next evidence:** Actual XR producer for the same node; and, separately, an inert stand-in for the CLIK controller to observe the next consumer boundary.
 
 ## F-Q2R-002
 
-- **Claim:** Different synthetic input frame IDs (`xr_controller_A/B`, old/new reference-space cases) are not preserved by the callback output, which uses configured `robot_base`.
-- **Evidence level:** **`RUNTIME_SYNTHETIC`**.
+- **Claim:** Different synthetic input frame IDs (`xr_controller_A/B`, old/new reference-space cases) are not preserved by the callback output, which uses the configured base frame. **Reproduced 2026-09-07 over actual ROS 2 transport:** 7/7 trials `source_frame_preserved=false`, all substituted with configured `bh_robot_base`.
+- **Evidence level:** **E2 `SYNTHETIC_RUNTIME`, now with actual ROS 2 transport + actual production node.**
 - **Repository/revision/path/command/raw:** Same as F-Q2R-001.
-- **Limitation:** Arbitrary software labels are not an actual OpenXR reference-space transition; actual ROS transport remains blocked.
-- **Next evidence:** Execute prepared ROS transport frame sweep and capture producer frame contract.
+- **Limitation:** Arbitrary software frame labels are not an actual OpenXR reference-space transition. The frame sweep demonstrates the boundary's transformation policy, not an observed XR reference-space change.
+- **Next evidence:** Capture the actual producer frame contract from the Quest2ROS2 frontend (currently a black box).
 
 ## F-PICKNIK-001
 
