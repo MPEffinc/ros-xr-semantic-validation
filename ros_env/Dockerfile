@@ -3,7 +3,10 @@ FROM ros:humble-ros-base-jammy
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         python3-colcon-common-extensions \
+        python3-fastapi \
         python3-numpy \
+        python3-transforms3d \
+        python3-uvicorn \
         python3-websocket \
         ros-humble-control-msgs \
         ros-humble-sros2 \

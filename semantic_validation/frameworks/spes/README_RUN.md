@@ -28,7 +28,24 @@ correlation/tracking fields to `PoseStamped`.
 
 Its dependency-light self-test passed at
 `semantic_validation/logs/next_phase_20260907T000000Z/spes_ros_adapter_selftest.jsonl`.
-This verifies adapter-side schema/correlation logic only. Desktop Docker daemon access was
-`BLOCKED_ENV` in the current execution identity, so an actual callback → desktop ROS/DDS → Pi
-smoke test was not run. The readiness scripts beside this file explicitly refuse to claim an
-unverified runtime launch.
+This verifies adapter-side schema/correlation logic only.
+
+## Verified Quest-less ROS/Pi runtime
+
+The standard Docker group mechanism is now usable through `sg docker` (a new login session will
+also acquire the group).  The final automated canonical run
+`semantic_validation/logs/spes_questless_all_20260907T043540Z/spes_runtime/` passed with three
+exact adapter-header/Pi-header and pose matches. The earlier direct run at
+`semantic_validation/logs/spes_ros_pi_20260907T041600Z/` independently has the same result:
+
+```text
+synthetic WSS after browser gate -> pinned Spes server -> accepted callback
+-> research post-callback adapter -> /robot_target_pose -> DDS -> Pi sink
+```
+
+Use `./spes_preflight.sh`, `./spes_start_all.sh <run-id>`, `./spes_status.sh <run-id>`,
+`./spes_collect.sh <run-id>`, and `./spes_stop_all.sh <run-id>` for a fresh observation-only
+run.  `spes_start_all.sh` starts only `semantic_robot_sink`, never a robot driver.  The result
+classification is necessarily `E2_BOUNDARY_LIMITED_REPLAY`: the synthetic input begins after the
+browser-native gate.  The Pi proves only `PI_RECEIVED`, never native-consumer acceptance,
+actionability, or actuator activity.

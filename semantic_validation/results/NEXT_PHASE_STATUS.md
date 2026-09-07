@@ -2,10 +2,10 @@
 
 ## Decision
 
-**`GO — NOT STRONG GO` 유지.** This session created no E5/E6 evidence. The only executed
-new check was a dependency-light E1 adapter self-test; all source audits are E1. No Quest,
-physical robot, actuator, driver, network configuration, or upstream source modification was
-used.
+**`GO — NOT STRONG GO` 유지.** This session created no E5/E6 evidence.  Quest-less work now
+includes E2 bounded Spes callback→ROS→DDS→Pi observation, but no native XR transition. No Quest,
+physical robot, actuator, or driver was used. See
+`AUTONOMOUS_QUESTLESS_CONVERGENCE.md` for the current canonical status.
 
 ## Spes
 

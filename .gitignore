@@ -29,6 +29,9 @@ frameworks/
 !semantic_validation/frameworks/*/PINNED_REVISION
 semantic_validation/frameworks/*/upstream/
 semantic_validation/targets/
+# ROS-TCP Endpoint is an optional upstream checkout in the isolated ROS
+# workspace.  Its exact origin/revision is recorded in framework metadata.
+ros_env/ros2_ws/src/ros_tcp_endpoint/
 
 # --- Large raw hardware-capture logs ---
 # semantic_validation/logs/quest_hw/ contains the raw canonical Quest 3
@@ -39,6 +42,21 @@ semantic_validation/targets/
 # re-scope this rule to other semantic_validation/logs/ subdirectories
 # without checking size first.
 semantic_validation/logs/quest_hw/
+# A failed, root-owned first attempt is intentionally retained locally for
+# forensics but is not a canonical result.
+semantic_validation/logs/spes_ros_pi_20260907T041500Z/
+# Intermediate automation diagnostics are retained locally but are not the
+# canonical final run.  The final 20260907T043540Z evidence remains tracked.
+semantic_validation/logs/questless_all_20260907T042910Z/
+semantic_validation/logs/questless_all_20260907T042941Z/
+semantic_validation/logs/questless_all_20260907T043157Z/
+semantic_validation/logs/questless_all_20260907T043234Z/
+semantic_validation/logs/questless_all_20260907T043318Z/
+semantic_validation/logs/questless_all_20260907T043433Z/
+semantic_validation/logs/spes_questless_all_20260907T043157Z/
+semantic_validation/logs/spes_questless_all_20260907T043234Z/
+semantic_validation/logs/spes_questless_all_20260907T043318Z/
+semantic_validation/logs/spes_questless_all_20260907T043433Z/
 
 # --- Build artifacts / caches ---
 __pycache__/

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo "No managed processes were started by these readiness placeholders. Stop only PIDs recorded by a future run."
+exec "$(dirname "$0")/spes_stop_all.sh" "$@"

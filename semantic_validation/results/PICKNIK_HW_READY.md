@@ -6,7 +6,7 @@
 **Unity/APK build: `BLOCKED_ENV`**  
 **Quest execution: `BLOCKED_HW`**
 
-현재 환경에는 Unity executable이 없고 ADB-connected Quest도 없으므로 APK를 만들거나 hardware trial을 실행하지 않았다. 이 문서는 준비 상태이며 hardware finding이 아니다.
+현재 환경에는 Unity executable이 없고 ADB-connected Quest도 없으므로 APK를 만들거나 hardware trial을 실행하지 않았다. 이 문서는 준비 상태이며 hardware finding이 아니다. Docker Humble container의 ROS 2 message dependencies와 official ROS-TCP Endpoint ROS 2 branch는 2026-09-07에 실제 build/listen까지 확인했다; Unity client input은 아직 없다.
 
 ## Hardware question
 
@@ -146,9 +146,11 @@ The experiment does not require or authorize physical robot actuation.
 
 ## Current blocker
 
-- Compatible Unity executable: not found.
+- Compatible Unity executable: not found. Official Unity CLI `1.0.0-beta.8` is installed; its
+  `6000.1.6f1` Android-module dry run succeeded, but the full editor install did not complete.
 - Existing repository tests/build artifact: none.
-- Current shell ROS 2 Python environment: unavailable.
+- Current host shell ROS 2 Python environment: unavailable; the isolated Docker Humble image has
+  `rclpy`, `nav_msgs`, `tf2_msgs`, and `geometry_msgs`.
 - ADB binary: available, connected Quest: none.
 
 Therefore the remaining manual/environment-dependent work is: provide an existing Unity 6000-compatible editor/Android module, connect an authorized Quest, build/install the disposable app, and perform controller occlusion. Until then PickNik remains `SOURCE_DATAFLOW_CONFIRMED`, not runtime-confirmed.
