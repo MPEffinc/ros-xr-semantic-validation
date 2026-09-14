@@ -125,17 +125,29 @@ message types.
 - mDNS collision on the research LAN identified and avoided.
 - `semantic_validation/results/RPI_TESTBED_STATUS.md` written with full detail.
 
-## Blocked / needs your action (still open)
+## Blocked / needs your action
 
-1. Pi reimage (Ubuntu 22.04 ARM64, hostname `rosxr`) — physical
-   SD-card-flash action, not yet done (Pi still answers as `worker1`/20.04.5
-   over USB). See `RPI_REIMAGE_PLAN.md`.
-2. Dedicated Ethernet cable from Pi `eth0` to Desktop `enp3s0f0` — physical
-   cabling action, not yet done (`enp3s0f0` still NO-CARRIER).
-3. Desktop `cclab` is still not in the `docker` group (socket is
-   `root:docker`, `docker info` still permission-denied) — needed to run the
-   Desktop's `ros_env` Humble container. Fix: `sudo usermod -aG docker cclab`
-   + re-login; not done automatically.
+**All three infrastructure blockers below were resolved on 2026-09-02.** Kept for history:
+
+1. ~~Pi reimage (Ubuntu 22.04 ARM64, hostname `rosxr`)~~ — **done**, see
+   `RPI_REIMAGE_RESULT.md`.
+2. ~~Dedicated Ethernet cable from Pi `eth0` to Desktop `enp3s0f0`~~ — **done** on
+   `enp3s0f1`; 10.10.10.1 ↔ 10.10.10.2 verified bidirectionally.
+3. ~~Desktop `cclab` not in the `docker` group~~ — **done** via
+   `pkexec usermod -aG docker cclab`; use `sg docker -c '<cmd>'` in-session. No socket
+   chmod was performed.
+
+### Currently open (2026-09-14)
+
+1. **Unity licence entitlement** on the operator's account. Unity `6000.1.6f1` *is*
+   installed at `/home/cclab/Unity/Hub/Editor/6000.1.6f1/` with `AndroidPlayer` and
+   `LinuxStandaloneSupport`, but batch mode fails with
+   `Found 0 entitlement groups and 0 free entitlements`. This blocks **PickNik** and
+   **Reachy**. It is an account action, not an engineering one.
+2. **An authorised, ADB-connected Quest 3.** This is the only remaining gate on the
+   entire hardware campaign — see `FINAL_QUEST_TEST_PLAN.md`.
+3. **Spes Quest orchestration does not yet attach a ROS publisher** — specified but
+   unexecuted; ~1 hour of work that should happen before the hardware day.
 
 ## Resolved this session
 
@@ -147,7 +159,14 @@ message types.
 
 ## Key file paths
 
-**Start here (2026-09-07 framework audit):**
+**Start here (2026-09-14, end of the Quest-free phase):**
+
+- `semantic_validation/results/QUESTLESS_COMPLETION_MATRIX.md` — **the single high-level status
+  table**; every framework carries exactly one final questless status
+- `semantic_validation/results/FINAL_QUEST_TEST_PLAN.md` — the hardware campaign, specified per
+  target down to trial IDs, loggers, stop conditions and success criteria
+
+**Framework audit (2026-09-07, two inline corrections made 2026-09-14):**
 
 - `semantic_validation/results/FRAMEWORK_RESEARCH_UTILITY_AUDIT.md` — main audit, four-axis model, claim-utility matrix, selection-bias check
 - `semantic_validation/results/FRAMEWORK_POPULATION_MATRIX.md` — 18 identities × four axes × I1–I5 disposition
@@ -157,10 +176,22 @@ message types.
 - `semantic_validation/frameworks/<name>/RESEARCH_UTILITY.md` — per-framework reports
 - `semantic_validation/methodology/` — V2 evidence levels, event model, selection policy
 
-**Latest runtime results (both robot-free, E2, no Quest):**
+**Runtime results (all robot-free, E2, no Quest):**
 
-- `semantic_validation/results/QUEST2ROS2_ROS_RUNTIME.md` — actual ROS 2 transport with the pinned production node
-- `semantic_validation/results/QUEST2ROS2_SIMULATIONINPUT_PI.md` — in-repo simulator → production node → DDS → Pi, 619/619
+- `QUEST2ROS2_ROS_RUNTIME.md` — actual ROS 2 transport with the pinned production node
+- `QUEST2ROS2_SIMULATIONINPUT_PI.md` — in-repo simulator → production node → DDS → Pi, 619/619
+- `QUEST2ROS2_RECONNECT_RUNTIME.md` — anchors/filter/latch survive a transport reconnect
+- `DOCKER_TELEOP_RECEIVER_RUNTIME.md`, `DOCKER_TELEOP_SIMULATOR_BASELINE.md`,
+  `DOCKER_TELEOP_DOWNSTREAM_RUNTIME.md` + `runs/docker_teleop_e2e_20260914/JOINT_STATE_EXTRACTION.md`
+  — full XR→ROS→MoveIt Servo→Gazebo path, D1 simulated motion vs D2/D3 halt
+- `OPENVR_UR5E_FAKE_RUNTIME.md` — ROS boundary, `bPoseIsValid` gated / `eTrackingResult` ignored
+- `OPENVR_UR5E_DOWNSTREAM_RUNTIME.md` — the same gap carried to MoveIt Servo + Gazebo joint motion
+- `OPENARMX_UDP_RUNTIME.md` — source time preserved bit-exact by the bridge, no age gate
+- `SPES_ROS_PI_INTEGRATION.md` — pinned **upstream** `teleop/ros2` module → DDS → Pi, 30/30
+- `VR_HAND_BRIDGE_RUNTIME.md` — 207 PoseStamped, no validity or freshness gate anywhere
+- `PICKNIK_QUESTLESS_CONVERGENCE.md` — ROS-TCP backend proven; PickNik's own publisher blocked
+- `REACHY_INERT_ENDPOINT_RUNTIME.md` — inert endpoint ready; `IsBodyTrackingActive()` has zero
+  call sites in the pinned source
 
 **Prior canonical:**
 
