@@ -2,6 +2,7 @@
 
 **Run A (research adapter, canonical for §§2-5):** `spes_ros_pi_20260914T064625Z`
 **Run B (pinned upstream ROS module, see §5A):** `spes_upstream_ros2_pi_20260914T065253Z`
+**Run C (hardware-day orchestration dry-run, see §5B):** `spes_upstream_ros2_pi_20260914T073500Z`
 **Discarded-but-preserved prior attempt:** `spes_ros_pi_20260914T064532Z` (DDS discovery race, see §7)
 **Executed:** 2026-09-14 UTC, this session, on the real testbed.
 **Pinned target:** `SpesRobotics/teleop` @ `c5d808155a87b584d6147a5943d4b87c34c92db0`,
@@ -297,6 +298,48 @@ provides no native XR evidence. It is not an E5 upgrade.
 
 ---
 
+## 5B. Hardware-day orchestration dry-run — fresh execution
+
+Run id `spes_upstream_ros2_pi_20260914T073500Z` was executed after the hardware-day procedure
+was frozen. It used the same pinned upstream module and physical Pi observation endpoint as Run B,
+with 30 synthetic post-browser WSS packets at 0.1 s intervals.
+
+The actual path completed:
+
+```text
+synthetic WSS input
+-> pinned production Spes server/control path
+-> pinned teleop/ros2 rclpy publisher
+-> /robot_target_pose PoseStamped
+-> Fast DDS domain 74 over the dedicated Ethernet
+-> physical Pi semantic_robot_sink
+```
+
+Observed counts were **30 WSS sent / 30 desktop ROS publishes / 30 Pi receives**. All 30 desktop
+header stamps were unique and found on the Pi; all desktop/Pi poses were equal, ordered, and used
+the upstream `link_base` frame. The target checkout was clean before and after at
+`c5d808155a87b584d6147a5943d4b87c34c92db0`.
+
+`validate_spes_native_ros_pi_run.py` assigned explicit immutable correlation labels
+`spes_upstream_ros2_pi_20260914T073500Z:packet-001` through `:packet-030` in the evidence file.
+These are research-side trial IDs joined by ordered input index and the unique upstream ROS header
+stamp; they are not fields added to the production message. Production still emitted
+`sequence_or_correlation_id: null` at the Pi.
+
+Operational checks also passed:
+
+- rerunning the orchestrator with the same run ID exited `1` and refused to overwrite the run;
+- rerunning the validator against its existing output exited `1` and refused to overwrite it;
+- post-run process counts were zero for both the desktop test container and Pi
+  `semantic_robot_sink`;
+- no Quest, robot, driver, controller, or actuator was used.
+
+This fresh run remains `E2 BOUNDARY_LIMITED_REPLAY` and its terminal consequence remains only
+`PI_RECEIVED`. It validates the Quest-free production-server-to-native-publisher-to-Pi leg and
+hardware-day orchestration; it does not join that leg to an actual Quest input.
+
+---
+
 ## 6. Confirmed vs unconfirmed
 
 ### Confirmed by this run
@@ -443,16 +486,24 @@ semantic_validation/results/runs/spes_upstream_ros2_pi_20260914T065253Z/   (Run 
   client.py                    the in-container WSS client / observer used by Run B
   container.stdout.txt / container.stderr.txt / pi_sink.stdout.txt
 
+semantic_validation/results/runs/spes_upstream_ros2_pi_20260914T073500Z/   (Run C, §5B)
+  summary.json                 fresh 30/30/30 PASS
+  desktop.jsonl / pi_sink.jsonl
+  correlation_validation.json explicit run/trial IDs and shutdown/overwrite checks
+  environment.jsonl / client.py / process logs
+
 semantic_validation/results/runs/spes_ros_pi_20260914T064532Z/   (preserved failed attempt, §7)
 
 semantic_validation/harness/spes_ros_pi_runtime.py               (new, research-created driver, Run A)
 semantic_validation/harness/spes_upstream_ros2_pi.py             (new, research-created driver, Run B)
+semantic_validation/harness/validate_spes_native_ros_pi_run.py   (Run C artifact validator)
 semantic_validation/harness/spes_ros_pi_smoke.py                 (extended: pose count, discovery wait)
 semantic_validation/harness/run_spes_hardware_preflight.py       (docker check now sg-aware)
 ```
 
 Pi-side originals remain at `rosxr:/home/cclab/spes_logs/spes_ros_pi_20260914T064625Z/` and
-`rosxr:/home/cclab/spes_logs/spes_upstream_ros2_pi_20260914T065253Z/`.
+`rosxr:/home/cclab/spes_logs/spes_upstream_ros2_pi_20260914T065253Z/`, with the fresh Run C copy at
+`rosxr:/home/cclab/spes_logs/spes_upstream_ros2_pi_20260914T073500Z/`.
 
 No secrets, keys, or tokens are present in any artifact. The self-signed cert/key used by the
 pinned Spes server are the upstream repository's own test materials and were not added, copied, or
