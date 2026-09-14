@@ -9,8 +9,10 @@ is byte-identical to upstream.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -18,6 +20,74 @@ import time
 
 
 EXPECTED_COMMIT = "bbaef0762fdb0b429b8ea12a4ca65040748b41dd"
+PROGRESS_STEPS = 7
+HEARTBEAT_SECONDS = 5
+UNITY_LOG_KEYWORDS = (
+    "importing",
+    "compiling",
+    "building",
+    "build",
+    "android",
+    "gradle",
+    "error",
+    "exception",
+    "failed",
+    "succeeded",
+)
+
+
+def timestamped(message: str) -> None:
+    print(f"[{datetime.now().astimezone():%H:%M:%S}] {message}", flush=True)
+
+
+def progress(step: int, message: str) -> None:
+    timestamped(f"[{step}/{PROGRESS_STEPS}] {message}")
+
+
+def unity_log_size(path: Path) -> int:
+    try:
+        return path.stat().st_size
+    except FileNotFoundError:
+        return 0
+
+
+def emit_unity_log_updates(path: Path, offset: int, remainder: str) -> tuple[int, str]:
+    """Print selected new Unity log lines while retaining Unity's full log file."""
+    try:
+        with path.open("r", encoding="utf-8", errors="replace") as handle:
+            handle.seek(offset)
+            appended = handle.read()
+            offset = handle.tell()
+    except FileNotFoundError:
+        return offset, remainder
+
+    complete, separator, remainder = (remainder + appended).rpartition("\n")
+    if not separator:
+        return offset, complete
+
+    matching = [
+        line.strip()
+        for line in complete.splitlines()
+        if line.strip() and any(keyword in line.lower() for keyword in UNITY_LOG_KEYWORDS)
+    ]
+    limit = 12
+    for line in matching[:limit]:
+        print(f"[UNITY] {line}", flush=True)
+    if len(matching) > limit:
+        print(f"[UNITY] {len(matching) - limit} additional matching lines suppressed this interval", flush=True)
+    return offset, remainder
+
+
+def print_unity_failure_tail(path: Path, line_count: int = 25) -> None:
+    timestamped(f"Unity build failed; build log: {path}")
+    try:
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    except FileNotFoundError:
+        timestamped("Unity build log was not created.")
+        return
+    print(f"[UNITY] Last {min(line_count, len(lines))} Unity log lines:", flush=True)
+    for line in lines[-line_count:]:
+        print(f"[UNITY] {line}", flush=True)
 
 
 def sha256(path: Path) -> str:
@@ -62,12 +132,14 @@ def main() -> int:
     if manifest_path.exists():
         raise SystemExit(f"refusing to overwrite existing manifest: {manifest_path}")
 
+    progress(1, "Verifying pinned PickNik checkout...")
     commit = git(target, "rev-parse", "HEAD")
     clean_before = git(target, "status", "--porcelain=v1", "--untracked-files=all") == ""
     if commit != EXPECTED_COMMIT:
         raise SystemExit(f"unexpected target commit: {commit}")
     if not clean_before:
         raise SystemExit("refusing to stage from a dirty upstream target")
+    timestamped(f"Pinned checkout verified: {commit}")
 
     started_ns = time.time_ns()
 
@@ -76,10 +148,16 @@ def main() -> int:
         ignored.update(name for name in names if name.endswith("_BurstDebugInformation_DoNotShip"))
         return ignored.intersection(names)
 
+    progress(2, "Copying disposable Unity project...")
     shutil.copytree(target, output, ignore=ignore, symlinks=True)
+    timestamped(f"Disposable Unity project copied: {output}")
+
+    progress(3, "Adding semantic-validation overlay...")
     overlay_assets = output / "UnityProject/Assets/SemanticValidation"
     shutil.copytree(instrumentation, overlay_assets)
+    timestamped(f"Semantic-validation overlay added: {overlay_assets}")
 
+    progress(4, "Checking ROSPublishers byte identity...")
     upstream_publisher = target / "UnityProject/Assets/ROSPublishers.cs"
     staged_publisher = output / "UnityProject/Assets/ROSPublishers.cs"
     logger = overlay_assets / "PickNikTrackingSidebandLogger.cs"
@@ -90,16 +168,24 @@ def main() -> int:
         and "RosMessageTypes" not in logger_text
         and ".Publish(" not in logger_text
     )
+    timestamped(
+        "ROSPublishers byte identity: "
+        f"{'PASS' if publisher_identical else 'FAIL'}; side-band payload independence: "
+        f"{'PASS' if logger_payload_independent else 'FAIL'}"
+    )
 
+    progress(5, "Locating Unity editor...")
     unity = discover_unity()
     build_status = "NOT_REQUESTED"
     build_command: list[str] = []
     build_returncode: int | None = None
     apk = (args.apk or (output / "Builds/picknik_semantic_validation.apk")).resolve()
     build_log = manifest_path.parent / "unity_batch_build.log"
+    timestamped(f"Unity found: {unity}" if unity else "Unity not found.")
     if args.build_if_available:
         if unity is None:
             build_status = "SKIP_ENV"
+            progress(6, "Android APK build skipped: Unity executable unavailable.")
         else:
             build_command = [
                 unity,
@@ -112,11 +198,42 @@ def main() -> int:
                 "-logFile",
                 str(build_log),
             ]
-            environment = dict(__import__("os").environ)
+            environment = dict(os.environ)
             environment["PICKNIK_VALIDATION_APK"] = str(apk)
-            completed = subprocess.run(build_command, env=environment, check=False)
-            build_returncode = completed.returncode
-            build_status = "PASS" if completed.returncode == 0 and apk.is_file() else "FAIL"
+            progress(6, "Starting Android APK build...")
+            build_log.parent.mkdir(parents=True, exist_ok=True)
+            build_started = time.monotonic()
+            process = subprocess.Popen(
+                build_command,
+                env=environment,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.STDOUT,
+            )
+            timestamped(f"Unity build started: pid={process.pid} build_log={build_log}")
+            log_offset = 0
+            log_remainder = ""
+            last_heartbeat = build_started - HEARTBEAT_SECONDS
+            while process.poll() is None:
+                log_offset, log_remainder = emit_unity_log_updates(build_log, log_offset, log_remainder)
+                now = time.monotonic()
+                if now - last_heartbeat >= HEARTBEAT_SECONDS:
+                    timestamped(
+                        "Unity build running... "
+                        f"elapsed={int(now - build_started)}s pid={process.pid} "
+                        f"build_log={build_log} size={unity_log_size(build_log)}"
+                    )
+                    last_heartbeat = now
+                time.sleep(1)
+            log_offset, log_remainder = emit_unity_log_updates(build_log, log_offset, log_remainder)
+            build_returncode = process.wait()
+            timestamped(f"Unity exited rc={build_returncode}")
+            build_status = "PASS" if build_returncode == 0 and apk.is_file() else "FAIL"
+            if build_status == "PASS":
+                timestamped(f"APK created: {apk} (size={apk.stat().st_size}, sha256={sha256(apk)})")
+            else:
+                print_unity_failure_tail(build_log)
+    else:
+        progress(6, "Android APK build not requested.")
 
     clean_after = git(target, "status", "--porcelain=v1", "--untracked-files=all") == ""
     manifest = {
@@ -145,7 +262,8 @@ def main() -> int:
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps(manifest, sort_keys=True))
+    progress(7, f"Manifest written: {manifest_path}")
+    print(json.dumps(manifest, sort_keys=True), flush=True)
     return 0 if manifest["status"] == "PASS" and build_status != "FAIL" else 1
 
 
