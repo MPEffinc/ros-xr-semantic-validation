@@ -146,13 +146,26 @@ def main() -> int:
 
     docker = run(["docker", "info"])
     docker_available = docker["returncode"] == 0
+    docker_path = "DIRECT" if docker_available else None
+    # The login session's supplementary groups may predate `docker` group
+    # membership. `sg docker -c ...` re-evaluates them without changing any
+    # system, socket, or group configuration.
+    sg_docker = None
+    if not docker_available:
+        sg_docker = run(["sg", "docker", "-c", "docker info"])
+        if sg_docker["returncode"] == 0:
+            docker_available = True
+            docker_path = "SG_DOCKER"
     records.append(
         {
             "event": "environment_check",
             "check": "docker_daemon_access",
             "available": docker_available,
+            "access_path": docker_path or "NONE",
             "returncode": docker["returncode"],
             "stderr": docker["stderr"],
+            "sg_docker_returncode": None if sg_docker is None else sg_docker["returncode"],
+            "sg_docker_stderr": None if sg_docker is None else sg_docker["stderr"],
             "interpretation": "ROS_DUMMY_SINK_AVAILABLE" if docker_available else "ROS_DUMMY_SINK_BLOCKED",
         }
     )

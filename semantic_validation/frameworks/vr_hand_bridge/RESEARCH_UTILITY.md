@@ -86,3 +86,52 @@ Not worth a Quest session slot on its own. Its one distinctive property — a **
 ## Priority
 
 **C** — keep in the population as a screened, documented data point on XR-runtime diversity and on the prevalence of telemetry-only bridges. Do not spend testbed time on it.
+
+## Runtime Outcome (2026-09-14)
+
+**Final status: `QUESTLESS_RUNTIME_COMPLETE`.**
+
+Full report: `semantic_validation/results/VR_HAND_BRIDGE_RUNTIME.md`.
+Run id `vr_hand_bridge_20260914T064240Z`. Evidence level **`E2 SYNTHETIC_RUNTIME`**.
+
+The pinned `xr_hand_pipeline` package was built with colcon in an isolated ROS 2
+Humble container (`--network none`, `ROS_DOMAIN_ID=72`) and the unmodified
+`hand_ws_publisher` node was driven by a research WebSocket client
+(`semantic_validation/harness/vr_hand_bridge_ws_trials.py`) using the exact
+wire schema of `ws_streamer.gd:43-52`. 207 actual `PoseStamped` messages were
+captured.
+
+Measured:
+
+- 1:1 pass-through, 100 frames in → 100 left + 100 right out, 49.495 Hz observed
+  against a 50 Hz commanded rate; no buffering, decimation, or rate limit.
+- `header.stamp` originates at the bridge (`hand_ws_publisher.py:41`), ~0.3 ms
+  after the harness send and always before subscriber receipt (median
+  `header.stamp − recv_wall = −274,590 ns` over all 207 messages). No wire time
+  exists to preserve.
+- `frame_id` is the unconditional literal `world` — the only frame id observed.
+- **No validity or freshness gate exists in the path.** A frame carrying
+  `timestamp_ns = 946684800123456789` (2000-01-01), `valid=false`,
+  `left_valid=false`, `right_valid=false`, `tracking_state="UNTRACKED"` produced
+  a normally-stamped, normally-valued pose on both topics, indistinguishable
+  from the clean frame.
+- Fault handling is structural only and is enforced by crashing the connection
+  handler: missing `right_hand` → `KeyError` at `:89`, malformed JSON →
+  `JSONDecodeError` at `:87`, non-numeric `pos` → `ValueError` at `:45`. All
+  three close the connection with code `1011`; the node's own
+  `except ConnectionClosed` at `:90-91` never fires.
+- **Partial publication confirmed:** the missing-`right_hand` frame still
+  published a left pose at `:88` before raising.
+- Source loss is silent on the ROS side; the node survives, keeps both topics
+  advertised, publishes no invalidation, and accepts an immediate stateless
+  reconnect.
+
+This upgrades the earlier source-only reading of `left_valid`/`right_valid`
+from "misleading naming" to a measured fact: the tokens never reach the wire,
+and the ROS side has no gate to mislead.
+
+**No control consequence may be claimed.** The pipeline still terminates at a
+printing subscriber and RViz; there is no robot consumer at this revision.
+Priority remains **C** — the framework is now runtime-exhausted, and nothing
+further can be learned from it without a Godot/OpenXR Quest session that would
+still observe no validity handling.

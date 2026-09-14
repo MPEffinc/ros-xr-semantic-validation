@@ -25,7 +25,19 @@ sets only `PI_RECEIVED`.
   boundary can be observed; and a disconnect/reconnect protocol to demonstrate the stale-anchor
   behaviour at runtime rather than only in source.
 
-## Tier 2 — next, highest value per unit of effort
+## Tier 2 — completed 2026-09-14
+
+All three Tier-2 adaptations below were executed. Results:
+
+| Target | Result | Report |
+| --- | --- | --- |
+| Docker_Teleop D1–D5 | executed in the x86_64 Gazebo-only environment; D1 simulated motion, D2/D3 halt, D4 no source-time effect, D5 silent client takeover | [DOCKER_TELEOP_DOWNSTREAM_RUNTIME.md](DOCKER_TELEOP_DOWNSTREAM_RUNTIME.md), [runs/docker_teleop_e2e_20260914/JOINT_STATE_EXTRACTION.md](runs/docker_teleop_e2e_20260914/JOINT_STATE_EXTRACTION.md) |
+| OpenVR UR5e V1–V4, then W0–W3 | ROS boundary **and** MoveIt Servo + Gazebo downstream; V2/W2 confirmed the prediction — `Running_OutOfRange` is indistinguishable from `Running_OK` all the way to simulated joint motion | [OPENVR_UR5E_FAKE_RUNTIME.md](OPENVR_UR5E_FAKE_RUNTIME.md), [OPENVR_UR5E_DOWNSTREAM_RUNTIME.md](OPENVR_UR5E_DOWNSTREAM_RUNTIME.md) |
+| OpenArmX bridge-only UDP | executed; positive `timestamp_ns` preserved bit-exact, deliberately old timestamp published with no age gate, zero fell back to bridge time. Downstream consumer blocked by the closed `openarmx_arm_driver` | [OPENARMX_UDP_RUNTIME.md](OPENARMX_UDP_RUNTIME.md) |
+
+The original plan text follows unchanged for traceability.
+
+## Tier 2 — original plan (executed)
 
 ### Docker_Teleop (S)
 
@@ -96,10 +108,10 @@ Goal: demonstrate the preserve-then-drop I3 behaviour cheaply.
 
 | Target | Status | Exact prerequisite |
 | --- | --- | --- |
-| PickNik | `BLOCKED_ENV` | Unity 6000.1.6f1-compatible editor + Android module; then an authorised Quest |
+| PickNik | `BLOCKED_EXTERNAL_DEPENDENCY` | **Corrected 2026-09-14:** Unity `6000.1.6f1` + Android module are installed. The real prerequisite is a **Unity licence entitlement** on the operator's account (batch-mode run fails with `Found 0 entitlement groups`), and the project has no test assemblies, so a play-mode path would still have to be written; then an authorised Quest |
 | Spes end-to-end | ready | actual Quest session; ROS adapter and Pi path already proven |
 | xiaoxiaoxh | withheld | a source-audited inert replacement for the direct Flexiv robot-server endpoint must exist **before** any runtime attempt |
-| Reachy | withheld | an inert WebSocket stub for `/api/move/ws/set_target` |
+| Reachy | `BLOCKED_EXTERNAL_DEPENDENCY` | **Updated 2026-09-14:** the inert `/api/move/ws/set_target` stub now exists and passes its own self-test, but the sending side is Unity C# and hits the same licence entitlement blocker (plus the project pins `6000.3.9f1`, which is not installed) |
 | NVIDIA native | `NOT_FEASIBLE` here | native OpenXR/CloudXR stack |
 | Nakama | not schedulable | resolve source identity (`JuanR5` fork) first |
 

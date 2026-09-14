@@ -2,6 +2,12 @@
 
 Date: 2026-09-07. Baseline decision on entry: `GO — NOT STRONG GO`.
 
+> **Superseded counts (2026-09-14).** The population summary in §8 reflects the state on
+> 2026-09-07. The authoritative current per-framework status and the current runtime-coverage
+> counts are in [QUESTLESS_COMPLETION_MATRIX.md](QUESTLESS_COMPLETION_MATRIX.md). Two factual
+> corrections made after further execution are marked inline in §4 (Spes ships an upstream ROS 2
+> publisher) and §5 (Unity is installed; the blocker is a licence entitlement).
+
 This audit re-evaluates the whole framework population against the actual research item, using
 four **independent** axes rather than a single INCLUDED/EXCLUDED bit. Per-framework records are in
 `semantic_validation/frameworks/<name>/RESEARCH_UTILITY.md`; the cross-framework tables are in
@@ -81,17 +87,38 @@ Re-audit confirms it is a **core** system, and specifically the population's bes
 
 ## 4. Spes role, stated precisely
 
-Spes remains the strongest **motivating XR-hardware case** and is **not** a native XR→ROS
+> **Correction (2026-09-14).** The paragraph below was **wrong on one point** and is kept only for
+> traceability. Pinned Spes `c5d8081` **does** ship an upstream ROS 2 publisher,
+> `teleop/ros2/__main__.py`, which was subsequently executed unmodified end-to-end to the physical
+> Pi. Spes therefore *does* have a framework-native ROS boundary and may be counted as a native
+> XR→ROS implementation for ROS-boundary claims. What remains true is narrower: the *actual Quest 3
+> hardware* evidence was collected at the Spes **server callback**, not through that ROS module, so
+> the hardware finding still may not be reported as a native XR→ROS **hardware** result. See
+> [SPES_ROS_PI_INTEGRATION.md](SPES_ROS_PI_INTEGRATION.md). Upstream re-stamps with
+> `node.get_clock().now()` and hardcodes `frame_id="link_base"`
+> (`teleop/ros2/__main__.py:131-132`), which is the same I2/I3 disposition the research adapter
+> showed.
+
+~~Spes remains the strongest **motivating XR-hardware case** and is **not** a native XR→ROS
 implementation. Its ROS output exists only through a research adapter written by this project.
 Roles: `MOTIVATING_XR_CONTROL_CASE` and `RESEARCH_ADAPTED_ROS_PROPAGATION_CASE`. It must not be
-counted toward "native XR→ROS implementations".
+counted toward "native XR→ROS implementations".~~
 
 ## 5. PickNik status
 
 Unchanged and still the primary white-box Quest target: `isTracked`/`trackingState` reach the
 controller Transform, and `RosPublishers` drops them at the Odometry/TF boundary while re-stamping
-with wall clock. The backend (ROS-TCP Endpoint, Pi observer) is ready; the blocker is a compatible
-Unity editor plus an authorised Quest, not the testbed.
+with wall clock. The backend (ROS-TCP Endpoint, Pi observer) is ready.
+
+> **Correction (2026-09-14).** The blocker was previously recorded as "a compatible Unity editor
+> plus an authorised Quest". The editor claim is **wrong**: Unity `6000.1.6f1` — exactly the
+> version the project pins — **is** installed locally with the `AndroidPlayer` and
+> `LinuxStandaloneSupport` modules. A real batch-mode run was attempted and fails on a **licence
+> entitlement** (`Found 0 entitlement groups and 0 free entitlements`), which needs the operator's
+> Unity account. A second, independent obstacle sits behind it: the project contains **zero** test
+> assemblies, so no play-mode path exists even with a licence. See
+> [PICKNIK_QUESTLESS_CONVERGENCE.md](PICKNIK_QUESTLESS_CONVERGENCE.md). The same licence blocker
+> was independently reproduced for Reachy.
 
 ## 6. Research-claim utility matrix
 

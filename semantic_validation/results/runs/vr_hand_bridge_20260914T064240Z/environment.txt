@@ -1,0 +1,9 @@
+websockets 12.0
+Python 3.10.12
+ROS_DISTRO=humble
+FROM ros-xr-humble:local
+RUN apt-get update && apt-get install -y --no-install-recommends python3-pip && rm -rf /var/lib/apt/lists/*
+RUN python3 -m pip install --no-cache-dir "websockets==12.0"
+
+pinned target revision: a5da3e09def32b2f0dc69d4199493243f40e1440
+bridge sha256: 41822041ce1c756946688ffa44fc8ba11ae758d65ba2596f81b27e92e1d63e2c

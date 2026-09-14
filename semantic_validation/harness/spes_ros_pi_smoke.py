@@ -51,7 +51,21 @@ def main() -> int:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--result-dir", type=Path, required=True)
     parser.add_argument("--topic", default="/robot_target_pose")
+    # Default 3 preserves the original smoke behaviour exactly. A larger count
+    # is used by spes_ros_pi_runtime.py to obtain a non-trivial published vs
+    # received comparison. The step stays below the pinned pose-jump tolerance
+    # (0.05 m in teleop/__init__.py) so every packet is accepted by production.
+    parser.add_argument("--pose-count", type=int, default=3)
+    parser.add_argument("--pose-step", type=float, default=0.02)
+    parser.add_argument("--send-interval", type=float, default=0.0)
+    # Cross-host DDS discovery is not instantaneous. Without this wait the first
+    # publishes leave before the remote subscription is matched and are simply
+    # never delivered -- a transport artefact, not a semantic finding.
+    parser.add_argument("--require-subscribers", type=int, default=0)
+    parser.add_argument("--discovery-timeout", type=float, default=60.0)
     args = parser.parse_args()
+    if args.pose_step >= 0.05:
+        raise SystemExit("pose-step must stay under the pinned 0.05 m jump tolerance")
     if args.result_dir.exists():
         raise SystemExit(f"refusing to overwrite {args.result_dir}")
     args.result_dir.mkdir(parents=True)
@@ -93,23 +107,47 @@ def main() -> int:
             raise RuntimeError("pinned Spes WSS server did not start")
         # Give DDS discovery a deterministic opportunity before production callbacks publish.
         time.sleep(2.0)
+        if args.require_subscribers > 0:
+            deadline = time.monotonic() + args.discovery_timeout
+            while (publisher.get_subscription_count() < args.require_subscribers
+                   and time.monotonic() < deadline):
+                rclpy.spin_once(node, timeout_sec=0.05)
+            matched = publisher.get_subscription_count()
+            summary["matched_subscriptions_before_send"] = matched
+            if matched < args.require_subscribers:
+                raise RuntimeError(
+                    f"DDS discovery incomplete: {matched} subscriber(s) matched on "
+                    f"{args.topic}, required {args.require_subscribers}"
+                )
+            # Matched != ready to deliver; allow the remote reader a short settle.
+            settle = time.monotonic() + 1.0
+            while time.monotonic() < settle:
+                rclpy.spin_once(node, timeout_sec=0.05)
         ws = create_connection(
             f"wss://127.0.0.1:{port}/ws", timeout=5,
             sslopt={"cert_reqs": ssl.CERT_NONE, "check_hostname": False},
         )
         try:
-            for index, values in enumerate(((0.0, 0.0, 0.0), (0.0, 0.02, 0.0), (0.0, 0.04, 0.0)), 1):
+            poses = [(0.0, round(step * args.pose_step, 9), 0.0)
+                     for step in range(args.pose_count)]
+            for index, values in enumerate(poses, 1):
                 ws.send(json.dumps({"type": "pose", "data": packet(*values)}))
                 deadline = time.monotonic() + 2
                 while adapter.local_event_id < index and time.monotonic() < deadline:
                     rclpy.spin_once(node, timeout_sec=0.02)
                 if adapter.local_event_id != index:
                     raise RuntimeError(f"accepted callback {index} did not publish")
+                if args.send_interval:
+                    end = time.monotonic() + args.send_interval
+                    while time.monotonic() < end:
+                        rclpy.spin_once(node, timeout_sec=0.01)
         finally:
             ws.close()
         time.sleep(2.0)
         summary.update({"result": "PASS", "accepted_callbacks": adapter.local_event_id,
-                        "ros_publishes": adapter.local_event_id})
+                        "ros_publishes": adapter.local_event_id,
+                        "server_update_index_final": observer.update_index,
+                        "pose_count_requested": args.pose_count})
     except Exception as error:
         summary.update({"result": "FAIL", "error": f"{type(error).__name__}: {error}"})
         raise

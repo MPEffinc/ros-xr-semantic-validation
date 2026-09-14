@@ -1,5 +1,17 @@
 # PickNik deep source + executable validation
 
+> **Correction notice (2026-09-14, `PICKNIK_QUESTLESS_CONVERGENCE.md`):** the
+> environment statements below are out of date. A Unity `6000.1.6f1` editor **is**
+> installed at `/home/cclab/Unity/Hub/Editor/6000.1.6f1/Editor/Unity`, with the
+> Android and Linux Standalone modules. It was actually invoked in batch mode and
+> failed with `No valid Unity Editor license found. Please activate your license.`
+> (exit 1). The blocker is a **license entitlement**, not a missing editor. The
+> `ros_env/ros2_ws` `ros_tcp_endpoint` install referenced below is also broken (a
+> stale `--symlink-install` egg-link); a working rebuild and an actual endpoint run
+> are recorded in the new report. Source findings below are unchanged and were
+> re-verified (33/33, 10/10) on 2026-09-14.
+
+
 ## Result
 
 **PASS — strongest evidence: `SOURCE_DATAFLOW_CONFIRMED`; Unity/Quest/ROS runtime: `BLOCKED_ENV` / `BLOCKED_HW`**
