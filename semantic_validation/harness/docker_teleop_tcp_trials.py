@@ -52,12 +52,12 @@ def main() -> int:
     now = time.time()
     first = socket.create_connection((args.host, args.port), timeout=3.0)
     print("D1_BASELINE_START", flush=True)
-    send_for(first, tracked=True, timestamp=now, x=0.10, seconds=0.35)
-    send_for(first, tracked=True, timestamp=now + 0.35, x=0.35, seconds=0.65)
+    send_for(first, tracked=True, timestamp=now, x=0.10, seconds=0.60)
+    send_for(first, tracked=True, timestamp=now + 0.60, x=0.35, seconds=2.00)
     print("D1_BASELINE_END", flush=True)
 
     print("D2_TRACKED_FALSE_START", flush=True)
-    send_for(first, tracked=False, timestamp=now + 1.0, x=0.35, seconds=0.70)
+    send_for(first, tracked=False, timestamp=now + 2.60, x=0.35, seconds=1.20)
     print("D2_TRACKED_FALSE_END", flush=True)
 
     print("D3_STALL_START", flush=True)
