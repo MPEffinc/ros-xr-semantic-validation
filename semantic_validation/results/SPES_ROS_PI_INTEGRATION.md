@@ -12,7 +12,8 @@
 
 ## 0. What Spes is and is not — read before citing anything below
 
-**Spes is NOT a native XR->ROS framework, and this section must be read precisely.**
+**Spes ships a framework-native optional ROS 2 publisher, but no single run has yet joined native
+Quest input to that ROS boundary; this section must be read precisely.**
 
 The Spes control path proper terminates at a Python callback (`Teleop.subscribe`,
 `teleop/__init__.py:204-214`). Two distinct ROS hops were executed this session and they have
@@ -29,8 +30,8 @@ ROS 2 module with its own `rclpy` publisher (`teleop/ros2/__main__.py:88` create
 existing "only through a research-created adapter" understated the source inventory; the accurate
 statement is below.
 
-Even with Run B, Spes **still** must not be counted toward "native XR->ROS implementations",
-because:
+Run B/C establish a framework-native ROS publisher boundary. They still must not be counted as
+native Quest-to-ROS runtime evidence, because:
 
 - the XR frontend is a **WebXR browser page**, and in both runs the source was a synthetic WSS
   packet injected *after* that frontend — so no native XR tracking decision was exercised;
@@ -39,9 +40,9 @@ because:
   upstream's own `--omit-current-pose` escape hatch;
 - neither run observed a native downstream consumer.
 
-Spes's roles are unchanged: `MOTIVATING_XR_CONTROL_CASE` and
-`RESEARCH_ADAPTED_ROS_PROPAGATION_CASE`, with Run B adding
-`UPSTREAM_OPTIONAL_ROS_MODULE_EXECUTED` as a source-provenance fact, not as a native-XR claim.
+Spes's roles are `MOTIVATING_XR_CONTROL_CASE`, `RESEARCH_ADAPTED_ROS_PROPAGATION_CASE`, and
+`UPSTREAM_OPTIONAL_ROS_MODULE_EXECUTED`. Only the first has actual Quest evidence; the ROS legs are
+separate `E2 BOUNDARY_LIMITED_REPLAY` runs.
 
 `PI_RECEIVED != NATIVE CONSUMER ACCEPTED`. The Pi endpoint's `accept_decision` field is hardcoded
 to `ACCEPTED_NO_SEMANTIC_GATING`; it is an observation sink, not a controller.
@@ -428,13 +429,29 @@ and restates that `PoseStamped` carries no experiment ID.
 `ROS_DOMAIN_ID=74`, Pi sink `-p tf_topic:=/tf_unused_by_this_run` and an absolute
 `-p log_dir:=/home/cclab/spes_logs/<run_id>`.
 
-**Gap the hardware day must close in development, stated plainly:** the Quest orchestration
-(`start_quest_experiment.sh` -> `spes_hardware_server.py`) does **not** currently attach the ROS
-adapter — it runs the WSS server and observer only. Joining the hardware path to the ROS/Pi path
-requires wiring `SpesRosCallbackAdapter` into `spes_hardware_server.py` the same way
-`spes_ros_pi_smoke.py:80-88` does, and running that server inside the ROS container. That is a
-small, fully specified integration, but it is not zero: it has not been executed, so it is listed
-here as remaining work rather than claimed as ready.
+**Native hardware-day workflow now ready:** the final path uses the pinned upstream
+`teleop/ros2` publisher, not the research adapter. `spes_native_hardware_day.py` provides
+`start/status/stop/collect`; `spes_native_hardware_container.sh` serves the instrumented WebXR
+frontend through the upstream server/publisher; `spes_native_sideband.py` records Quest operator
+events and observes `/robot_target_pose`; and the Pi sink records the same topic. A Quest-free
+self-test (`spes_native_hardware_day_selftest_20260914T083000Z`) exercised this exact orchestration:
+10 synthetic production packets, 10 native ROS observations, 10 Pi receptions and 10 unique stamp
+matches, with clean shutdown. This is `E2 BOUNDARY_LIMITED_REPLAY`, not native Quest evidence.
+
+Hardware-day command surface (use one unique state directory throughout):
+
+```bash
+run_id=spes_native_hw_<UTC>
+state_dir=/tmp/${run_id}.state
+python3 semantic_validation/harness/spes_native_hardware_day.py start --run-id "$run_id" --state-dir "$state_dir"
+python3 semantic_validation/harness/spes_native_hardware_day.py status --state-dir "$state_dir"
+# Perform the five T1 transitions in the instrumented WebXR page.
+python3 semantic_validation/harness/spes_native_hardware_day.py stop --state-dir "$state_dir"
+python3 semantic_validation/harness/spes_native_hardware_day.py collect --state-dir "$state_dir"
+```
+
+The start action refuses an existing result directory or active state file; collection refuses an
+existing Pi copy. The workflow starts no robot, driver, controller or actuator.
 
 ---
 
@@ -458,8 +475,8 @@ release/re-press.
 These runs supply the other half — that an accepted callback propagates 1:1 to a physically
 separate ROS endpoint, through both a research adapter (Run A) and the pinned upstream ROS module
 (Run B) — under a synthetic source. **The two halves have not been joined in a single execution.**
-Joining them requires an authorized Quest 3 plus the small, fully specified wiring noted at the end
-of §8; every other component has now been executed for real.
+Joining them now requires only an authorized Quest 3 using the ready native workflow in §8; every
+Quest-free component has been executed for real.
 
 ---
 
@@ -499,6 +516,15 @@ semantic_validation/harness/spes_upstream_ros2_pi.py             (new, research-
 semantic_validation/harness/validate_spes_native_ros_pi_run.py   (Run C artifact validator)
 semantic_validation/harness/spes_ros_pi_smoke.py                 (extended: pose count, discovery wait)
 semantic_validation/harness/run_spes_hardware_preflight.py       (docker check now sg-aware)
+semantic_validation/harness/spes_native_hardware_day.py          (native start/status/stop/collect)
+semantic_validation/harness/spes_native_hardware_container.sh    (upstream publisher + instrumented WebXR overlay)
+semantic_validation/harness/spes_native_sideband.py              (operator events + ROS observer)
+semantic_validation/harness/spes_native_hardware_selftest.py     (Quest-free orchestration probe)
+
+semantic_validation/results/runs/spes_native_hardware_day_selftest_20260914T083000Z/
+  selftest.json                 10 synthetic packets and per-trial native ROS acknowledgements
+  hardware_day_summary.json     10 ROS / 10 Pi / 10 stamp matches, PASS
+  experiment_sideband.jsonl / native_ros_observer.jsonl / pi_sink.jsonl
 ```
 
 Pi-side originals remain at `rosxr:/home/cclab/spes_logs/spes_ros_pi_20260914T064625Z/` and
@@ -520,7 +546,6 @@ been executed for real — the pinned WSS server and control calculation, **both
 (the research adapter in Run A and the pinned upstream `teleop.ros2` module in Run B), actual
 ROS 2/Fast DDS transport, the dedicated Ethernet, and reception on a physically separate Raspberry
 Pi — each with a 30/30 published-to-received result and the pinned worktree unmodified. The Quest
-orchestration, preflight and live probe were also re-executed and pass. The remaining open item
-(§9) is gated on Quest hardware; the one non-Quest gap is the small adapter-into-hardware-server
-wiring stated plainly at the end of §8, which is specified but not yet executed. The status does
-**not** assert native XR->ROS behaviour, which Spes does not have.
+orchestration, preflight and live probe were also re-executed and pass. The native-publisher
+hardware workflow then passed a 10/10 Quest-free self-test. The remaining open item (§9) is gated
+only on Quest hardware. The status does **not** assert native Quest-to-ROS behaviour.

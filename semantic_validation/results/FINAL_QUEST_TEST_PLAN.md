@@ -21,11 +21,27 @@ the E5/E6 evidence that would justify moving it.
 Every target below is Gazebo-only or observation-only. The launch files in the safety register of
 [FRAMEWORK_TESTBED_ADAPTATION_PLAN.md](FRAMEWORK_TESTBED_ADAPTATION_PLAN.md) must never be run.
 
+Run the read-only campaign check before any target:
+
+```bash
+cd /home/cclab/ros_xr
+python3 semantic_validation/harness/final_quest_preflight.py \
+  --output-dir semantic_validation/results/runs/final_quest_preflight_<UTC>
+```
+
+The current app/artifact inventory and exact install commands are authoritative in
+[QUEST_APP_BUILD_READINESS.md](QUEST_APP_BUILD_READINESS.md). Each hardware result directory must
+be a new `semantic_validation/results/runs/<trial-prefix>_<UTC>/`; every prepared logger refuses or
+must be guarded against overwriting an existing directory.
+
 ## 1. PickNik — highest value, white-box
 
 - **Pinned revision:** `PickNikRobotics/meta_quest_teleoperation@bbaef0762fdb0b429b8ea12a4ca65040748b41dd`
 - **Application/build:** Unity `6000.1.6f1` (installed) + `AndroidPlayer`; pinned `SampleScene`;
-  APK build, install, launch on the Quest.
+  legitimate Unity entitlement is still required before the prepared disposable APK build.
+- **Exact build/install:** after entitlement activation, run
+  `prepare_picknik_hw_project.py --output /tmp/picknik_hw_run --manifest <run>/staging.json --build-if-available --apk /tmp/picknik_hw_run/Builds/picknik_semantic_validation.apk`, then
+  `adb install -r /tmp/picknik_hw_run/Builds/picknik_semantic_validation.apk`.
 - **Backend:** vendored `Unity-Technologies/ROS-TCP-Endpoint@54c1a64`, rebuilt non-symlinked and
   proven to run. Command in
   [PICKNIK_QUESTLESS_CONVERGENCE.md](PICKNIK_QUESTLESS_CONVERGENCE.md) §6.
@@ -57,8 +73,13 @@ Every target below is Gazebo-only or observation-only. The launch files in the s
 ## 2. Docker_Teleop — the gate-semantics question
 
 - **Pinned revision:** `Noah727/Docker_Teleop@64cbdde88bc52c6a80d37f994752e50f95ba537e`
-- **Application/build:** the in-tree Unity app (`HandPoseSender.cs`) built and installed on the
-  Quest. Backend already built and proven: `docker-teleop-humble:local`, workspace colcon-built.
+- **Application/build:** official upstream release `R.U_7.0.7.apk` is downloaded at
+  `local_artifacts/quest_apps/docker_teleop/R.U_7.0.7.apk`, SHA-256
+  `257828a6d2d9da1daf17692d68a69ddf12ec08f5df444e1feeeb5afff6084cf4`, signature/integrity
+  verified. Source rebuild remains blocked by missing Unity `6000.2.10f1` and entitlement.
+- **Exact install/tunnel:** `adb install -r -d local_artifacts/quest_apps/docker_teleop/R.U_7.0.7.apk`,
+  `adb reverse tcp:5026 tcp:5026`, `adb reverse tcp:10001 tcp:10001`.
+  Backend is already built and proven: `docker-teleop-humble:local`.
 - **Simulator bring-up (never `servo_test.launch.py`):** `simulation/launch/run_tabletop_sim.sh`,
   then `servo_test_config/launch/servo_gz.launch.py`, then `quest_controller_receiver`,
   `hand_pose_mapper`, `servo_command_bridge` — the exact sequence already executed in
@@ -73,6 +94,12 @@ Every target below is Gazebo-only or observation-only. The launch files in the s
 - **Trial IDs:** `hw_dt_baseline`, `hw_dt_t01` … `hw_dt_t05`.
 - **Logger:** `ros2 bag record` of the four topics (the synthetic run's bag schema), analysed with
   the existing `runs/docker_teleop_e2e_20260914/extract_joint_state.py`.
+- **Exact launch/log/stop:** from
+  `semantic_validation/targets/docker_teleop/ros_backend1.1`, run
+  `./scripts/backend11_lifecycle.sh bringup_dual`, then
+  `ros2 bag record -o <run>/bag /received_pose_states /target_twist_states /servo_node/delta_twist_cmds /joint_states`;
+  stop with `./scripts/backend11_lifecycle.sh wired_off` and
+  `./scripts/backend11_lifecycle.sh safe_down`. Never substitute `servo_test.launch.py`.
 - **Stop condition:** five occlusion intervals in which the Quest log shows the controller
   remained *connected*, or 20 minutes.
 - **Success criterion:** for each interval, whether the wire `isTracked` changed, and whether the
@@ -108,6 +135,12 @@ Every target below is Gazebo-only or observation-only. The launch files in the s
 - **Trial IDs:** `hw_q2r_track_t01` … `t05`, `hw_q2r_reconnect_t01` … `t05`.
 - **Logger:** `semantic_validation/harness/quest2ros2_simulationinput_pi.py` observation path,
   with the production node substituted for the simulator.
+- **Exact capture:** in the prepared Humble environment, start the pinned production
+  `q2r2_bringup.right_arm_controller` as documented in `QUEST2ROS2_ROS_RUNTIME.md`; capture
+  `ros2 bag record -o <run>/bag /q2r_right_hand_pose /q2r_right_hand_inputs /bh_robot/right_arm_clik_controller/target_frame`,
+  while the Pi sink writes to absolute `/home/cclab/semantic_robot_endpoint_logs/<run-id>`.
+  The external Quest2ROS app must be obtained/configured via the pinned README's
+  `quest2ros.github.io` path; no build or APK is attributed to this repository.
 - **Stop condition:** five clean intervals per trial type, or 20 minutes each.
 - **Success criterion:** for reconnect, whether the anchor/filter/`button_lower` latch state
   survives as it does synthetically; for degradation, whether the target frame keeps advancing.
@@ -131,10 +164,17 @@ Every target below is Gazebo-only or observation-only. The launch files in the s
   upstream ROS 2 module attached, so that one continuous run spans actual Quest → Spes server
   callback → upstream ROS publisher → DDS → Pi.
 - **Trial IDs:** `hw_spes_ros_t01` … `t05`.
-- **Logger:** `launch_spes_quest_experiment.sh` orchestration (preflight 9/9 PASS) plus
-  `spes_upstream_ros2_pi.py`.
+- **Exact launch/logger/collect/stop:** use one unique state path for all commands:
+  `python3 semantic_validation/harness/spes_native_hardware_day.py start --run-id <run-id> --state-dir /tmp/<run-id>.state`;
+  verify with the same command's `status` action; after five trials use `stop`, then `collect`.
+  This starts the pinned upstream `teleop/ros2` publisher, instrumented WebXR overlay,
+  side-band/ROS observer and Pi sink. The exact workflow passed its Quest-free 10/10 self-test.
+- **Topic/output:** `/robot_target_pose`; local
+  `semantic_validation/results/runs/<run-id>/`; Pi `/home/cclab/spes_logs/<run-id>/`.
 - **Success criterion:** each emulated-tracking interval correlates to Pi reception by ordering,
   stamp and payload equality (`<1e-9`), as validated in the synthetic run.
+- **Stop condition:** five valid raw native transitions, or 20 minutes; intervals overlapping
+  focus/session loss are invalid rather than negative results.
 - **Strongest possible evidence:** `E5 NATIVE_XR_TO_ROS` with `PI_RECEIVED`.
 - **Quest-only question:** none new — the XR-side question is already answered. This run exists to
   upgrade the *boundary* of an existing hardware finding.
@@ -154,18 +194,17 @@ stating.
 
 ## 6. What the hardware day still requires — stated honestly
 
-These are the residual gaps. They are small, but the campaign is **not** literally
-zero-development:
+These are the residual external/user-action gaps. Quest-free code and harness work is closed:
 
-1. **Unity licence entitlement** on the operator's account. This blocks PickNik and Reachy, and it
+1. **Unity licence entitlement** on the operator's account. This blocks PickNik source build and
+   Reachy, and it
    is an account action, not an engineering one.
-2. **PickNik APK build** after activation. The project has no test assemblies, so there is no
-   play-mode shortcut.
-3. **Docker_Teleop Unity app build** for the Quest, which has not been attempted.
-4. **Spes Quest orchestration does not yet attach a ROS publisher.** The wiring is specified in §4
-   above but has not been executed; this is perhaps an hour of work and should be done *before*
-   the hardware day, not during it.
-5. **An authorised Quest 3**, ADB-connected.
+2. **PickNik APK build** after activation. The build wrapper and exact command already exist; the
+   project has no play-mode shortcut.
+3. **Quest2ROS2 external app acquisition/configuration.** Its frontend is not in the pinned repo.
+4. **Optional OpenVR setup:** ALVR and SteamVR/OpenVR are not installed; omit this target unless
+   those external runtimes are intentionally added.
+5. **An authorised Quest 3**, ADB-connected. Docker_Teleop's verified official APK is already local.
 
 ## 7. Recommended order
 

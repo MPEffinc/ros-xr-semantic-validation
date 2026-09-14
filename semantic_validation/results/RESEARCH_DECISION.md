@@ -4,6 +4,14 @@
 
 **GO — NOT STRONG GO**
 
+**Quest-free closure update (2026-09-14):** Docker_Teleop and OpenVR UR5e now reach their
+production MoveIt Servo/Gazebo consumers with measured simulated joint consequences; Quest2ROS2
+now has actual ROS/DDS/Pi and reconnect-state runtime; OpenArmX reaches its production UDP-to-ROS
+bridge; NVIDIA's production ROS message gate has synthetic runtime evidence; and Spes's pinned
+upstream ROS 2 publisher reaches the Pi. These are all Quest-free `E2` or boundary-limited results.
+They substantially strengthen feasibility and cross-architecture comparison, but they do not add a
+second native Quest transition, so the decision remains **GO — NOT STRONG GO**.
+
 연구 방향은 계속 진행할 가치가 있다. 다만 현재 self-generated evidence에서 actual XR hardware transition과 downstream actionable consequence를 함께 확인한 implementation은 Spes 하나뿐이다. 따라서 cross-stack generality나 mature-stack-wide vulnerability를 claim할 단계가 아니며, **두 번째 independent runtime/hardware actionable confirmation이 명시적으로 부재한다.**
 
 여기서 GO는 paper claim 확정이나 deployment safety 판정이 아니라 다음 decisive cross-stack experiment로 진행한다는 결정이다.
@@ -13,8 +21,8 @@
 | Rubric | Required conditions | Current decision |
 | --- | --- | --- |
 | **STRONG GO** | Independent stack >=2; same higher-level invariant; different implementation mechanisms; runtime or hardware evidence; downstream actionable consequence observed | **NOT MET.** Spes만 actual Quest 3 -> production server callback consequence를 self-generated raw evidence로 보였다. 다른 stack은 synthetic runtime, source/dataflow, static, blocker, 또는 external self-report다. |
-| **GO** | Actual hardware motivating finding; cross-stack static/runtime evidence; second independent hardware/runtime confirmation needed | **MET.** Spes actual hardware finding이 있고 Quest2ROS2 callback runtime, PickNik source/dataflow, NVIDIA release/main comparison과 synthetic positive control이 있다. 두 번째 confirmation은 아직 필요하다. |
-| **CONDITIONAL GO** | Strong result only one implementation; rest weak/static | **NOT SELECTED.** Strong hardware result는 하나지만, 나머지가 단순 grep만은 아니다. Quest2ROS2 unchanged callback synthetic runtime, PickNik serialized source dataflow 33/33, NVIDIA current-main behavior tests가 있어 rubric의 GO 조건인 cross-stack static/runtime evidence를 충족한다. 단, 이들이 second actionable confirmation을 대신하지는 않는다. |
+| **GO** | Actual hardware motivating finding; cross-stack static/runtime evidence; second independent hardware/runtime confirmation needed | **MET.** Spes actual hardware finding과 11개 framework의 bounded runtime evidence가 있다. Docker_Teleop/OpenVR는 simulator consequence까지 도달했지만 synthetic source이므로 두 번째 native confirmation은 아니다. |
+| **CONDITIONAL GO** | Strong result only one implementation; rest weak/static | **NOT SELECTED.** Strong hardware result는 하나지만 나머지는 source-only breadth에 머물지 않는다. Actual ROS/DDS, production consumers, two Gazebo consequences, positive-control gates가 실행됐다. 단, 이들이 second native Quest confirmation을 대신하지는 않는다. |
 | **NO-GO** | Single trivial bug; metadata one-field explains everything; same generic ROS/network bug even without XR; mature stacks all safely handle semantics | **NOT MET.** Narrow Spes H1 patch는 one-field fix가 가능하지만 source identity, source time, generation, invalidation/re-arm은 독립 축이다. NVIDIA도 partial guard만 제공하며 `TRACKED`, freshness, generation은 complete positive control이 아니다. |
 
 ## 왜 STRONG GO가 아닌가
@@ -23,9 +31,11 @@ STRONG GO에는 두 implementation에서 같은 higher-level invariant가 서로
 
 | Candidate second stack | Current strongest evidence | Missing decisive link |
 | --- | --- | --- |
-| Quest2ROS2 | `CONFIRMED_RUNTIME_SYNTHETIC_SOURCE`: unchanged callback이 stale/future stamp와 frame lineage를 대체하며 publish test double까지 진행 | Actual XR producer, actual ROS graph/DDS/node/subscriber, tracking/session transition이 없음. Current Docker probe는 `BLOCKED_ENV`. |
-| PickNik | `SOURCE_DATAFLOW_CONFIRMED`: tracking state가 controller Transform driver에는 연결되고 Odometry/TF publisher에서 소실; source time은 wall-clock으로 재생성 | Unity/Quest runtime, actual tracking loss, actual Odometry/TF progression, dummy endpoint reception이 없음. |
-| NVIDIA | Linked release `MACHINE_CHECKED_STATIC`; current main invalid-path `RUNTIME_SYNTHETIC`; issue #731 `PUBLIC_ISSUE_SELF_REPORT` | Native OpenXR `VALID`/`TRACKED` trace, ROS output, 이 연구의 independent hardware/robot reproduction이 없음. |
+| Quest2ROS2 | `E2 SYNTHETIC_RUNTIME`: actual production node, ROS transport, DDS/Pi 619/619, reconnect anchor/filter/latch retention | Actual XR producer and tracking/session transition from the opaque Quest app. |
+| Docker_Teleop | `E2 UPSTREAM_FAITHFUL_REPLAY`: production receiver→mapper→Servo→Gazebo; D1 motion, D2/D3 halt | Whether optical tracking loss on actual Quest changes the connection-derived `isTracked` input. |
+| OpenVR UR5e | `E2 UPSTREAM_FAITHFUL_REPLAY`: `Running_OK` and `Running_OutOfRange` are equivalent through MoveIt Servo/Gazebo; invalid pose gives baseline | Whether the real ALVR/SteamVR/OpenVR path exposes that state pair during Quest loss. |
+| PickNik | `SOURCE_DATAFLOW_CONFIRMED`; downstream ROS-TCP endpoint replay 3600/3600 is `BOUNDARY_LIMITED_REPLAY` | Unity licence entitlement, actual Quest tracking transition, and execution of PickNik's own Odometry/TF publisher. |
+| NVIDIA | Production ROS builder/gate `E2 SYNTHETIC_RUNTIME`; issue #731 remains `PUBLIC_ISSUE_SELF_REPORT` | Native OpenXR `VALID`/`TRACKED` trace and this study's independent hardware reproduction. |
 
 NVIDIA issue #731은 다른 mechanism과 actual hardware/robot을 보고한 중요한 motivation이지만, raw artifact를 이 연구가 재실행·재분석하지 않았으므로 독립 confirmation으로 계산하지 않는다.
 
@@ -79,7 +89,9 @@ PickNik이 가장 직접적인 STRONG GO 판별 대상이다. Tracking state가 
 
 `HW_PICKNIK_UNTRACKED_ROS_CONTINUES`가 valid trial에서 반복되고 downstream dummy observer progression이 확인되면 I1 또는 I5에 대한 second independent hardware/runtime actionable confirmation 후보가 된다. `HW_NO_LOSS_OBSERVED`는 hypothesis failure가 아니라 device path 미관측이다. Robot은 필요하지 않다.
 
-Current blocker는 compatible Unity executable/Android build environment와 ADB-connected authorized Quest, ROS 2 Python environment다. 준비된 instrumentation은 `MACHINE_CHECKED_STATIC READY`일 뿐 hardware result가 아니다.
+Current blocker는 Unity `6000.1.6f1` 또는 Android module의 부재가 아니라 **Unity licence
+entitlement**다. Editor와 Android module, ROS-TCP backend/logger는 준비됐지만 batch execution은
+`Found 0 entitlement groups`에서 멈춘다. 그 뒤에 actual authorised Quest가 필요하다.
 
 ### Secondary alternatives
 

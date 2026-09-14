@@ -95,11 +95,12 @@ which path succeeded.
 and passed. Trials and stop conditions are fixed in `EXPERIMENT_T1.md` (five valid raw transitions;
 3-5 s degradation without focus loss; 1-2 s hold; 5-10 s post-recovery observation).
 
-**One remaining development item, stated honestly:** the Quest orchestration runs the WSS server
-and observer but does **not** yet attach a ROS publisher. Joining the hardware path to the ROS/Pi
-path needs `SpesRosCallbackAdapter` wired into `spes_hardware_server.py` the way
-`harness/spes_ros_pi_smoke.py:80-88` does, with that server run inside the ROS container. It is
-small and fully specified, but it has not been executed.
+**Quest-free orchestration closure:** `spes_native_hardware_day.py` now starts the pinned upstream
+`teleop/ros2` publisher, instrumented WebXR overlay, side-band/ROS observer and Pi sink as one
+start/status/stop/collect workflow. Its final Quest-free self-test delivered 10/10 native ROS
+observations to 10/10 Pi records with stamp correlation. It uses the framework-native publisher,
+not `SpesRosCallbackAdapter`; evidence remains `E2 BOUNDARY_LIMITED_REPLAY` until Quest input is
+used.
 
 ## The one Quest-only open question
 

@@ -144,10 +144,14 @@ message types.
    `LinuxStandaloneSupport`, but batch mode fails with
    `Found 0 entitlement groups and 0 free entitlements`. This blocks **PickNik** and
    **Reachy**. It is an account action, not an engineering one.
-2. **An authorised, ADB-connected Quest 3.** This is the only remaining gate on the
-   entire hardware campaign — see `FINAL_QUEST_TEST_PLAN.md`.
-3. **Spes Quest orchestration does not yet attach a ROS publisher** — specified but
-   unexecuted; ~1 hour of work that should happen before the hardware day.
+2. **An authorised, ADB-connected Quest 3.** This is the universal hardware-session prerequisite;
+   individual app/APK readiness and optional OpenVR setup have separate blockers documented in
+   `QUEST_APP_BUILD_READINESS.md`.
+3. **Resolved:** Spes hardware-day orchestration now attaches the pinned upstream ROS2 publisher,
+   instrumented WebXR overlay, side-band/ROS observer and Pi sink through
+   `spes_native_hardware_day.py` `start/status/stop/collect`. Its final synthetic self-test reached
+   native ROS/Pi 10/10 with stamp correlation and clean shutdown. Replacing the post-browser
+   synthetic source with actual Quest input is `QUEST_REQUIRED`.
 
 ## Resolved this session
 

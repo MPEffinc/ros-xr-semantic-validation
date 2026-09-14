@@ -1,6 +1,11 @@
 # Evidence Ledger
 
-Canonical actual-hardware run은 `spes_quest_hw_20260831T001349Z`, canonical autonomous suite는 `semantic_validation_20260831T153536Z`다. 이 ledger에서 actual XR hardware evidence는 F-SPES-HW-001/002뿐이다. 어느 finding도 `ACTUAL_ROBOT`이 아니며, Quest2ROS2 actual ROS transport는 이번 retry에서도 실행되지 않았다.
+Canonical actual-hardware run은 `spes_quest_hw_20260831T001349Z`, canonical autonomous suite는
+`semantic_validation_20260831T153536Z`다. Actual XR hardware evidence는 여전히
+F-SPES-HW-001/002뿐이다. 이후 Quest-free closure에서는 Quest2ROS2 actual ROS/DDS/Pi,
+Docker_Teleop/OpenVR production consumer와 Gazebo, OpenArmX UDP bridge, NVIDIA ROS message gate,
+Spes upstream ROS2 publisher→Pi를 실행했다. 어느 finding도 `ACTUAL_ROBOT`이 아니며 모든 새
+source는 synthetic/fake/replay다.
 
 ## Evidence-level contract
 
@@ -9,11 +14,26 @@ Canonical actual-hardware run은 `spes_quest_hw_20260831T001349Z`, canonical aut
 | `STATIC` | 사람이 고정 source를 추적한 결과. |
 | `MACHINE_CHECKED_STATIC` | 고정 commit의 source/schema/serialized reference를 checker가 검증. Runtime claim 아님. |
 | `RUNTIME_SYNTHETIC` | 실제 production method/path를 synthetic source 또는 test double로 실행. Actual XR/ROS transport라는 뜻 아님. |
-| `ACTUAL_ROS_RUNTIME` | Actual ROS graph/node/publisher/subscriber transport를 실행. 현재 새 finding 없음. |
+| `ACTUAL_ROS_RUNTIME` | Actual ROS graph/node/publisher/subscriber transport를 실행. Source가 synthetic이면 evidence level은 여전히 E2이며 native Quest evidence가 아님. |
 | `ACTUAL_XR_HARDWARE` | Actual Quest semantic transition을 raw capture. Endpoint 범위를 별도 명시. |
 | `ACTUAL_ROBOT` | Physical robot/actuator consequence. 현재 없음. |
 
 `SOURCE_DATAFLOW_CONFIRMED`는 PickNik의 `MACHINE_CHECKED_STATIC` 안에서 serialized scene/action reference까지 연결했음을 나타내는 refinement다. `PUBLIC_ISSUE_SELF_REPORT`는 외부 motivation이며 self-generated evidence level이 아니다.
+
+## Quest-free closure findings — 2026-09-14
+
+| Finding | Executed boundary | Result | Evidence / limitation |
+| --- | --- | --- | --- |
+| `F-DOCKER-E2E-001` | synthetic Unity-compatible TCP → production receiver/mapper/Servo → Gazebo | D1 Hand-E `0.134070 m`; D2/D3 stable halt near `1.09e-10 rad/s` | `E2 UPSTREAM_FAITHFUL_REPLAY`; actual Quest `isTracked` semantics unknown |
+| `F-OPENVR-E2E-001` | fake OpenVR → production bridge → MoveIt Servo → Gazebo | `Running_OK` and valid `Running_OutOfRange` equivalent downstream; invalid pose at baseline | `E2 UPSTREAM_FAITHFUL_REPLAY`; ALVR/Quest state pair not observed |
+| `F-Q2R-ROS-001` | synthetic publisher / in-repo SimulationInput → pinned `RightArmController` → DDS/Pi | age sweep 7/7; Pi 619/619; reconnect retained anchor/filter/latch | `E2 SYNTHETIC_RUNTIME`; opaque Quest frontend not executed |
+| `F-OPENARMX-ROS-001` | synthetic production-format UDP → pinned C++ bridge → `PoseStamped` | positive/old source time bit-exact; zero replaced with bridge time | `E2 SYNTHETIC_RUNTIME`; consumer blocked by missing `openarmx_arm_driver` |
+| `F-NVIDIA-ROS-001` | synthetic retargeting tensors → production ROS builders/gate | 15/15 against real rosidl types | `E2 SYNTHETIC_RUNTIME`; no native OpenXR/DDS |
+| `F-SPES-ROS-001` | synthetic post-browser WSS → pinned server/native ROS2 publisher → DDS/Pi | Run C 30/30/30; final hardware-workflow self-test 10 ROS/10 Pi/10 stamp matches | `E2 BOUNDARY_LIMITED_REPLAY`; `PI_RECEIVED` only |
+
+Additional bounded comparison runtimes and their exact claim limits are recorded in
+[COMPARISON_POPULATION_CLOSURE.md](COMPARISON_POPULATION_CLOSURE.md). The authoritative one-row-per-
+framework status is [QUESTLESS_COMPLETION_MATRIX.md](QUESTLESS_COMPLETION_MATRIX.md).
 
 ## F-SPES-HW-001
 
@@ -172,4 +192,4 @@ Canonical actual-hardware run은 `spes_quest_hw_20260831T001349Z`, canonical aut
 - Invariant mapping: [`INVARIANT_MATRIX.md`](INVARIANT_MATRIX.md).
 - Trivial-fix threat: [`TRIVIAL_FIX_THREAT.md`](TRIVIAL_FIX_THREAT.md).
 - Decision: **GO — NOT STRONG GO**, because a second independently reproduced runtime/hardware actionable confirmation is absent. See [`RESEARCH_DECISION.md`](RESEARCH_DECISION.md).
-- Final suite: [`summary.jsonl`](../logs/semantic_validation_20260831T153536Z/summary.jsonl): 11 PASS, 0 FAIL, 2 SKIP_ENV, 1 BLOCKED_HW. Nested/current socket restrictions are environment results, not negative findings.
+- Legacy autonomous suite: [`summary.jsonl`](../logs/semantic_validation_20260831T153536Z/summary.jsonl): 11 PASS, 0 FAIL, 2 SKIP_ENV, 1 BLOCKED_HW. Current closure status is maintained separately in [QUESTLESS_COMPLETION_MATRIX.md](QUESTLESS_COMPLETION_MATRIX.md); the legacy counts are not the current runtime-population count.

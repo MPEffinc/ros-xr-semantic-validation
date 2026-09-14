@@ -8,7 +8,7 @@ independent stack. This matrix records the lineage evidence actually found in so
 
 | Framework | XR SDK / API | ROS integration | Transport | Downstream controller | Shared-code origin evidence |
 | --- | --- | --- | --- | --- | --- |
-| Spes | WebXR (browser) | research adapter only (not native) | HTTPS/WSS | Spes server callback; ROS added by this project | none found; self-contained web app |
+| Spes | WebXR (browser) | optional pinned upstream `teleop/ros2` publisher; research adapter is a separate comparison path | HTTPS/WSS | Spes server callback; upstream ROS `PoseStamped`; no native downstream consumer | none found; self-contained web app |
 | PickNik | Unity XR/OpenXR + XRI | Unity ROS-TCP Connector | TCP (ROS-TCP) | MoveIt Pro (external) | **Unity Robotics Hub** dependency |
 | Quest2ROS2 | external Quest app (opaque) | external `ros_tcp_communication` | TCP (ROS-TCP) | external CLIK Cartesian controller | frontend is the public `quest2ros` app; ROS-TCP family |
 | Docker_Teleop | Unity 6000.2.10f1, OpenXR 1.15.1 + Meta XR SDK 72.0.0 | **bespoke TCP JSON receiver** (primary) + vendored ROS-TCP-Endpoint (secondary channel) | raw TCP, newline JSON, port 5026→5005 | MoveIt Servo → Gazebo | vendors Unity `ROS-TCP-Endpoint` verbatim (`server.py:1` Unity copyright); credits in `docs/System_Setup.md:324-328`. **No Quest2ROS evidence** (grep: zero hits) |

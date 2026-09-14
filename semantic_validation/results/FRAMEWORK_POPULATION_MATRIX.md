@@ -6,6 +6,11 @@ Generated 2026-09-07. Supersedes the population tables in
 frameworks audited in this session and by replacing the single INCLUDED/EXCLUDED bit with the
 four independent axes defined in the audit brief.
 
+> **Quest-free closure update (2026-09-14):** identity and role assignments remain useful here,
+> but current build/runtime/status results are authoritative in
+> [QUESTLESS_COMPLETION_MATRIX.md](QUESTLESS_COMPLETION_MATRIX.md). The rows below have been
+> corrected where later execution changed a factual boundary.
+
 Axis vocabularies are those of the brief: **System relevance** (`HIGH_XR_ROS_CONTROL`,
 `XR_ROS_BRIDGE_ONLY`, `XR_ROBOT_NON_ROS`, `XR_UI_OR_VISUALIZATION`, `NOT_RELEVANT`);
 **Semantic observability** (`FULL_SOURCE`, `PARTIAL_SOURCE`, `BLACK_BOX_XR_FRONTEND`,
@@ -44,7 +49,7 @@ Everything else was audited against the pinned source in this session.
 
 | # | Framework | System relevance | Semantic observability | Control depth (best auditable) | Testbed adaptability |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Spes | `HIGH_XR_ROS_CONTROL` (XR side); ROS side is a research adapter | `FULL_SOURCE` | `CONTROL_TARGET` (server callback); ROS via research adapter | `ROS_ADAPTER_REQUIRED`, `DIRECT_PI` |
+| 1 | Spes | `HIGH_XR_ROS_CONTROL` | `FULL_SOURCE` | `CONTROL_TARGET` at server callback; `ROS_PUBLISHED` through pinned upstream `teleop/ros2` | `DIRECT_PI` |
 | 2 | PickNik | `HIGH_XR_ROS_CONTROL` | `FULL_SOURCE` | `ROS_PUBLISHED`; original consumer MoveIt Pro is external | `DIRECT_PI`, `NATIVE_OBSERVER_ONLY` (Unity build blocked) |
 | 3 | Quest2ROS2 | `HIGH_XR_ROS_CONTROL` | `BLACK_BOX_XR_FRONTEND` + full host source | **`NATIVE_CONSUMER`** (executed) | `DIRECT_PI`, `INERT_STUB_FEASIBLE`, in-repo simulator |
 | 4 | Docker_Teleop | `HIGH_XR_ROS_CONTROL` | `FULL_SOURCE` | **`NATIVE_CONSUMER`** + simulated joint motion | `SIMULATOR_AVAILABLE`, `DIRECT_PI`, `INERT_STUB_FEASIBLE` |
@@ -52,7 +57,7 @@ Everything else was audited against the pinned source in this session.
 | 6 | OpenArmX | `HIGH_XR_ROS_CONTROL` | `PARTIAL_SOURCE` (closed IK core, external APK) | `ROS_PUBLISHED` reachable; `DRIVER_PREWRITE` blocked by closed core | `INERT_STUB_FEASIBLE` for bridge only |
 | 7 | VR-hand-bridge | `XR_ROS_BRIDGE_ONLY` | `FULL_SOURCE` | `TELEMETRY_ONLY` / `ROS_PUBLISHED` | `DIRECT_PI` (low yield) |
 | 8 | Nakama | `NOT_RELEVANT` at this identity (`SOURCE_PATH_UNCONFIRMED`) | `UNKNOWN` — no code in repo | none | `NOT_FEASIBLE` |
-| 9 | xiaoxiaoxh | `HIGH_XR_ROS_CONTROL` | `FULL_SOURCE` | `NATIVE_CONSUMER` exists in source (direct Flexiv server) | `INERT_STUB_FEASIBLE` — **not yet built**, runtime deliberately withheld (prior) |
+| 9 | xiaoxiaoxh | `HIGH_XR_ROS_CONTROL` | `FULL_SOURCE` | `NATIVE_CONSUMER` exists in source (direct Flexiv server); wire schema only executed | `HARDWARE_ONLY_UNSAFE` for the control path |
 | 10 | Reachy VR Quest | `XR_ROBOT_NON_ROS` | `FULL_SOURCE` | `NATIVE_CONSUMER` via daemon WebSocket, no ROS | `INERT_STUB_FEASIBLE` (prior) |
 | 11 | NU-MECH | `XR_ROS_BRIDGE_ONLY` | `FULL_SOURCE` | `TELEMETRY_ONLY` (Qt visualiser) | `DIRECT_PI` (prior) |
 | 12 | Legged | `XR_ROS_BRIDGE_ONLY` (control path unconfirmed) | `PARTIAL_SOURCE` | `ROS_PUBLISHED` telemetry | `NATIVE_OBSERVER_ONLY` (prior) |
@@ -61,7 +66,7 @@ Everything else was audited against the pinned source in this session.
 | 15 | LTS0429 | `HIGH_XR_ROS_CONTROL` (claimed) | `BLACK_BOX_XR_FRONTEND` (APK only) | unconfirmed | `BLACK_BOX_RUNTIME_ONLY` (prior) |
 | 16 | AgileX | `HIGH_XR_ROS_CONTROL` (claimed) | `BLACK_BOX_XR_FRONTEND` (APK only) | host IK only | `BLACK_BOX_RUNTIME_ONLY` (prior) |
 | 17 | xArm Quest | `HIGH_XR_ROS_CONTROL` | `BLACK_BOX_XR_FRONTEND` (Quest2ROS lineage) | direct xArm service | not launched (prior) |
-| 18 | NVIDIA IsaacTeleop | `HIGH_XR_ROS_CONTROL` | `FULL_SOURCE` (native runtime not run) | `ROS_PUBLISHED` | `NOT_FEASIBLE` without native OpenXR stack (prior) |
+| 18 | NVIDIA IsaacTeleop | `HIGH_XR_ROS_CONTROL` | `FULL_SOURCE` | `ROS_PUBLISHED` production message builders/gate executed; native XR source not run | synthetic dependency-boundary adaptation complete; native OpenXR still requires hardware stack |
 
 ## C. Invariant disposition matrix
 
@@ -79,36 +84,36 @@ A cell records the **audited production path**, not intent.
 | 6 | OpenArmX | **absent** | `P` side/head | **`P` at bridge → `D` at consumer** (the same field, two boundaries) | `D` | **`G`** on receipt-age freshness + grip deadman (bypassable by latched override) |
 | 7 | VR-hand-bridge | **absent** (`left_valid` is a null check) | `P` left/right | **`D`** — never carried at all | `D` | absent |
 | 8 | Nakama | `U` | `U` | `U` | `U` | `U` |
-| 9 | xiaoxiaoxh | no consumed gate found (prior) | `U` | ROS stamps synchronised (prior) | `U` | `U` |
+| 9 | xiaoxiaoxh | application `valid=true` is unconditional and unconsumed | positional left/right only | Unity `Time.time` carried but unconsumed | absent | control path not executed |
 | 10 | Reachy | **`G`** `IsPoseValid` + stable-delay + provider readiness (prior) | `P` skeleton provider | `U` | source-visible WS queue/generation (prior) | provider-not-ready blocks payload (prior) |
-| 11 | NU-MECH | **`G`** `IsTrackedDataValid` before UDP send; not serialised (prior) | `P` | `D` | `D` | `G` upstream only |
-| 12 | Legged | **`G`** `XRHand.isTracked` source-side (prior) | `P` | `U` | `U` | `U` |
-| 13 | Homebrew | **`G`** controller/hand fallback gate (prior) | `P` | `U` | `U` | `U` |
-| 14 | XRoboToolkit | publisher **overwrites** controller status with constant `3` (prior) | `P` | wire carries timestamp; consumer ignores (prior) | `U` | `U` |
-| 15 | LTS0429 | `U` | `U` | `U` | `U` | `U` |
-| 16 | AgileX | `U` | `U` | `U` | `U` | `U` |
+| 11 | NU-MECH | **`G`** `IsTrackedDataValid` before UDP send; unrepresentable on the wire | laterality implicit in endpoint | `D`; message type has no header | absent | upstream gate only; downstream loss is silence |
+| 12 | Legged | `XRHand.isTracked` computed then discarded | right-hand topic/frame only | every header has `stamp = 0` | absent | no downstream watchdog/re-arm |
+| 13 | Homebrew | tracking mode computed then discarded; fallback substitutes poses | side/body part in topic/message layout | send time, not sample time | URL session only | reconnect without a payload generation |
+| 14 | XRoboToolkit | head status `P`; controller status overwritten with constant `3` | laterality `T`; `deviceID` dropped | wire time `P`, not revalidated | absent | consumer not run |
+| 15 | LTS0429 | absent on wire | token name `T` to topic/frame | `D`, receiver re-stamp | absent | absent; malformed token can terminate bridge |
+| 16 | AgileX | absent in logcat representation | laterality only | absent | absent | host clutch only; frontend opaque |
 | 17 | xArm Quest | `U` (Quest2ROS lineage) | `U` | `U` | `U` | `U` |
-| 18 | NVIDIA | `VALID` `P`+`G`; `TRACKED` **`D`** (prior) | `P` handedness; modality incomplete | `D`/`T` in actionable path | `D` | invalid-pose hold/zero/rebaseline (prior) |
+| 18 | NVIDIA | `VALID` `P`+`G`; `TRACKED` **`D`**, ROS builder gate runtime-confirmed | `P` handedness; modality incomplete | `D`/`T` in actionable path | `D` | invalid-pose hold/zero/rebaseline |
 
 ## D. Runtime and readiness
 
 | # | Framework | Best evidence level reached | Downstream consequence reached | Simulator | Quest-ready | Priority |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Spes | E2 + prior hardware-to-callback | `PI_RECEIVED` | no | yes (orchestration ready) | A |
-| 2 | PickNik | E1 | none | no | blocked (Unity/APK) | A |
-| 3 | Quest2ROS2 | **E2 with actual ROS 2 transport** | **`NATIVE_CONSUMER_ACCEPTED`** | **in-repo** | blocked (external app) | **S** |
-| 4 | Docker_Teleop | E1 | none yet | **Ignition Gazebo** | plausible | **S** |
-| 5 | OpenVR UR5e | E1 | none yet | **Gazebo Sim** | heavy (ALVR/SteamVR) | A |
-| 6 | OpenArmX | E1 | none yet | no | no (PICO APK) | B |
-| 7 | VR-hand-bridge | E1 | none | no | low value | C |
+| 1 | Spes | E2 ROS leg + prior hardware-to-callback | `PI_RECEIVED`, 30/30 through upstream publisher and 30/30 through adapter | no | yes; native publisher orchestration is the last Quest-free closure item | A |
+| 2 | PickNik | E1; transport-only replay reached ROS-TCP 3600/3600 | boundary-limited backend relay only | no | blocked by Unity licence entitlement | A |
+| 3 | Quest2ROS2 | **E2 with actual ROS 2 transport** | pinned `RightArmController`; `PI_RECEIVED` 619/619 | in-repo source simulator | external app required for Quest semantics | **S** |
+| 4 | Docker_Teleop | **E2 upstream-faithful replay** | MoveIt Servo + simulated joint effect | **Ignition Gazebo** | app build readiness tracked separately | **S** |
+| 5 | OpenVR UR5e | **E2 upstream-faithful replay** | MoveIt Servo + simulated joint effect | **Gazebo Sim** | optional, heavy ALVR/SteamVR path | A |
+| 6 | OpenArmX | **E2 synthetic UDP runtime** | actual ROS `PoseStamped`; closed driver blocks consumer | no | frontend opaque/PICO | B |
+| 7 | VR-hand-bridge | **E2 boundary-limited replay** | `ROS_PUBLISHED`, no control consumer | no | low control value | C |
 | 8 | Nakama | E0 | none | no | no | DROP |
-| 9 | xiaoxiaoxh | E1 | none (withheld) | no | blocked | B |
+| 9 | xiaoxiaoxh | E2 wire-schema only; E1 control path | no control consequence | no | `HARDWARE_ONLY_UNSAFE` | B |
 | 10 | Reachy | E1 | none | no | blocked | B |
-| 11 | NU-MECH | E1 | none | no | no | C (positive control) |
+| 11 | NU-MECH | E2 boundary-limited UDP runtime | `ROS_PUBLISHED`; no robot consumer | no | Quest-only gate question | C (positive control) |
 | 12 | Legged | E1 partial | none | no | no | C (positive control) |
 | 13 | Homebrew | E1 | none | no | no | C (positive control) |
-| 14 | XRoboToolkit | E0/E1 | none | no | no | C |
-| 15 | LTS0429 | E0/E1 | none | no | no | DROP |
-| 16 | AgileX | E0/E1 | none | no | no | DROP |
+| 14 | XRoboToolkit | E2 with inert vendor-SDK substitute | `ROS_PUBLISHED`; external consumer not run | inert | frontend opaque | C |
+| 15 | LTS0429 | E2 synthetic UDP runtime | `ROS_PUBLISHED`; frontend opaque | inert | APK required | DROP |
+| 16 | AgileX | E2 representation runtime | no ROS/DDS/control consequence | inert | APK/ADB required | DROP |
 | 17 | xArm Quest | E1 | none | no | no | DROP (lineage) |
-| 18 | NVIDIA | E1 + E2 upstream tests | none | no | no | B (positive control) |
+| 18 | NVIDIA | E2 production ROS builder/gate | real rosidl message construction; no DDS/native XR | inert | native OpenXR required | B (positive control) |

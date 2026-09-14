@@ -15,10 +15,14 @@
 ## Status
 
 **Instrumentation/harness: `MACHINE_CHECKED_STATIC READY`**  
-**Unity/APK build: `BLOCKED_ENV`**  
+**Unity/APK build: `BLOCKED_USER_ACTION` (licence entitlement)**
 **Quest execution: `BLOCKED_HW`**
 
-현재 환경에는 Unity executable이 없고 ADB-connected Quest도 없으므로 APK를 만들거나 hardware trial을 실행하지 않았다. 이 문서는 준비 상태이며 hardware finding이 아니다. Docker Humble container의 ROS 2 message dependencies와 official ROS-TCP Endpoint ROS 2 branch는 2026-09-07에 실제 build/listen까지 확인했다; Unity client input은 아직 없다.
+Unity `6000.1.6f1`과 Android module은 설치되어 있지만 batch mode는 licence entitlement가
+없어 project import 전에 종료된다. ADB-connected Quest도 없으므로 APK/hardware trial은
+실행하지 않았다. Docker Humble의 official ROS-TCP Endpoint는 실제 build/listen 및
+backend-only 3600/3600 relay까지 확인됐지만, injection은 PickNik code 뒤이므로
+`BOUNDARY_LIMITED_REPLAY`다.
 
 ## Hardware question
 
@@ -158,11 +162,15 @@ The experiment does not require or authorize physical robot actuation.
 
 ## Current blocker
 
-- Compatible Unity executable: not found. Official Unity CLI `1.0.0-beta.8` is installed; its
-  `6000.1.6f1` Android-module dry run succeeded, but the full editor install did not complete.
+- Compatible Unity executable and Android module: installed at
+  `/home/cclab/Unity/Hub/Editor/6000.1.6f1/`; batch mode exits `1` with
+  `Found 0 entitlement groups` / `No valid Unity Editor license found`.
 - Existing repository tests/build artifact: none.
 - Current host shell ROS 2 Python environment: unavailable; the isolated Docker Humble image has
   `rclpy`, `nav_msgs`, `tf2_msgs`, and `geometry_msgs`.
 - ADB binary: available, connected Quest: none.
 
-Therefore the remaining manual/environment-dependent work is: provide an existing Unity 6000-compatible editor/Android module, connect an authorized Quest, build/install the disposable app, and perform controller occlusion. Until then PickNik remains `SOURCE_DATAFLOW_CONFIRMED`, not runtime-confirmed.
+Therefore the remaining manual work is: activate a legitimate Unity entitlement, build/install the
+prepared disposable app, authorize the Quest over ADB, and perform controller occlusion. Until
+then PickNik remains `SOURCE_DATAFLOW_CONFIRMED`; its ROS-TCP result is backend-only replay, not
+PickNik publisher runtime.

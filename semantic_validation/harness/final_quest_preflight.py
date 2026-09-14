@@ -232,6 +232,10 @@ def script_checks(checks: list[Check]) -> None:
         "semantic_validation/instrumentation/semantic-logger.js",
         "semantic_validation/harness/spes_hardware_server.py",
         "semantic_validation/harness/spes_ros_callback_adapter.py",
+        "semantic_validation/harness/spes_native_hardware_day.py",
+        "semantic_validation/harness/spes_native_hardware_container.sh",
+        "semantic_validation/harness/spes_native_sideband.py",
+        "semantic_validation/harness/spes_native_hardware_selftest.py",
     ]
     missing = []
     nonexec = []

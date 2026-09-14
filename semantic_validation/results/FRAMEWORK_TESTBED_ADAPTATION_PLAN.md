@@ -21,9 +21,10 @@ sets only `PI_RECEIVED`.
 - **Done:** in-repo `SimulationInput` → production node → DDS → physical Pi, 619/619.
   → [QUEST2ROS2_SIMULATIONINPUT_PI.md](QUEST2ROS2_SIMULATIONINPUT_PI.md)
 - Harness: `semantic_validation/harness/quest2ros2_simulationinput_pi.py`
-- **Remaining for this target:** an inert stand-in for the CLIK controller so the next consumer
-  boundary can be observed; and a disconnect/reconnect protocol to demonstrate the stale-anchor
-  behaviour at runtime rather than only in source.
+- **Completed after the transport run:** the disconnect/reconnect protocol executed the pinned
+  production node and demonstrated anchor/filter/arming-latch retention. The absent CLIK package
+  is intentionally not replaced with a research implementation that could be misattributed.
+  → [QUEST2ROS2_RECONNECT_RUNTIME.md](QUEST2ROS2_RECONNECT_RUNTIME.md)
 
 ## Tier 2 — completed 2026-09-14
 
@@ -109,10 +110,10 @@ Goal: demonstrate the preserve-then-drop I3 behaviour cheaply.
 | Target | Status | Exact prerequisite |
 | --- | --- | --- |
 | PickNik | `BLOCKED_EXTERNAL_DEPENDENCY` | **Corrected 2026-09-14:** Unity `6000.1.6f1` + Android module are installed. The real prerequisite is a **Unity licence entitlement** on the operator's account (batch-mode run fails with `Found 0 entitlement groups`), and the project has no test assemblies, so a play-mode path would still have to be written; then an authorised Quest |
-| Spes end-to-end | ready | actual Quest session; ROS adapter and Pi path already proven |
-| xiaoxiaoxh | withheld | a source-audited inert replacement for the direct Flexiv robot-server endpoint must exist **before** any runtime attempt |
+| Spes end-to-end | ready | actual Quest session; both research-adapter and pinned upstream ROS2/Pi legs are proven separately |
+| xiaoxiaoxh | `HARDWARE_ONLY_UNSAFE` for control | wire-schema runtime complete; direct Flexiv path remains prohibited without an unquestionably isolated inert endpoint |
 | Reachy | `BLOCKED_EXTERNAL_DEPENDENCY` | **Updated 2026-09-14:** the inert `/api/move/ws/set_target` stub now exists and passes its own self-test, but the sending side is Unity C# and hits the same licence entitlement blocker (plus the project pins `6000.3.9f1`, which is not installed) |
-| NVIDIA native | `NOT_FEASIBLE` here | native OpenXR/CloudXR stack |
+| NVIDIA native | `QUESTLESS_RUNTIME_COMPLETE` at ROS builder/gate; native path unavailable | native OpenXR/CloudXR stack is still required only for the hardware semantic question |
 | Nakama | not schedulable | resolve source identity (`JuanR5` fork) first |
 
 ## Safety register for this plan

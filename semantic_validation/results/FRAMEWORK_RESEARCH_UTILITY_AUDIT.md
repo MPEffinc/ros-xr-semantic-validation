@@ -128,8 +128,8 @@ with wall clock. The backend (ROS-TCP Endpoint, Pi observer) is ready.
 | **Docker_Teleop** | a complete XR→ROS→MoveIt Servo→Gazebo path with a real, source-visible validity gate; neutral-state recovery as a positive design pattern; the gate-semantics mismatch question | that occlusion actually trips the gate (must be tested on hardware) | the best simulator-backed, full-source principal target | ARM64 base image vs x86_64 host; real-hardware launch path exists in-tree and must be avoided |
 | **OpenVR UR5e** | `VALID` vs `TRACKED` gap in a second XR API; grip deadman with explicit re-anchor; Gazebo-only, zero hardware risk | production-grade representativeness | independent XR-runtime family (OpenVR/SteamVR) | low-maturity single-commit repo; needs a separate Jazzy environment |
 | **OpenArmX** | I3 preserve-then-drop inside one framework; freshness gate measured on the wrong clock; a latched override that bypasses the operator deadman | anything about the PICO frontend; the IK/joint-command half at runtime | sharpest single-framework I3 evidence; distinct UDP/PICO family | closed `openarmx_arm_driver`; frontend in a separate APK repo |
-| **Spes** | actual Quest 3 hardware transition to an actual application-server callback; ROS/DDS/Pi propagation through a research adapter | native XR→ROS implementation count; actuation | strongest motivating hardware evidence in the project | ROS side is not native to the framework |
-| **PickNik** | tracking state reaching the Transform and being dropped at the Odometry/TF publisher | any runtime or hardware behaviour yet | primary white-box Quest candidate | Unity editor + authorised Quest unavailable |
+| **Spes** | actual Quest 3 hardware transition to an actual application-server callback; separate ROS/DDS/Pi propagation through both the research adapter and pinned upstream `teleop/ros2` publisher | a claim that the prior hardware trace already crossed ROS; actuation | strongest motivating hardware evidence plus a framework-native ROS boundary ready for correlation | native XR-to-native-ROS has not yet been observed in one continuous hardware run |
+| **PickNik** | tracking state reaching the Transform and being dropped at the Odometry/TF publisher; actual ROS-TCP backend relay at the downstream injection boundary | native Unity/Quest behaviour or PickNik publisher execution | primary white-box Quest candidate | Unity `6000.1.6f1` is installed, but licence entitlement blocks batch execution/build |
 | **NVIDIA** | partial positive control: explicit `VALID` gating, invalid-pose hold/zero/rebaseline | that inferred-but-valid poses are blocked | the safe-design comparator | `TRACKED` bits not preserved; native runtime not run |
 | **Reachy, NU-MECH, Legged, Homebrew** | positive controls: source-visible gates that suppress output when tracking/provider state is bad | downstream consequence claims | they prevent the study from only sampling systems with gaps | no included control consumer (or unconfirmed) |
 | **xiaoxiaoxh** | source-visible direct-robot control path with no consumed tracking gate | any runtime result | high-risk downstream makes it a strong future case | runtime deliberately withheld until an audited inert stub exists |
@@ -173,8 +173,10 @@ with wall clock. The backend (ROS-TCP Endpoint, Pi observer) is ready.
 - Distinguishable architecture families with inspected source: **12**.
 - `HIGH_XR_ROS_CONTROL` with auditable source and a reachable native consumer **without hardware**:
   **3** (Quest2ROS2, Docker_Teleop, OpenVR UR5e).
-- Frameworks with runtime evidence to date: **2** (Spes via research adapter, Quest2ROS2 natively).
-- Positive controls retained: **5** (NVIDIA partial, Reachy, NU-MECH, Legged, Homebrew) plus
+- Frameworks with runtime evidence to date: **11**; the authoritative boundary-by-boundary count is
+  in [QUESTLESS_COMPLETION_MATRIX.md](QUESTLESS_COMPLETION_MATRIX.md). This is source/runtime breadth,
+  not native Quest generality.
+- Positive controls retained: **6** (NVIDIA, Reachy, NU-MECH, Legged, Homebrew) plus
   Docker_Teleop's recovery behaviour.
-- Excluded / dropped at current identity: Nakama (`SOURCE_PATH_UNCONFIRMED`), xArm (lineage),
-  LTS0429 and AgileX (opaque, no auditable semantics).
+- Identity-limited cases: Nakama (`SOURCE_PATH_UNCONFIRMED`) and xArm (`NON_INDEPENDENT`).
+  LTS0429 and AgileX remain opaque at the frontend but now have bounded host/representation runtime evidence.
