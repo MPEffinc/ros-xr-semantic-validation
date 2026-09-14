@@ -1,0 +1,37 @@
+[INFO] [launch]: All log files can be found below /tmp/h/.ros/log/2026-09-14-06-50-52-043263-0f16abe35d5f-1048
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container_mt-1]: process started with pid [1070]
+[component_container_mt-1] [INFO] [1789368652.461941571] [ur_servo_container]: Load Library: /opt/ros/jazzy/lib/librobot_state_publisher_node.so
+[component_container_mt-1] [INFO] [1789368652.464316619] [ur_servo_container]: Found class: rclcpp_components::NodeFactoryTemplate<robot_state_publisher::RobotStatePublisher>
+[component_container_mt-1] [INFO] [1789368652.464353396] [ur_servo_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<robot_state_publisher::RobotStatePublisher>
+[component_container_mt-1] [INFO] [1789368652.472903395] [robot_state_publisher]: Robot initialized
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/robot_state_publisher' in container '/ur_servo_container'
+[INFO] [servo_node-2]: process started with pid [1115]
+[servo_node-2] [WARN] [1789368657.285998490] [rcl.logging_rosout]: Publisher already registered for node name: 'servo_node'. If this is due to multiple nodes with the same name then all logs for the logger named 'servo_node' will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[servo_node-2] [WARN] [1789368657.289487248] [rcl.logging_rosout]: Publisher already registered for node name: 'servo_node'. If this is due to multiple nodes with the same name then all logs for the logger named 'servo_node' will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[servo_node-2] [WARN] [1789368657.291743573] [servo_node]: Could not enable FIFO RT scheduling policy. Continuing with the default.
+[servo_node-2] [WARN] [1789368657.291835632] [servo_node]: Realtime kernel is recommended for better performance.
+[servo_node-2] [INFO] [1789368657.294061553] [servo_node.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[servo_node-2] [INFO] [1789368657.294107538] [servo_node.moveit.core.robot_model]: Loading robot model 'ur5_robot'...
+[servo_node-2] [INFO] [1789368657.335795739] [servo_node.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'ur5_arm': 1 1 1 1 1 1
+[servo_node-2] [INFO] [1789368658.058332873] [servo_node.moveit.ros.current_state_monitor]: Listening to joint states on topic '/joint_states'
+[servo_node-2] [INFO] [1789368658.064627288] [servo_node.moveit.ros.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[servo_node-2] [INFO] [1789368658.064679627] [servo_node.moveit.ros.planning_scene_monitor]: Starting planning scene monitor
+[servo_node-2] [INFO] [1789368658.065811068] [servo_node.moveit.ros.planning_scene_monitor]: Listening to '/monitored_planning_scene'
+[servo_node-2] [INFO] [1789368658.065839479] [servo_node.moveit.ros.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[servo_node-2] [INFO] [1789368658.066149368] [servo_node.moveit.ros.planning_scene_monitor]: Listening to 'collision_object'
+[servo_node-2] [INFO] [1789368658.066441024] [servo_node.moveit.ros.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[servo_node-2] [INFO] [1789368663.067477799] [servo_node.moveit.ros.planning_scene_monitor]: Failed to call service get_planning_scene, have you launched move_group or called psm.providePlanningSceneService()?
+[servo_node-2] [INFO] [1789368663.068643101] [servo_node.moveit.ros.planning_scene_monitor]: Publishing maintained planning scene on '/servo_node/publish_planning_scene'
+[servo_node-2] [INFO] [1789368663.069013647] [servo_node.moveit.ros.move_group.collision_monitor]: Collision monitor started
+[servo_node-2] [WARN] [1789368663.069033002] [servo_node.moveit.ros.servo]: No smoothing plugin loaded
+[servo_node-2] [INFO] [1789368663.069037112] [servo_node.moveit.ros.servo]: Servo initialized successfully
+[servo_node-2] [INFO] [1789368663.075659398] [servo_node]: Waiting to receive robot state update.
+[servo_node-2] [INFO] [1789368683.893002574] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[component_container_mt-1] [INFO] [1789368683.893010475] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[servo_node-2] [INFO] [1789368683.898180094] [servo_node.moveit.ros.move_group.collision_monitor]: Collision monitor stopped
+[servo_node-2] [INFO] [1789368683.898835794] [servo_node.moveit.ros.planning_scene_monitor]: Stopped publishing maintained planning scene.
+[servo_node-2] [INFO] [1789368683.899284051] [servo_node.moveit.ros.planning_scene_monitor]: Stopping world geometry monitor
+[servo_node-2] [INFO] [1789368683.899472987] [servo_node.moveit.ros.planning_scene_monitor]: Stopping planning scene monitor
+[INFO] [component_container_mt-1]: process has finished cleanly [pid 1070]
+[INFO] [servo_node-2]: process has finished cleanly [pid 1115]
