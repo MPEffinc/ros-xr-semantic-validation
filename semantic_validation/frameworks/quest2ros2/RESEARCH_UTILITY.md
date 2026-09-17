@@ -85,8 +85,28 @@ Two runs exist:
 
 Both are E2. Neither is an XR-hardware result.
 
+## Actual Quest feasibility attempt — adapted transport / unchanged controller
+
+On 2026-09-17, Quest 3 application `com.Tiguin.Q2R` version `1.1`, configured
+in its UI for `ROS2`, reached the README-specified maintained bridge from
+`192.168.0.178` to `192.168.0.3:10000`. The unmodified bridge misparsed both
+the app's NUL-terminated system commands and its ROS 2 CDR message layout. An
+isolated external-bridge copy was therefore adapted only for those observed
+wire-framing/offset details; the pinned checkout and `RightArmController`
+remained unchanged.
+
+The resulting actual Quest run published 5,098 right poses and inputs, which
+the unchanged controller turned into 2,153 changing production target frames.
+An additional user visibility/recovery action did not yield a raw tracking
+state or an unambiguously attributable host-side transition, so it is
+`NO_TRANSITION_OBSERVED` for I1. See
+[`QUEST2ROS2_QUEST_FEASIBILITY_20260917.md`](../../results/QUEST2ROS2_QUEST_FEASIBILITY_20260917.md).
+
 ## Future Quest Test
 
+- Precondition: use the documented external bridge with the recorded isolated
+  CDR/NUL compatibility adaptation, unless upstream publishes an equivalent
+  compatible revision.
 - T0: headset app connected, `button_lower` pressed once to establish the anchor, 10 s baseline.
 - T1: occlude the controller 3–5 s. The decisive question is what the **external app** does — does it stop publishing, publish a frozen pose, or publish an extrapolated pose? The in-repo node has no gate, so whatever arrives is filtered, offset, and published.
 - T4 (distinctive to this framework): **disconnect/reconnect without pressing `button_lower`.** Source analysis predicts the stale pre-disconnect anchor is reused. This is a framework-specific I4 experiment that no other target in the population offers as cleanly.

@@ -137,6 +137,15 @@ framework status is [QUESTLESS_COMPLETION_MATRIX.md](QUESTLESS_COMPLETION_MATRIX
 - **Limitation:** Arbitrary software frame labels are not an actual OpenXR reference-space transition. The frame sweep demonstrates the boundary's transformation policy, not an observed XR reference-space change.
 - **Next evidence:** Capture the actual producer frame contract from the Quest2ROS2 frontend (currently a black box).
 
+## F-Q2R-HW-001
+
+- **Claim:** Quest 3 app `com.Tiguin.Q2R` v1.1 configured as `ROS2` reached the documented bridge and, through an isolated NUL/CDR compatibility adaptation, published 5,098 actual right poses and inputs into the unchanged `RightArmController`. That controller published 2,153 changing production target frames during normal controller motion.
+- **Evidence level:** Actual Quest → adapted external transport → unchanged production-controller runtime. This does **not** establish E5 for an XR tracking semantic transition: the frontend is black box and the one visibility/recovery action is `NO_TRANSITION_OBSERVED` without an app-side state capture or exact phase marker.
+- **Repository/revision/path:** `Taokt/Quest2ROS2@07aaf65149c9e29103f1fc61deb466cef8a55cef`; unchanged `RightArmController`; external `guguroro/ros_tcp_communication@5c5f08956d4bc7a045c321214b0bc03c63eb20a7` was used only as an isolated NUL/CDR-compatible bridge copy.
+- **Raw:** [`QUEST2ROS2_QUEST_FEASIBILITY_20260917.md`](QUEST2ROS2_QUEST_FEASIBILITY_20260917.md) and uncommitted run roots `hw_quest2ros2_cdr_20260917T093000Z` / `hw_quest2ros2_visibility_20260917T094000Z`.
+- **Limitation:** The unmodified documented bridge is not compatible with this app version. No physical robot/driver/CLIK consumer ran and `PI_RECEIVED` was not attempted.
+- **Next evidence:** a noninterfering app-side raw state capture or reproducible host-side marker for one visibility/tracking transition through this same boundary.
+
 ## F-PICKNIK-001
 
 - **Claim:** In the enabled Quest/OpenXR Unity scene, controller position/rotation and `trackingState` reach the exact left/right tracked-pose GameObject Transform drivers; `RosPublishers` then reads only Transform, drops tracking state/source time at the Odometry/TF boundary, and stamps with `DateTime.UtcNow`.
