@@ -1,0 +1,60 @@
+# S2 command record (2026-09-22 UTC)
+
+All commands below were run from `/home/cclab/ros_xr`. Docker commands were
+authorized only for the isolated S2 containers. `servo_test.launch.py` was not
+run; no physical driver, `robot_ip`, CAN, Quest, Pi, or external ROS network
+was used.
+
+```text
+git status --short --branch
+git rev-parse HEAD
+git rev-parse --verify origin/main
+git -C semantic_validation/targets/docker_teleop status --short --branch
+git -C semantic_validation/targets/docker_teleop rev-parse HEAD
+sed -n ... SEMANTIC_VALIDATION_EXECUTION_PLAN_V2.md SEMANTIC_VALIDATION_STATUS.md P0_INVENTORY.md S1_TRACE_AUDIT.md DOCKER_TELEOP_DOWNSTREAM_RUNTIME.md FRAMEWORK_TESTBED_ADAPTATION_PLAN.md JOINT_STATE_EXTRACTION.md
+sed -n ... ros_backend1.1/simulation/launch/run_tabletop_sim.sh
+sed -n ... receiver/receiver/quest_controller_receiver.py
+sed -n ... teleop_bridge/.../mapping/hand_pose_mapper.py
+sed -n ... teleop_bridge/.../servo_bridge/servo_command_bridge.py
+sed -n ... servo_test_config/launch/servo_gz.launch.py
+sg docker -c 'docker image inspect docker-teleop-humble:local ...; docker inspect docker_teleop_sim ...; docker exec docker_teleop_sim ... ps/ros2 graph/control list ...'
+```
+
+The original `run_tabletop_sim.sh` was inspected but **not run** because it
+contains broad `pkill -9` calls. The S2 launcher is recorded at
+`inputs/start_gazebo_only.sh`; it transcribes only the Gazebo-only operations
+into containers created for this stage and owns no pre-existing process.
+
+```text
+# primary D0--D5 session; image source and simulation mounts were read-only
+sg docker -c 'docker run -d --name s2_docker_baseline_20260922T080640Z --network bridge --publish 127.0.0.1:15006:5005 --env ROS_DOMAIN_ID=92 --env RMW_IMPLEMENTATION=rmw_fastrtps_cpp --env ROS_LOCALHOST_ONLY=1 --mount ...src...,readonly --mount ...simulation...,readonly --mount .../s2_docker_baseline_20260922T080640Z:/results docker-teleop-humble:local sleep infinity'
+sg docker -c 'docker exec s2_docker_baseline_20260922T080640Z bash /results/inputs/start_gazebo_only.sh'
+python3 inputs/s2_tcp_trials.py --host 127.0.0.1 --port 15006 --output inputs/transmitted.jsonl
+# The preceding command failed before connection with sandbox PermissionError;
+# its two D0 marker records and stderr are retained.
+python3 inputs/s2_tcp_trials.py --host 127.0.0.1 --port 15006 --output inputs/transmitted_retry.jsonl
+# This localhost-only retry ran with the explicit sandbox approval recorded in the session.
+sg docker -c 'docker exec ... bash -lc <first teardown command>'
+# The first teardown command had nested-quote expansion and did not signal recorded PIDs;
+# docker stop then ended only this S2 container. The raw DB3 remains readable, but lacks metadata.yaml.
+
+# independent comparable D4 source-time session
+sg docker -c 'docker run -d --name s2_docker_d4_20260922T080640Z --network bridge --publish 127.0.0.1:15007:5005 --env ROS_DOMAIN_ID=93 --env RMW_IMPLEMENTATION=rmw_fastrtps_cpp --env ROS_LOCALHOST_ONLY=1 --mount ...readonly source... --mount ...readonly simulation... --mount ...result root... docker-teleop-humble:local sleep infinity'
+sg docker -c 'docker exec -e RUN_LABEL=runtime_d4 -e BAG_NAME=d4_timestamp_pair s2_docker_d4_20260922T080640Z bash /results/inputs/start_gazebo_only.sh'
+python3 inputs/s2_d4_timestamp_pair.py --port 15007 --output runtime_d4/inputs/transmitted.jsonl
+sg docker -c 'docker exec s2_docker_d4_20260922T080640Z bash /results/inputs/teardown_owned.sh /results/runtime_d4; docker stop --timeout 5 s2_docker_d4_20260922T080640Z; docker rm s2_docker_d4_20260922T080640Z'
+
+# independent comparable D5 reconnect session
+sg docker -c 'docker run -d --name s2_docker_d5_20260922T080640Z --network bridge --publish 127.0.0.1:15008:5005 --env ROS_DOMAIN_ID=94 --env RMW_IMPLEMENTATION=rmw_fastrtps_cpp --env ROS_LOCALHOST_ONLY=1 --mount ...readonly source... --mount ...readonly simulation... --mount ...result root... docker-teleop-humble:local sleep infinity'
+sg docker -c 'docker exec -e RUN_LABEL=runtime_d5 -e BAG_NAME=d5_reconnect s2_docker_d5_20260922T080640Z bash /results/inputs/start_gazebo_only.sh'
+python3 inputs/s2_d5_reconnect.py --port 15008 --output runtime_d5/inputs/transmitted.jsonl
+sg docker -c 'docker exec s2_docker_d5_20260922T080640Z bash /results/inputs/teardown_owned.sh /results/runtime_d5; docker stop --timeout 5 s2_docker_d5_20260922T080640Z; docker rm s2_docker_d5_20260922T080640Z'
+
+# offline analysis only
+python3 analysis/analyze_s2.py . analysis/s2_analysis.json
+sha256sum <files listed in input_manifest.sha256>
+python3 -c "sqlite3 readonly PRAGMA integrity_check" <each of the three new DB3 files>
+rg -n -i '<credential/token/private-key patterns>' runs/s2_docker_baseline_20260922T080640Z -g '!*.db3'
+git diff --check
+git status --short
+```
