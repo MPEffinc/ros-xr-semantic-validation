@@ -1,6 +1,6 @@
 # XR→ROS 연구 현황판
 
-Last updated: 2026-09-22 (S4-A). Reviewed baseline: `1ffad59bcae0a5c9561f3509882d320be832d17e`. This board's carrying commit is resolved with `git log -1 --format=%H -- semantic_validation/results/SEMANTIC_VALIDATION_STATUS.md`; local/remote equality is verified after push and reported in the handoff. This avoids embedding a self-referential commit SHA.
+Last updated: 2026-09-22 (S4-B qualification). Reviewed baseline/S4-A commit: `226522d21e8c6bfb5cf2b523ea8b32d7423b4c5e`. This board's carrying commit is resolved with `git log -1 --format=%H -- semantic_validation/results/SEMANTIC_VALIDATION_STATUS.md`; local/remote equality is verified after push and reported in the handoff. This avoids embedding a self-referential commit SHA.
 
 ## Goal and current core question
 
@@ -15,7 +15,8 @@ Goal: a new XR→ROS defense-framework paper only if a demonstrable gap remains 
 | S2 Docker baseline | DONE | New synthetic input reached original receiver→mapper→bridge→MoveIt Servo→Gazebo. D1 moved; D2/D3 zeroed after settling; D4 old/fresh timestamps both accepted; D5 reconnect recaptured reference then moved | `S2_DOCKER_CONTROL_BASELINE.md`, `runs/s2_docker_baseline_20260922T080640Z/`; commit SHA `7d21e003475a96ebd2408cafc6e84d4f5aee6823` |
 | S3 OpenVR baseline | DONE | New fake OpenVR W0–W3 runs used unchanged `quest_teleop.py`→MoveIt Servo→Gazebo. W1/W2 produced pose, controller trajectory, and simulated movement; W3 `bPoseIsValid=false` produced none. `Running_OutOfRange` is not read by the source. | `S3_OPENVR_CONTROL_BASELINE.md`, `runs/s3_openvr_baseline_20260922T083841Z/`; commit `1ffad59bcae0a5c9561f3509882d320be832d17e` |
 | S4-A investigation/protocol | DONE | Official ROSMonitoring 3.0.0 source acquired/pinned; task policy, native/full-information B0–B3 arms, controls, repeats, metrics and decision rules preregistered. No defense installed or executed. | `S4_EXISTING_DEFENSE_PROTOCOL.md`, detached `.sha256`, `runs/s4a_preregistration_20260922T123356Z/`; carrying commit resolved as above |
-| S4-B implementation/comparison | NOT_STARTED | NOT_READY: review approval, dependency/runtime qualification, clock/ID joins, start barrier and actual stop integration still required | Frozen protocol verification precedes every approved run; no S4-B outcome exists |
+| S4-B runtime qualification | PARTIAL | Official ROSMonitoring 3.0.0 PASS on Humble/Jazzy; custom-message allow/block and fail-open oracle error measured. Exact original-path IDs, Gazebo stop/re-arm and integrated barrier remain blocked. | `S4B_RUNTIME_QUALIFICATION.md`, `runs/s4b_qualification_20260922T142928Z/`; carrying commit resolved as above |
+| S4-B B0–B3 comparison | NOT_STARTED | NOT_READY: lineage, Docker/OpenVR stop/re-arm, integrated clocks/start barrier must qualify first | Do not run comparison until explicit review/approval and qualification closure |
 | S5 cross-stack decision | TODO | No method-gap decision | Cannot start before S1–S4 reviewed |
 | S6 conditional method | BLOCKED | Requires S5 residual-condition result and explicit approval | No framework implementation authorized |
 | S7 conditional evaluation | BLOCKED | Requires S6 method and explicit approval | No evaluation authorized |
@@ -35,7 +36,7 @@ Goal: a new XR→ROS defense-framework paper only if a demonstrable gap remains 
 - Docker_Teleop: synthetic `isTracked=false` is gated to zero output; its field is connection-derived, so adequacy for actual optical/system tracking semantics remains unproven.
 - OpenVR UR5e: direct `bPoseIsValid=false` check gates; `eTrackingResult` is dropped in the tested original program, so this particular direct check does not distinguish `Running_OK` from `Running_OutOfRange`.
 - PickNik/Spes/Quest2ROS2: current paths do not provide a demonstrated original final robot controller for a defense consequence claim. Pi receipt is not a substitute.
-- ROSMonitoring: official master `d03aa5b44e29b76c0e108a098817bdf5aa98e322`, package 3.0.0, supports generated ROS 2 filters in source. Humble dependencies incomplete; Jazzy dependency/runtime support unverified. No local monitor or oracle was installed/generated/run. Source returns allowed/unknown on oracle absence/error; ordinary fail-closed integration remains a possible remedy requiring measurement, not a new-method claim.
+- ROSMonitoring: official master `d03aa5b44e29b76c0e108a098817bdf5aa98e322`, package 3.0.0, generated and passed its official ROS 2 integration test in isolated Humble and Jazzy containers. A Docker_Teleop custom-message filter allowed `tracked=true` and blocked `tracked=false`. Oracle absence, disconnect and 50 ms response timeout were measured fail-open; this is qualification evidence, not a B2 performance result.
 
 ## S4-A design corrections and frozen policy
 
@@ -47,8 +48,8 @@ Goal: a new XR→ROS defense-framework paper only if a demonstrable gap remains 
 ## Handoff instruction for the next worker
 
 1. Read `SEMANTIC_VALIDATION_EXECUTION_PLAN_V2.md`, this board, and `P0_INVENTORY.md` first; check Git status before any work.
-2. S4-A is complete and awaits external review. Do **not** start S4-B/S5 or any defense runtime automatically.
+2. S4-A is complete. S4-B runtime qualification is PARTIAL and B0–B3 comparison is NOT_STARTED. Do **not** start the comparison, S5 or any framework work automatically.
 3. Read `S4_EXISTING_DEFENSE_PROTOCOL.md` and verify its detached SHA-256 before approved S4-B work. Read S2/S3 input/analysis and the S4-A feasibility logs. Never amend the frozen policy after observing S4-B results.
 4. Preserve evidence boundaries: Docker synthetic, OpenVR fake API, ROS publication, original callback/consumer, Servo output and Gazebo joints are distinct. Actual Quest semantics and physical robot outcomes remain unverified.
-5. Qualify real ROSMonitoring in isolated environments, source-ID linkage, clocks, synchronized start and stop/re-arm behavior before comparative trials. Record integration blockers without relabelling a replacement implementation as ROSMonitoring.
+5. ROSMonitoring Humble/Jazzy runtime is qualified. Next close the exact original-path source-ID lineage, cross-container clocks, synchronized recorder/joint barrier and Docker/OpenVR stop/re-arm blockers. The qualification-only lineage carrier and barrier primitive are not original-controller PASS evidence.
 6. After the one later approved stage, explicitly stage reviewed evidence, push, verify `HEAD == origin/main == remote main`, report and stop.
