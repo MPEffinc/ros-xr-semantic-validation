@@ -12,8 +12,8 @@ Goal: determine whether a concrete XR semantic-state condition reaches an origin
 | --- | --- | --- | --- |
 | S0 context/inventory | DONE | Git fast-forward to `81a8b60`; local actual Quest, synthetic/Gazebo raw roots, source revisions, images and Pi role checked read-only | `P0_INVENTORY.md`; commit/push this documentation and preserved reviewed raw evidence, then stop |
 | S1 trace audit | DONE | Raw PickNik/Spes/Quest2ROS2/Docker/OpenVR recalculated offline; no mismatch in audited values, with causal/XR-semantic UNKNOWNs retained | `S1_TRACE_AUDIT.md`, `runs/s1_trace_audit_20260922T075316Z/`; commit SHA `5eb42b2909205829c5a8ec65bb398050ad24c927` |
-| S2 Docker baseline | DONE | New synthetic input reached original receiver→mapper→bridge→MoveIt Servo→Gazebo. D1 moved; D2/D3 zeroed after settling; D4 old/fresh timestamps both accepted; D5 reconnect recaptured reference then moved | `S2_DOCKER_CONTROL_BASELINE.md`, `runs/s2_docker_baseline_20260922T080640Z/`; S2 commit SHA `PENDING_COMMIT`, must be remote-verified before S3 |
-| S3 OpenVR baseline | TODO | Existing fake OpenVR→Servo→Gazebo evidence exists; no new runtime executed | `OPENVR_UR5E_DOWNSTREAM_RUNTIME.md`, `runs/openvr_ur5e_downstream_20260914T065659Z/` |
+| S2 Docker baseline | DONE | New synthetic input reached original receiver→mapper→bridge→MoveIt Servo→Gazebo. D1 moved; D2/D3 zeroed after settling; D4 old/fresh timestamps both accepted; D5 reconnect recaptured reference then moved | `S2_DOCKER_CONTROL_BASELINE.md`, `runs/s2_docker_baseline_20260922T080640Z/`; commit SHA `7d21e003475a96ebd2408cafc6e84d4f5aee6823` |
+| S3 OpenVR baseline | DONE | New fake OpenVR W0–W3 runs used unchanged `quest_teleop.py`→MoveIt Servo→Gazebo. W1/W2 produced pose, controller trajectory, and simulated movement; W3 `bPoseIsValid=false` produced none. `Running_OutOfRange` is not read by the source. | `S3_OPENVR_CONTROL_BASELINE.md`, `runs/s3_openvr_baseline_20260922T083841Z/`; S3 commit SHA `PENDING_COMMIT` until this documentation commit is pushed |
 | S4 existing-defense comparison | TODO | No policy or comparison implementation/execution | Must be pre-registered before results are viewed/changed |
 | S5 cross-stack decision | TODO | No method-gap decision | Cannot start before S1–S4 reviewed |
 | S6 conditional method | BLOCKED | Requires S5 residual-condition result and explicit approval | No framework implementation authorized |
@@ -39,6 +39,7 @@ Goal: determine whether a concrete XR semantic-state condition reaches an origin
 ## Handoff instruction for the next worker
 
 1. Read `SEMANTIC_VALIDATION_EXECUTION_PLAN_V2.md`, this board, and `P0_INVENTORY.md` first; check Git status before any work.
-2. S2 Docker runtime is complete and now awaits external review. Do **not** start S3/S4 or any Quest/OpenVR/defense runtime automatically.
-3. Read `S2_DOCKER_CONTROL_BASELINE.md` and its result root before any next action. Preserve its declared boundaries: synthetic input, Gazebo only, no source-to-bag latency join, no actual Quest tracking semantics, and no physical robot result.
-4. After exactly one later approved stage, update this board and the plan if evidence changes, explicitly stage reviewed files, push, verify `HEAD == origin/main`, report, and stop.
+2. S3 OpenVR baseline is complete and now awaits external review. Do **not** start S4 or any Quest/OpenVR/defense runtime automatically.
+3. Read `S2_DOCKER_CONTROL_BASELINE.md`, `S3_OPENVR_CONTROL_BASELINE.md`, and their result roots before any next action. Preserve boundaries: S2 is synthetic and S3 is fake OpenVR; both are Gazebo only and neither is actual Quest tracking semantics or physical robot evidence.
+4. The S3 report records that W1/W2 capture phases differed despite equal declared fake input except tracking result. Do not upgrade its endpoint comparison to time-aligned equality.
+5. After exactly one later approved stage, update this board and the plan if evidence changes, explicitly stage reviewed files, push, verify `HEAD == origin/main`, report, and stop.
