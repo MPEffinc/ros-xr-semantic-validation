@@ -1,6 +1,6 @@
 # XR→ROS 연구 현황판
 
-Last updated: 2026-09-22 (S4-B qualification). Reviewed baseline/S4-A commit: `226522d21e8c6bfb5cf2b523ea8b32d7423b4c5e`. This board's carrying commit is resolved with `git log -1 --format=%H -- semantic_validation/results/SEMANTIC_VALIDATION_STATUS.md`; local/remote equality is verified after push and reported in the handoff. This avoids embedding a self-referential commit SHA.
+Last updated: 2026-09-23 (S4-B qualification closure). Reviewed S4-B qualification commit: `9829c2a74f7693cee05f5da337ccc6f2fb9a77a4`; S4-A commit: `226522d21e8c6bfb5cf2b523ea8b32d7423b4c5e`. This board's carrying commit is resolved with `git log -1 --format=%H -- semantic_validation/results/SEMANTIC_VALIDATION_STATUS.md`; local/remote equality is verified after push and reported in the handoff. This avoids embedding a self-referential commit SHA.
 
 ## Goal and current core question
 
@@ -16,7 +16,8 @@ Goal: a new XR→ROS defense-framework paper only if a demonstrable gap remains 
 | S3 OpenVR baseline | DONE | New fake OpenVR W0–W3 runs used unchanged `quest_teleop.py`→MoveIt Servo→Gazebo. W1/W2 produced pose, controller trajectory, and simulated movement; W3 `bPoseIsValid=false` produced none. `Running_OutOfRange` is not read by the source. | `S3_OPENVR_CONTROL_BASELINE.md`, `runs/s3_openvr_baseline_20260922T083841Z/`; commit `1ffad59bcae0a5c9561f3509882d320be832d17e` |
 | S4-A investigation/protocol | DONE | Official ROSMonitoring 3.0.0 source acquired/pinned; task policy, native/full-information B0–B3 arms, controls, repeats, metrics and decision rules preregistered. No defense installed or executed. | `S4_EXISTING_DEFENSE_PROTOCOL.md`, detached `.sha256`, `runs/s4a_preregistration_20260922T123356Z/`; carrying commit resolved as above |
 | S4-B runtime qualification | PARTIAL | Official ROSMonitoring 3.0.0 PASS on Humble/Jazzy; custom-message allow/block and fail-open oracle error measured. Exact original-path IDs, Gazebo stop/re-arm and integrated barrier remain blocked. | `S4B_RUNTIME_QUALIFICATION.md`, `runs/s4b_qualification_20260922T142928Z/`; carrying commit resolved as above |
-| S4-B B0–B3 comparison | NOT_STARTED | NOT_READY: lineage, Docker/OpenVR stop/re-arm, integrated clocks/start barrier must qualify first | Do not run comparison until explicit review/approval and qualification closure |
+| S4-B qualification closure | PARTIAL | Docker source→bridge and OpenVR fake poll→pose lineage observed in shim; Docker stop+zero and official-monitor unknown→generic stop qualified in one synthetic trial. OpenVR pause+hold settled only at 1,203 ms (>1 s frozen limit); B0/shim source timing differed >5 ms; full graph ACK incomplete. | `S4B_QUALIFICATION_CLOSURE.md`, `runs/s4b_qualification_closure_20260922T151053Z/`; carrying commit resolved with `git log -1 --format=%H -- semantic_validation/results/SEMANTIC_VALIDATION_STATUS.md` after push |
+| S4-B B0–B3 comparison | NOT_STARTED | NOT_READY: OpenVR halt/re-arm, formal B0-shim equivalence and complete start ACK remain blocked; consumer-level exact lineage is bounded. | Do not run comparison until explicit review/approval and blockers resolved |
 | S5 cross-stack decision | TODO | No method-gap decision | Cannot start before S1–S4 reviewed |
 | S6 conditional method | BLOCKED | Requires S5 residual-condition result and explicit approval | No framework implementation authorized |
 | S7 conditional evaluation | BLOCKED | Requires S6 method and explicit approval | No evaluation authorized |
@@ -40,7 +41,7 @@ Goal: a new XR→ROS defense-framework paper only if a demonstrable gap remains 
 
 ## S4-A design corrections and frozen policy
 
-- S2 D3 stalled after invalidation; S4-B will stall while moving. S2 D4 used phase-held timestamps and opposite directions; S4-B uses per-sample stamps and same-direction fresh-initial-state pairs. Historical raw/reports are preserved.
+- S2 D3 stalled after invalidation; this closure tested a moving-state stall. S2 D4 used phase-held timestamps and opposite directions; S4-B uses per-sample stamps and same-direction fresh-initial-state pairs. Historical raw/reports are preserved.
 - S3 W1/W2 capture phase differed; S4-B needs source index zero, recorder readiness ACK and joint-state tolerance before a common barrier.
 - Primary freshness 250 ms, mandatory 100/500 ms sensitivity cases; receive silence 250 ms. Primary explicit recovery re-arm and separate automatic recovery policy both preregistered. No results-based selection.
 - Protocol ID XRROS-S4-1.0.0. SHA-256: `3a40337121f8d687dc68036ff2ffc85a1bc6eda275a700ba7d9e8119cd322969`; authoritative verification file: `S4_EXISTING_DEFENSE_PROTOCOL.sha256`. No S4-B results exist at freeze time.
@@ -51,5 +52,5 @@ Goal: a new XR→ROS defense-framework paper only if a demonstrable gap remains 
 2. S4-A is complete. S4-B runtime qualification is PARTIAL and B0–B3 comparison is NOT_STARTED. Do **not** start the comparison, S5 or any framework work automatically.
 3. Read `S4_EXISTING_DEFENSE_PROTOCOL.md` and verify its detached SHA-256 before approved S4-B work. Read S2/S3 input/analysis and the S4-A feasibility logs. Never amend the frozen policy after observing S4-B results.
 4. Preserve evidence boundaries: Docker synthetic, OpenVR fake API, ROS publication, original callback/consumer, Servo output and Gazebo joints are distinct. Actual Quest semantics and physical robot outcomes remain unverified.
-5. ROSMonitoring Humble/Jazzy runtime is qualified. Next close the exact original-path source-ID lineage, cross-container clocks, synchronized recorder/joint barrier and Docker/OpenVR stop/re-arm blockers. The qualification-only lineage carrier and barrier primitive are not original-controller PASS evidence.
-6. After the one later approved stage, explicitly stage reviewed evidence, push, verify `HEAD == origin/main == remote main`, report and stop.
+5. ROSMonitoring Humble/Jazzy runtime is qualified. Read `S4B_QUALIFICATION_CLOSURE.md` and its raw root: Docker exact lineage reaches bridge publication and generic stop+zero settles in one trial; OpenVR lineage reaches production pose only, hold misses the frozen 1 s settling bound, and B0/shim source timing violates the 5 ms pair gate. Complete DDS/Servo readiness ACK and OpenVR recovery remain unresolved. Do not promote shim or toy carrier evidence to unmodified B0.
+6. For any separately approved later stage, explicitly stage reviewed evidence, push, verify `HEAD == origin/main == remote main`, report and stop.
