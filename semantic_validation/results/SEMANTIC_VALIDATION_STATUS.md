@@ -11,7 +11,7 @@ Goal: determine whether a concrete XR semantic-state condition reaches an origin
 | Stage | Status | Conditions / key result | Evidence and next action |
 | --- | --- | --- | --- |
 | S0 context/inventory | DONE | Git fast-forward to `81a8b60`; local actual Quest, synthetic/Gazebo raw roots, source revisions, images and Pi role checked read-only | `P0_INVENTORY.md`; commit/push this documentation and preserved reviewed raw evidence, then stop |
-| S1 trace audit | TODO | No raw reanalysis performed | Inputs enumerated in `P0_INVENTORY.md`; requires a new result root and one committed audit report |
+| S1 trace audit | DONE | Raw PickNik/Spes/Quest2ROS2/Docker/OpenVR recalculated offline; no mismatch in audited values, with causal/XR-semantic UNKNOWNs retained | `S1_TRACE_AUDIT.md`, `runs/s1_trace_audit_20260922T075316Z/`; commit SHA `PENDING_COMMIT`, then verify remote and stop |
 | S2 Docker baseline | TODO | Existing synthetic and actual Quest→Gazebo evidence exists; no new runtime executed | `DOCKER_TELEOP_DOWNSTREAM_RUNTIME.md`, `runs/docker_teleop_e2e_20260914/`, `runs/hw_docker_native_20260917T071824Z/` |
 | S3 OpenVR baseline | TODO | Existing fake OpenVR→Servo→Gazebo evidence exists; no new runtime executed | `OPENVR_UR5E_DOWNSTREAM_RUNTIME.md`, `runs/openvr_ur5e_downstream_20260914T065659Z/` |
 | S4 existing-defense comparison | TODO | No policy or comparison implementation/execution | Must be pre-registered before results are viewed/changed |
@@ -39,6 +39,6 @@ Goal: determine whether a concrete XR semantic-state condition reaches an origin
 ## Handoff instruction for the next worker
 
 1. Read `SEMANTIC_VALIDATION_EXECUTION_PLAN_V2.md`, this board, and `P0_INVENTORY.md` first; check Git status before any work.
-2. Do **not** start S1 until the commit from this board is externally reviewed. Do not start a new Quest/Gazebo/ROS runtime now.
-3. For S1, work only from the recorded hashes in `P0_INVENTORY.md`; write all new analysis and logs under a new result root, preserve inputs, and distinguish source/ROS/Pi/consumer/Gazebo evidence.
-4. After exactly one stage, update this board and the plan if evidence changes, explicitly stage reviewed files, push, verify `HEAD == origin/main`, report, and stop.
+2. Do **not** start S2/S3 until the S1 commit is externally reviewed. Do not start a new Quest/Gazebo/ROS runtime now.
+3. Read `S1_TRACE_AUDIT.md` and its result root. Preserve its declared UNKNOWNs: no event-level Spes causality, no Quest2ROS2 tracking state, no Docker system-mode/app-field equivalence, and no physical robot result.
+4. After exactly one later stage, update this board and the plan if evidence changes, explicitly stage reviewed files, push, verify `HEAD == origin/main`, report, and stop.

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/analysis/audit.py", line 104, in <module>
+    out={'picknik':p_picknik(),'spes':p_spes(),'quest2ros2_cdr':q2('cdr'),'quest2ros2_visibility':q2('visibility'),'docker_synthetic':docker(R/'docker_teleop_e2e_20260914/bag/docker_teleop_e2e_bag_0.db3'),'docker_actual':docker_actual(),'openvr':openvr()}
+                                                                ^^^^^^^^^
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/analysis/audit.py", line 77, in q2
+    rows=bag(R/f'hw_quest2ros2_{name}_20260917T0'+('93000Z' if name=='cdr' else '94000Z')+'/bag/bag_0.db3',{})
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'
