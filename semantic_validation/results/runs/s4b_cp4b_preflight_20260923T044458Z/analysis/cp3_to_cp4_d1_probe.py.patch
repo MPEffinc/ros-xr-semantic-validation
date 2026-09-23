@@ -1,0 +1,62 @@
+--- semantic_validation/results/runs/s4b_cp3_d1_path_20260923T035434Z/inputs/d1_probe.py	2026-09-23 13:14:22.429422321 +0900
++++ semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_probe.py	2026-09-23 13:59:12.983728256 +0900
+@@ -73,6 +73,26 @@
+ 
+ event('clock', boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
+       time_namespace=os.readlink('/proc/self/ns/time'), clock='CLOCK_MONOTONIC')
++probe_boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
++probe_time_namespace = os.readlink('/proc/self/ns/time')
++
++def participant_clocks():
++    required = ['gazebo', 'clock', 'rsp', 'servo', 'sender']
++    if mode == 'b0': required += ['receiver', 'mapper', 'bridge']
++    else: required += ['observed']
++    if mode == 'b2': required += ['oracle', 'monitor']
++    if mode in ('b1', 'b3') or (mode == 'b2' and os.environ.get('COMPOSED') == '1'): required += ['stop_adapter']
++    records = {}
++    for label in required:
++        path = root / f'participant_clock_{label}.json'
++        if not path.exists(): return None
++        try: record = json.loads(path.read_text())
++        except json.JSONDecodeError: return None
++        if (record.get('boot_id') != probe_boot or
++            record.get('time_namespace') != probe_time_namespace or
++            record.get('clock') != 'CLOCK_MONOTONIC'): return None
++        records[label] = record
++    return records
+ 
+ def spin(seconds=.01):
+     deadline = time.monotonic() + seconds
+@@ -116,6 +136,11 @@
+         continue
+     if stack == 'docker' and mode != 'b0' and not (root / 'd1_nodes.ready').exists():
+         continue
++    clocks = participant_clocks()
++    if clocks is None:
++        continue
++    if (mode in ('b1', 'b3') or (mode == 'b2' and os.environ.get('COMPOSED') == '1')) and not (root / 'stop_adapter.ready').exists():
++        continue
+     monitor_events = []
+     if mode == 'b2':
+         status_file = root / ('monitor_full_status.jsonl' if regime == 'full' else 'monitor_native_status.jsonl')
+@@ -134,6 +159,12 @@
+     graph_ok = all(len(current_graph[name]['publishers']) >= 1 and
+                    len(current_graph[name]['subscriptions']) >= 2 for name in edges)
+     graph_ok &= len(current_graph['/joint_states']['publishers']) >= 1
++    if stack == 'docker' and mode == 'b2':
++        carrier_root = '/s4b/d1/envelope' if regime == 'full' else '/s4b/d1/native_input'
++        guard = 'd1_full_guard' if regime == 'full' else 'd1_native_guard'
++        graph_ok &= set(current_graph['/received_pose_states']['publishers']) == {'d1_lossless_stripper'}
++        graph_ok &= set(current_graph[carrier_root]['publishers']) == {guard}
++        graph_ok &= set(current_graph[carrier_root + '_mon']['publishers']) == {'quest_controller_receiver'}
+     services = {name: types for name, types in node.get_service_names_and_types()}
+     service_ok = servo_service in services
+     if not (graph_ok and service_ok):
+@@ -146,6 +177,7 @@
+     last = dict(position_error=position_error, drift=drift, speed=speed,
+                 joint_samples=len(window), increasing_stamps=increasing,
+                 graph=current_graph, controllers=states, servo_service=servo_service,
++                participant_clocks=clocks,
+                 monitor_oracle_positive_events=sum(row.get('status') == 'event' and
+                     row.get('verdict_raw') == 'currently_true' for row in monitor_events))
+     ready = True

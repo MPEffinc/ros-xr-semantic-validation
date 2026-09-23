@@ -1,0 +1,17 @@
+# Exact preflight commands run from /home/cclab/ros_xr; no Gazebo in CP4-B preflight.
+python3 semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/analysis/test_sender_loopback.py
+python3 semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/analysis/test_launcher_preflight.py
+python3 semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/analysis/test_d1_contract.py
+python3 semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/clock_check.py
+sg docker -c 'docker run --rm --network none --cap-drop ALL --security-opt no-new-privileges --user 1000:1000 --entrypoint python3 -e PYTHONPATH=/d1deps -v /home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z:/results -v /home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp3_d1_path_20260923T035434Z/deps:/d1deps:ro s4b-rosmonitoring-humble:20260922 /results/analysis/test_property_preflight.py'
+sg docker -c 'docker run --rm --network none --cap-drop ALL --security-opt no-new-privileges --user 1000:1000 --entrypoint bash -e PYTHONPATH=/official/src -v /tmp/rosmonitoring_s4a_20260922:/official:ro -v /home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs:/code:ro s4b-rosmonitoring-humble:20260922 -lc "source /opt/ros/humble/setup.bash; python3 -m rosmonitoring.cli validate /code/d1_rosmonitoring.yaml --ros-version ros2"'
+python3 -m py_compile semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_nodes.py semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_probe.py semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_stop_adapter.py
+bash -n semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/launch.sh
+sha256sum -c semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/freeze_manifest.sha256
+git -C semantic_validation/targets/docker_teleop rev-parse HEAD
+sg docker -c 'docker image inspect s4b-rosmonitoring-humble:20260922 --format "{{.Id}} {{json .RepoDigests}}"'
+sg docker -c 'docker ps --format "{{.Names}} {{.Image}} {{.Status}}"'
+
+# The first oracle property test returned assertion failure because the test
+# retained a mutable dict reference; it is recorded in preflight_failures.md.
+# Later runs logged under stdout/ and stderr/; no ROS runtime was started.
