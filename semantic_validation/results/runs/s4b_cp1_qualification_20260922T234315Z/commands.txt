@@ -1,0 +1,25 @@
+# CP1 qualification continuation. `commands.jsonl` records every trial-owned
+# docker create/inspect/exec/stop argv and clock-check argv verbatim.
+# Workdir: /home/cclab/ros_xr. `sg docker` is used without changing socket ACLs.
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/run_owned.py docker b0 --attempt 01
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/run_owned.py docker b0 --attempt 02
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/run_owned.py docker shim --attempt 01
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/run_owned.py openvr b0 --attempt 01
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/run_owned.py openvr shim --attempt 01
+# Setup-only change after previous pair: cancel/reset original 50 Hz timer at
+# the ACKed barrier in both variants; original program itself was untouched.
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/run_owned.py openvr b0 --attempt 02
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/run_owned.py openvr shim --attempt 02
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/analysis/pair_audit.py
+# Stop variant committed before its first trial; setup corrections separately
+# committed before each retry. All three attempts retained.
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/stop_inputs/run_owned.py openvr hold_fast --attempt 01
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/stop_inputs/run_owned.py openvr hold_fast --attempt 02
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/stop_inputs/run_owned.py openvr hold_fast --attempt 03
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/analysis/stop_audit.py
+python3 semantic_validation/results/runs/s4b_cp1_qualification_20260922T234315Z/inputs/clock_check.py
+
+# Read-only analysis snippets used to inspect raw event counts, phases and
+# controller trajectory timing were executed via `python3 - <<'PY'` and are
+# reproduced by the saved pair_audit.py/stop_audit.py and this report.
