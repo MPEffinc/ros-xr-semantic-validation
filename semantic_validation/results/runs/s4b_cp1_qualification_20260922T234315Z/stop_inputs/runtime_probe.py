@@ -95,18 +95,23 @@ event('recorder_readiness',ready=ready,window_samples=len(window),
 if not ready:
     event('BLOCKED_INITIAL_CONDITION')
     raise SystemExit(12)
-# Require real DDS matches for production -> Servo -> controller before release.
-for topic in ('/servo_node/pose_target_cmds','/ur5_arm_controller/joint_trajectory'):
-    pubs=node.get_publishers_info_by_topic(topic)
-    subs=node.get_subscriptions_info_by_topic(topic)
-    event('graph_ack',topic=topic,publishers=[x.node_name for x in pubs],subscribers=[x.node_name for x in subs])
-    if len(pubs)<1 or len(subs)<2:
-        raise SystemExit('BLOCKED_GRAPH_ACK '+topic)
 ROOT.joinpath('recorder.ready').write_text('READY\n')
 while not ROOT.joinpath('production.ready').exists():
     spin(.02)
     if time.monotonic()>deadline+20:
         raise SystemExit('production readiness timeout')
+# Require real DDS matches for production -> Servo -> controller before release.
+for topic in ('/servo_node/pose_target_cmds','/ur5_arm_controller/joint_trajectory'):
+    match_deadline=time.monotonic()+15
+    while time.monotonic()<match_deadline:
+        pubs=node.get_publishers_info_by_topic(topic)
+        subs=node.get_subscriptions_info_by_topic(topic)
+        if len(pubs)>=1 and len(subs)>=2:
+            break
+        spin(.02)
+    event('graph_ack',topic=topic,publishers=[x.node_name for x in pubs],subscribers=[x.node_name for x in subs])
+    if len(pubs)<1 or len(subs)<2:
+        raise SystemExit('BLOCKED_GRAPH_ACK '+topic)
 phase('idle',teleop=False)
 event('barrier_release')
 ROOT.joinpath('barrier.json').write_text(json.dumps({'monotonic_ns':time.monotonic_ns()}))
