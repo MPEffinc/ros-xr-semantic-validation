@@ -1,0 +1,1727 @@
+[
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0002807110650193678,
+      "shoulder_lift_joint": 0.0002293261978190131,
+      "shoulder_pan_joint": 3.832439115863131e-12,
+      "wrist_1_joint": 5.2950475658251894e-05,
+      "wrist_2_joint": 3.82849307811739e-12,
+      "wrist_3_joint": 3.4259158924823427e-15
+    },
+    "max_final_joint_difference_rad": 0.0002807110650193678,
+    "max_source_offset_difference_ms": 0.0571669999999358,
+    "median_source_offset_difference_ms": 0.004817000000002736,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b1_full_q3b1fsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.285634988647626,
+          "shoulder_lift_joint": -1.3192699729005017,
+          "shoulder_pan_joint": 1.8458051220934375e-08,
+          "wrist_1_joint": 0.03375451398606771,
+          "wrist_2_joint": 1.5700000808954808,
+          "wrist_3_joint": 8.004814812308565e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "d1_common_stop_adapter",
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.9936456912466594e-11,
+        "initial_max_velocity_rad_s": 6.182120093622956e-11,
+        "initial_position_error_rad": 2.720765579908116e-05,
+        "joint_samples": 454,
+        "max_joint_excursion_rad": 0.2843909217598388,
+        "name": "docker_b1_full_q3b1fsetup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582598645501581,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0017752403006503492,
+      "shoulder_lift_joint": 0.0015241203320046637,
+      "shoulder_pan_joint": 2.1977965248542435e-11,
+      "wrist_1_joint": 0.0003580603575641175,
+      "wrist_2_joint": 2.1988633136516e-11,
+      "wrist_3_joint": 4.6879375991668326e-15
+    },
+    "max_final_joint_difference_rad": 0.0017752403006503492,
+    "max_source_offset_difference_ms": 0.30377000000004273,
+    "median_source_offset_difference_ms": 0.004280000000107975,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b1_native_q3b1nsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.284140459411995,
+          "shoulder_lift_joint": -1.317975178766316,
+          "shoulder_pan_joint": 1.8439905694801696e-08,
+          "wrist_1_joint": 0.03405962386797357,
+          "wrist_2_joint": 1.5700000808773207,
+          "wrist_3_joint": 8.004895950843482e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "d1_common_stop_adapter",
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.152878012244479e-11,
+        "initial_max_velocity_rad_s": 6.182117318065394e-11,
+        "initial_position_error_rad": 2.7207615862626273e-05,
+        "joint_samples": 446,
+        "max_joint_excursion_rad": 0.28588545103398855,
+        "name": "docker_b1_native_q3b1nsetup01",
+        "recorder_joint_window": 31,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582551567260431,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 2.486021099623592e-05,
+      "shoulder_lift_joint": 7.166965267080272e-05,
+      "shoulder_pan_joint": 7.007713290647203e-13,
+      "wrist_1_joint": 2.136658119002155e-05,
+      "wrist_2_joint": 7.713829575095588e-13,
+      "wrist_3_joint": 2.191296372110707e-13
+    },
+    "max_final_joint_difference_rad": 7.166965267080272e-05,
+    "max_source_offset_difference_ms": 0.051199999999880674,
+    "median_source_offset_difference_ms": 0.002925500000003467,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b2_full_q3b2fsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859405599236415,
+          "shoulder_lift_joint": -1.31942762944565,
+          "shoulder_pan_joint": 1.8461182888721173e-08,
+          "wrist_1_joint": 0.033722930091599476,
+          "wrist_2_joint": 1.570000080898538,
+          "wrist_3_joint": 8.002657775095379e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "d1_lossless_stripper"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/envelope": {
+            "publishers": [
+              "d1_full_guard"
+            ],
+            "subscriptions": [
+              "d1_lossless_stripper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/envelope_mon": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "d1_full_guard",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.888549415258691e-11,
+        "initial_max_velocity_rad_s": 6.182120787512346e-11,
+        "initial_position_error_rad": 2.7207500257068858e-05,
+        "joint_samples": 472,
+        "max_joint_excursion_rad": 0.28408535062739304,
+        "name": "docker_b2_full_q3b2fsetup01",
+        "recorder_joint_window": 38,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582696632292812,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0019287523080062652,
+      "shoulder_lift_joint": 0.0015262553337185292,
+      "shoulder_pan_joint": 2.331186964927568e-11,
+      "wrist_1_joint": 0.0004015630458362937,
+      "wrist_2_joint": 2.330646786674606e-11,
+      "wrist_3_joint": 1.8898185031760517e-15
+    },
+    "max_final_joint_difference_rad": 0.0019287523080062652,
+    "max_source_offset_difference_ms": 0.050865000000158034,
+    "median_source_offset_difference_ms": 0.003678499999750784,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b2_native_q3b2nsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.283986947404639,
+          "shoulder_lift_joint": -1.3179730437646022,
+          "shoulder_pan_joint": 1.8438571790400962e-08,
+          "wrist_1_joint": 0.03410312655624575,
+          "wrist_2_joint": 1.5700000808760028,
+          "wrist_3_joint": 8.004867969652522e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "d1_lossless_stripper"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/native_input": {
+            "publishers": [
+              "d1_native_guard"
+            ],
+            "subscriptions": [
+              "d1_lossless_stripper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/native_input_mon": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "d1_native_guard",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.257973980590081e-11,
+        "initial_max_velocity_rad_s": 6.182118705844175e-11,
+        "initial_position_error_rad": 2.7207334205455206e-05,
+        "joint_samples": 446,
+        "max_joint_excursion_rad": 0.28603896329918155,
+        "name": "docker_b2_native_q3b2nsetup01",
+        "recorder_joint_window": 32,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582638507283613,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0017644765311528587,
+      "shoulder_lift_joint": 0.0013938579575036858,
+      "shoulder_pan_joint": 2.1340527544027488e-11,
+      "wrist_1_joint": 0.00037112440145267017,
+      "wrist_2_joint": 2.134292742539401e-11,
+      "wrist_3_joint": 8.37892757957142e-15
+    },
+    "max_final_joint_difference_rad": 0.0017644765311528587,
+    "max_source_offset_difference_ms": 0.05979399999978341,
+    "median_source_offset_difference_ms": 0.0045850000001905755,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b2c_full_q3b2cfsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2841512231814924,
+          "shoulder_lift_joint": -1.318105441140817,
+          "shoulder_pan_joint": 1.844054313250621e-08,
+          "wrist_1_joint": 0.034072687911862125,
+          "wrist_2_joint": 1.5700000808779664,
+          "wrist_3_joint": 8.004765282191694e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "d1_common_stop_adapter",
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "joint_states_filter",
+              "cp1_recorder"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "d1_lossless_stripper"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/envelope": {
+            "publishers": [
+              "d1_full_guard"
+            ],
+            "subscriptions": [
+              "d1_lossless_stripper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/envelope_mon": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "d1_full_guard",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "servo_node",
+              "cp1_recorder"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.257973870136985e-11,
+        "initial_max_velocity_rad_s": 6.182116971120699e-11,
+        "initial_position_error_rad": 2.7207566467537434e-05,
+        "joint_samples": 447,
+        "max_joint_excursion_rad": 0.2858746873101041,
+        "name": "docker_b2c_full_q3b2cfsetup01",
+        "recorder_joint_window": 32,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582770569944478,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.001842293718019139,
+      "shoulder_lift_joint": 0.001415181163886281,
+      "shoulder_pan_joint": 2.2069047085837547e-11,
+      "wrist_1_joint": 0.0003853054373882253,
+      "wrist_2_joint": 2.202749094237788e-11,
+      "wrist_3_joint": 4.0550975677835355e-15
+    },
+    "max_final_joint_difference_rad": 0.001842293718019139,
+    "max_source_offset_difference_ms": 0.057895999999345804,
+    "median_source_offset_difference_ms": 0.004313000000067291,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b2c_native_q3b2cnsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2877579934306644,
+          "shoulder_lift_joint": -1.320914480262207,
+          "shoulder_pan_joint": 1.8483952707136076e-08,
+          "wrist_1_joint": 0.03331625807302123,
+          "wrist_2_joint": 1.5700000809213368,
+          "wrist_3_joint": 8.004889622443168e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "d1_common_stop_adapter",
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "joint_states_filter",
+              "cp1_recorder"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "d1_lossless_stripper"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/native_input": {
+            "publishers": [
+              "d1_native_guard"
+            ],
+            "subscriptions": [
+              "d1_lossless_stripper",
+              "cp1_recorder"
+            ]
+          },
+          "/s4b/d1/native_input_mon": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "d1_native_guard",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "servo_node",
+              "cp1_recorder"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.8885495599319184e-11,
+        "initial_max_velocity_rad_s": 6.182119399733566e-11,
+        "initial_position_error_rad": 2.720763793276583e-05,
+        "joint_samples": 459,
+        "max_joint_excursion_rad": 0.2822679170003022,
+        "name": "docker_b2c_native_q3b2cnsetup01",
+        "recorder_joint_window": 38,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582734683912156,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0005370157849238222,
+      "shoulder_lift_joint": 0.0004451240097018694,
+      "shoulder_pan_joint": 6.722151903426565e-12,
+      "wrist_1_joint": 0.00012087491721508165,
+      "wrist_2_joint": 6.725286993969348e-12,
+      "wrist_3_joint": 3.08308587056287e-14
+    },
+    "max_final_joint_difference_rad": 0.0005370157849238222,
+    "max_source_offset_difference_ms": 0.05649300000004587,
+    "median_source_offset_difference_ms": 0.0046160000001691515,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b3_full_q3b3fsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2853786839277215,
+          "shoulder_lift_joint": -1.3190541750886189,
+          "shoulder_pan_joint": 1.845516150814681e-08,
+          "wrist_1_joint": 0.033822438427624536,
+          "wrist_2_joint": 1.570000080892584,
+          "wrist_3_joint": 8.004540762880434e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "d1_common_stop_adapter",
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.2579738823342594e-11,
+        "initial_max_velocity_rad_s": 6.182121481401737e-11,
+        "initial_position_error_rad": 2.7207554906963037e-05,
+        "joint_samples": 475,
+        "max_joint_excursion_rad": 0.2846472266010074,
+        "name": "docker_b3_full_q3b3fsetup01",
+        "recorder_joint_window": 32,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582840511700510,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0006829737160003457,
+      "shoulder_lift_joint": 0.0005177230262556343,
+      "shoulder_pan_joint": 5.937029091131462e-12,
+      "wrist_1_joint": 0.0002147410171641148,
+      "wrist_2_joint": 5.915712364412684e-12,
+      "wrist_3_joint": 3.4544778196151067e-13
+    },
+    "max_final_joint_difference_rad": 0.0006829737160003457,
+    "max_source_offset_difference_ms": 0.08995099999999923,
+    "median_source_offset_difference_ms": 0.0034155000000737346,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_b3_native_q3b3nsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2865986734286456,
+          "shoulder_lift_joint": -1.3200170221245764,
+          "shoulder_pan_joint": 1.846782068914137e-08,
+          "wrist_1_joint": 0.03348682249324534,
+          "wrist_2_joint": 1.570000080905225,
+          "wrist_3_joint": 8.008303549287105e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "d1_common_stop_adapter",
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.1528779234754264e-11,
+        "initial_max_velocity_rad_s": 6.18211905278887e-11,
+        "initial_position_error_rad": 2.720752022529273e-05,
+        "joint_samples": 445,
+        "max_joint_excursion_rad": 0.2834272371039632,
+        "name": "docker_b3_native_q3b3nsetup01",
+        "recorder_joint_window": 31,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582805023338951,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0015098195873679554,
+      "shoulder_lift_joint": 0.0012252843132982694,
+      "shoulder_pan_joint": 1.757829274219171e-11,
+      "wrist_1_joint": 0.00034916853991022456,
+      "wrist_2_joint": 1.7579937505729504e-11,
+      "wrist_3_joint": 5.621065401104341e-14
+    },
+    "max_final_joint_difference_rad": 0.0015098195873679554,
+    "max_source_offset_difference_ms": 0.05628500000011627,
+    "median_source_offset_difference_ms": 0.004959499999927175,
+    "pair": [
+      "docker_b0_full_q3b0setup01",
+      "docker_shim_full_q3shimsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 361,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2859156997126453,
+          "shoulder_lift_joint": -1.3194992990983208,
+          "shoulder_pan_joint": 1.8461883660050238e-08,
+          "wrist_1_joint": 0.033701563510409455,
+          "wrist_2_joint": 1.5700000808993093,
+          "wrist_3_joint": 8.00484907146749e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.993645319907415e-11,
+        "initial_max_velocity_rad_s": 6.18211766501009e-11,
+        "initial_position_error_rad": 2.720754124449159e-05,
+        "joint_samples": 474,
+        "max_joint_excursion_rad": 0.28411021080175813,
+        "name": "docker_b0_full_q3b0setup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582362133265377,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2844058801252773,
+          "shoulder_lift_joint": -1.3182740147850225,
+          "shoulder_pan_joint": 1.8444305367308046e-08,
+          "wrist_1_joint": 0.03405073205031968,
+          "wrist_2_joint": 1.5700000808817294,
+          "wrist_3_joint": 8.00428696492738e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.88854944609069e-11,
+        "initial_max_velocity_rad_s": 6.182120093622956e-11,
+        "initial_position_error_rad": 2.7207501308023666e-05,
+        "joint_samples": 473,
+        "max_joint_excursion_rad": 0.2856200304254959,
+        "name": "docker_shim_full_q3shimsetup01",
+        "recorder_joint_window": 38,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2582474913691797,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  }
+]
