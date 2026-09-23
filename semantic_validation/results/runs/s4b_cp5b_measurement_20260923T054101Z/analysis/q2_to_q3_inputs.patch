@@ -1,0 +1,198 @@
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_nodes.py semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_nodes.py
+--- semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_nodes.py	2026-09-23 13:58:50.695929617 +0900
++++ semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_nodes.py	2026-09-23 14:45:02.390751095 +0900
+@@ -70,6 +70,7 @@
+         if REGIME == 'full':
+             envelope = make_envelope(fields, selected, time.monotonic_ns())
+             log('publish', stage='receiver_envelope', selected_origin=selected,
++                monitor_event_id=envelope['envelope_monotonic_ns'],
+                 original_payload_sha256=envelope['original_payload_sha256'])
+             self.target.publish(String(data=canonical(envelope)))
+         else:
+@@ -88,11 +89,15 @@
+ 
+     def on_full(self, wire):
+         envelope = json.loads(wire.data)
++        log('monitor_output_received', regime='full',
++            monitor_event_id=envelope['envelope_monotonic_ns'],
++            selected_origin=envelope['selected_origin'])
+         fields = verify_transport(envelope)
+         msg = ReceivedPoseStates()
+         set_message_fields(msg, fields)
+         assert message_to_ordereddict(msg) == fields
+-        bind('stripper_restored', msg, envelope['selected_origin'])
++        bind('stripper_restored', msg, dict(envelope['selected_origin'],
++             monitor_event_id=envelope['envelope_monotonic_ns']))
+         self.pub.publish(msg)
+ 
+     def on_native(self, msg):
+@@ -104,7 +109,10 @@
+         # observation registry entry so Mapper sees one unique restored edge.
+         edge_list = EDGES[digest(msg)]
+         edge_list.remove(parent)
+-        bind('stripper_restored', msg, parent['parent'])
++        log('monitor_output_received', regime='native',
++            payload_sha256=digest(msg), monitor_input_id=parent['command_id'])
++        bind('stripper_restored', msg, dict(parent['parent'],
++             monitor_input_id=parent['command_id']) if isinstance(parent['parent'], dict) else parent['parent'])
+         self.pub.publish(msg)
+ 
+ 
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_probe.py semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_probe.py
+--- semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_probe.py	2026-09-23 13:59:12.983728256 +0900
++++ semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_probe.py	2026-09-23 14:43:28.577087811 +0900
+@@ -77,7 +77,7 @@
+ probe_time_namespace = os.readlink('/proc/self/ns/time')
+ 
+ def participant_clocks():
+-    required = ['gazebo', 'clock', 'rsp', 'servo', 'sender']
++    required = ['gazebo', 'clock', 'rsp', 'servo', 'sender', 'resources', 'recorder']
+     if mode == 'b0': required += ['receiver', 'mapper', 'bridge']
+     else: required += ['observed']
+     if mode == 'b2': required += ['oracle', 'monitor']
+@@ -136,9 +136,22 @@
+         continue
+     if stack == 'docker' and mode != 'b0' and not (root / 'd1_nodes.ready').exists():
+         continue
++    if not (root / 'resource_sampler.ready').exists():
++        continue
+     clocks = participant_clocks()
+     if clocks is None:
+         continue
++    resource_path = root / 'resource_samples.jsonl'
++    if not resource_path.exists():
++        continue
++    try:
++        resource_rows = [json.loads(line) for line in resource_path.read_text().splitlines() if line]
++        recent_resources = next(row for row in reversed(resource_rows) if row.get('kind') == 'sample')
++    except (json.JSONDecodeError, StopIteration):
++        continue
++    if not all(recent_resources['targets'].get(label, {}).get('status') == 'OBSERVED'
++               for label in clocks):
++        continue
+     if (mode in ('b1', 'b3') or (mode == 'b2' and os.environ.get('COMPOSED') == '1')) and not (root / 'stop_adapter.ready').exists():
+         continue
+     monitor_events = []
+@@ -205,8 +218,16 @@
+                                                   start_monotonic_ns=start_ns, source_index=0)))
+ event('barrier_release', start_monotonic_ns=start_ns)
+ end_ns = start_ns + (6_000_000_000 if stack == 'docker' else 12_000_000_000)
++stop_triggered = False
+ while time.monotonic_ns() < end_ns:
+     spin(.01)
++    if os.environ.get('STOP_DIAG') == '1' and not stop_triggered and time.monotonic_ns() >= start_ns + 2_250_000_000:
++        trigger_ns = time.monotonic_ns()
++        (root / 'qualification_stop_trigger.json').write_text(json.dumps(dict(
++            kind='QUALIFICATION_STOP', monotonic_ns=trigger_ns,
++            reason='ordinary_stop_actuation_test_not_source_policy')))
++        event('qualification_stop_trigger', trigger_ns=trigger_ns)
++        stop_triggered = True
+ event('capture_end', sent_records=sum(1 for _ in (root / 'sent.jsonl').open()) if (root / 'sent.jsonl').exists() else None,
+       source_records=sum(1 for _ in (root / 'source.jsonl').open()) if (root / 'source.jsonl').exists() else None)
+ sent = [json.loads(line) for line in (root / 'sent.jsonl').read_text().splitlines()] if (root / 'sent.jsonl').exists() else []
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_stop_adapter.py semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_stop_adapter.py
+--- semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_stop_adapter.py	2026-09-23 13:55:19.563015679 +0900
++++ semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_stop_adapter.py	2026-09-23 14:43:00.839325994 +0900
+@@ -60,6 +60,11 @@
+ capture_end_ns = start_ns + 6_000_000_000
+ while time.monotonic_ns() < capture_end_ns and trigger is None:
+     rclpy.spin_once(node, timeout_sec=.005)
++    qualification_trigger = root / 'qualification_stop_trigger.json'
++    if os.environ.get('STOP_DIAG') == '1' and qualification_trigger.exists():
++        trigger = 'QUALIFICATION_STOP'
++        emit('qualification_trigger', record=json.loads(qualification_trigger.read_text()))
++        break
+     if verdict_path.exists():
+         with verdict_path.open() as stream:
+             stream.seek(cursor)
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_tloracle_property.py semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_tloracle_property.py
+--- semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/d1_tloracle_property.py	2026-09-23 13:01:23.100229429 +0900
++++ semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/d1_tloracle_property.py	2026-09-23 14:45:02.390649318 +0900
+@@ -5,10 +5,11 @@
+ pre-registered task predicate. I_NATIVE incompleteness is logged separately.
+ """
+ import json
++import hashlib
+ import os
+ import time
+ 
+-from d1_contract import d1_allow
++from d1_contract import d1_allow, canonical
+ 
+ PROPERTY = '{safe}'
+ predicates = {'safe': True, 'time': 0}
+@@ -21,6 +22,7 @@
+     regime = os.environ.get('INFO_REGIME', 'full')
+     if regime == 'full':
+         envelope = json.loads(message['data'])
++        monitor_event_id = envelope['envelope_monotonic_ns']
+         origin = envelope['selected_origin']
+         fields = envelope['original_payload']
+         if origin.get('origin') == 'ORIGINAL_NEUTRAL':
+@@ -35,6 +37,7 @@
+         sample_id = origin.get('sample_id')
+     else:
+         fields = message
++        monitor_event_id = None
+         sample_id = None
+         # I_NATIVE has no validated generation/source-age; no full-policy PASS.
+         allowed = not fields.get('teleop_enable', False) or bool(fields.get('tracked', False))
+@@ -49,6 +52,8 @@
+     if log_path:
+         with open(log_path, 'a', encoding='utf-8') as handle:
+             handle.write(json.dumps(dict(monotonic_ns=now, regime=regime,
++                                         monitor_event_id=monitor_event_id,
++                                         payload_sha256=hashlib.sha256(canonical(fields).encode()).hexdigest(),
+                                          sample_id=sample_id, safe=bool(allowed),
+                                          reason=reason), sort_keys=True) + '\n')
+     return predicates
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/launch.sh semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/launch.sh
+--- semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/launch.sh	2026-09-23 13:54:06.430201802 +0900
++++ semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/launch.sh	2026-09-23 14:43:00.839218154 +0900
+@@ -63,6 +63,7 @@
+   touch /results/production.ready
+   start sender python3 /code/d1_sender.py
+   sender_pid=${pids[${#pids[@]}-1]}
++  start resources python3 /code/resource_sampler.py
+ else
+   source /ws/install/setup.bash
+   if [ "$MODE" != b0 ]; then source /observer/install/local_setup.bash; fi
+@@ -82,7 +83,7 @@
+   ros2 service list -t > /results/services.txt
+   start production python3 /code/openvr_production.py
+ fi
+-python3 /code/d1_probe.py > /results/stdout/probe.log 2> /results/stderr/probe.log
++python3 /code/participant_entry.py recorder python3 /code/d1_probe.py > /results/stdout/probe.log 2> /results/stderr/probe.log
+ if [ "$STACK" = docker ]; then wait_required_finished "$sender_pid" sender; fi
+ for i in "${!pids[@]}"; do
+   if [ "$STACK" = docker ] && [ "${labels[$i]}" = sender ]; then continue; fi
+Only in semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs: resource_sampler.py
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/run_owned.py semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/run_owned.py
+--- semantic_validation/results/runs/s4b_cp4b_preflight_20260923T044458Z/inputs/run_owned.py	2026-09-23 13:53:49.554467554 +0900
++++ semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/inputs/run_owned.py	2026-09-23 14:43:00.839139691 +0900
+@@ -14,13 +14,16 @@
+ parser.add_argument('--regime',choices=['native','full'],default='full')
+ parser.add_argument('--attempt',default='01')
+ parser.add_argument('--composed',action='store_true')
++parser.add_argument('--stop-diagnostic',action='store_true')
+ args=parser.parse_args()
+ if args.composed and args.mode != 'b2': parser.error('--composed is only a B2 variant')
++if args.stop_diagnostic and args.mode not in ('b1','b3') and not (args.mode == 'b2' and args.composed):
++    parser.error('--stop-diagnostic requires B1, B3, or B2-composed')
+ variant='b2c' if args.composed else args.mode
+ trial=ROOT/'raw'/f'{args.stack}_{variant}_{args.regime}_{args.attempt}'
+ trial.mkdir(exist_ok=False)
+ trial.chmod(0o777)  # Only the new trial output directory; container UID mapping.
+-name=f's4cp3_{args.stack}_{args.mode}_{args.regime}_{args.attempt}'
++name=f's4cp5_{args.stack}_{variant}_{args.regime}_{args.attempt}'
+ def run(argv, label, timeout=240):
+     with (ROOT/'commands.jsonl').open('a') as f:
+         f.write(json.dumps({'time_ns':time.time_ns(),'argv':argv,'trial':trial.name})+'\n')
+@@ -46,6 +49,7 @@
+ argv=['run','-d','--name',name,'--network','none','--cap-drop','ALL','--security-opt','no-new-privileges',
+       '--entrypoint','sleep','-e','ROS_DOMAIN_ID=181','-e','ROS_LOCALHOST_ONLY=1','-e',f'STACK={args.stack}','-e',f'MODE={args.mode}','-e',f'INFO_REGIME={args.regime}']
+ argv += ['-e',f'COMPOSED={int(args.composed)}']
++argv += ['-e',f'STOP_DIAG={int(args.stop_diagnostic)}']
+ for mount in mounts: argv+=['-v',mount]
+ if args.stack=='docker': argv+=['--user','1000:1000','-e','HOME=/home/noah']
+ argv += [image,'infinity']
