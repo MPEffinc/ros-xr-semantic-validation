@@ -24,7 +24,7 @@ def run(argv, label, timeout=240):
     return result.returncode
 def docker(argv,label,timeout=240):
     return run(['sg','docker','-c',shlex.join(['docker',*argv])],label,timeout)
-mounts=[f'{ROOT}/inputs:/code:ro',f'{trial}:/results']
+mounts=[f'{ROOT}/stop_inputs:/code:ro',f'{trial}:/results']
 if args.stack=='docker':
     src=REPO/'semantic_validation/targets/docker_teleop/ros_backend1.1'
     mounts += [f'{src}/src:/home/noah/ws_moveit/src:ro',f'{src}/simulation:/home/noah/ws_moveit/simulation:ro',
