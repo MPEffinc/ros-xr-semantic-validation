@@ -15,3 +15,28 @@ sg docker -c 'docker ps --format "{{.Names}} {{.Image}} {{.Status}}"'
 # The first oracle property test returned assertion failure because the test
 # retained a mutable dict reference; it is recorded in preflight_failures.md.
 # Later runs logged under stdout/ and stderr/; no ROS runtime was started.
+
+# CP4-B prospective integrated qualification began only after freeze commit
+# 137d0f319e2ac27384e04850290a8c546b63c074 was pushed and verified.
+# Exact Docker run/inspect/exec/stop argv for each attempt is in commands.jsonl.
+# These commands were run from this result root; all are setup-only.
+python3 inputs/run_owned.py docker b2 --regime full --attempt q2setup01
+python3 inputs/run_owned.py docker b2 --regime full --attempt q2setup01 --composed  # create failed; retained
+python3 inputs/run_owned.py docker b2 --regime full --attempt q2csetup02 --composed
+python3 inputs/run_owned.py docker b0 --regime full --attempt q2b0setup01
+python3 inputs/run_owned.py docker shim --regime full --attempt q2shimsetup01
+python3 inputs/run_owned.py docker b1 --regime full --attempt q2b1fsetup01
+python3 inputs/run_owned.py docker b1 --regime native --attempt q2b1nsetup01
+python3 inputs/run_owned.py docker b3 --regime full --attempt q2b3fsetup01
+python3 inputs/run_owned.py docker b3 --regime native --attempt q2b3nsetup01
+python3 inputs/run_owned.py docker b2 --regime native --attempt q2b2nsetup01
+python3 inputs/run_owned.py docker b2 --regime native --attempt q2c2nsetup01 --composed
+# Frozen read-only analyses were invoked for complete roots; failed create
+# was classified separately instead of silently omitted. The exact Python
+# importlib invocations called d1_qualification_audit.audit on all nine
+# complete hook-equipped roots, and CP2 pair_audit.summarize on B0 versus
+# shim/B1/B2/B2-composed/B3 roots; outputs are analysis/q2_trial_metrics.json
+# and analysis/q2_pair_metrics.json. The initial unfiltered all-glob call
+# wrote one row to analysis/d1_setup_metrics.json, then failed on the
+# pre-container failure root. No raw was removed to obtain the aggregate.
+sha256sum -c freeze_manifest.sha256
