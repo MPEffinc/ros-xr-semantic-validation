@@ -1,0 +1,3 @@
+# Pre-freeze host-only test failure 01
+
+The first expanded `test_d2_sender.py` run executed B0, B1 I_FULL and B1 I_NATIVE over a local in-process socket pair; it failed its **test assertion**, not the sender or a defense runtime, after the final 120-index native schedule. The test incorrectly required B1 I_NATIVE's denied-sample reason to be `INVALID_TRACKING`. Frozen Q4 B1 I_NATIVE explicitly logs `NATIVE_WIRE_ONLY_UNOBSERVABLE_TIME_GENERATION` because age/generation are not available in that regime. The prospective test was corrected to assert the regime-specific reason; no source fixture, original policy, B1 predicate or Gazebo result changed. This failure occurred before any CP7-C freeze or Docker/ROS/Gazebo run and is preserved rather than removed.
