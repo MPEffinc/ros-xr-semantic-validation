@@ -1,0 +1,674 @@
+{
+  "b0_shim_equivalence": {
+    "final_joint_difference_rad": {
+      "elbow_joint": 0.0018219237494614404,
+      "shoulder_lift_joint": 0.001483142328928544,
+      "shoulder_pan_joint": 2.314086090762278e-11,
+      "wrist_1_joint": 0.00039413712408819385,
+      "wrist_2_joint": 2.3138824190027663e-11,
+      "wrist_3_joint": 9.829359393170168e-14
+    },
+    "max_final_joint_difference_rad": 0.0018219237494614404,
+    "max_source_offset_difference_ms": 0.05805300000019997,
+    "median_source_offset_difference_ms": 0.0029789999998826033,
+    "pair": [
+      "docker_b0_full_q4b0setup01",
+      "docker_shim_full_q4shimsetup01"
+    ],
+    "same_clock_namespace": true,
+    "same_fixture": true,
+    "source_offsets_over_5ms": 0,
+    "status": "PASS",
+    "trials": [
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2839579164825534,
+          "shoulder_lift_joint": -1.3179114295976877,
+          "shoulder_pan_joint": 1.843743627015588e-08,
+          "wrist_1_joint": 0.03412183933074542,
+          "wrist_2_joint": 1.5700000808748564,
+          "wrist_3_joint": 8.0039937400158e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.8885495016560516e-11,
+        "initial_max_velocity_rad_s": 6.182118011954785e-11,
+        "initial_position_error_rad": 2.7207534938732463e-05,
+        "joint_samples": 454,
+        "max_joint_excursion_rad": 0.28606799403814587,
+        "name": "docker_b0_full_q4b0setup01",
+        "recorder_joint_window": 38,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2586773157804246,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "active_controller_output_records": 360,
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "controller_states": {
+          "hande_position_controller": "active",
+          "joint_group_velocity_controller": "active",
+          "joint_state_broadcaster": "active"
+        },
+        "exit": {
+          "launch_exit": 0
+        },
+        "final_joint_position_rad": {
+          "elbow_joint": 1.2857798402320149,
+          "shoulder_lift_joint": -1.3193945719266162,
+          "shoulder_pan_joint": 1.8460577131063502e-08,
+          "wrist_1_joint": 0.033727702206657224,
+          "wrist_2_joint": 1.5700000808979953,
+          "wrist_3_joint": 8.004976675955117e-10
+        },
+        "fixture_sha256": "20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b",
+        "graph": {
+          "/joint_group_velocity_controller/commands": {
+            "publishers": [
+              "servo_node"
+            ],
+            "subscriptions": [
+              "joint_group_velocity_controller",
+              "cp1_recorder"
+            ]
+          },
+          "/joint_states": {
+            "publishers": [
+              "joint_state_broadcaster"
+            ],
+            "subscriptions": [
+              "robot_state_publisher",
+              "cp1_recorder",
+              "joint_states_filter"
+            ]
+          },
+          "/received_pose_states": {
+            "publishers": [
+              "quest_controller_receiver"
+            ],
+            "subscriptions": [
+              "hand_pose_mapper",
+              "cp1_recorder"
+            ]
+          },
+          "/servo_node/delta_twist_cmds": {
+            "publishers": [
+              "servo_command_bridge"
+            ],
+            "subscriptions": [
+              "cp1_recorder",
+              "servo_node"
+            ]
+          },
+          "/target_twist_states": {
+            "publishers": [
+              "hand_pose_mapper"
+            ],
+            "subscriptions": [
+              "servo_command_bridge",
+              "cp1_recorder"
+            ]
+          }
+        },
+        "initial_drift_rad": 3.9936454530609946e-11,
+        "initial_max_velocity_rad_s": 6.182120093622956e-11,
+        "initial_position_error_rad": 2.7207336307376366e-05,
+        "joint_samples": 454,
+        "max_joint_excursion_rad": 0.2842460704703649,
+        "name": "docker_shim_full_q4shimsetup01",
+        "recorder_joint_window": 39,
+        "source_records_core": 120,
+        "source_records_total": 120,
+        "start_ns": 2857151003443689,
+        "time_namespace": "time:[4026531834]"
+      }
+    ]
+  },
+  "formal_trials": "NOT_STARTED",
+  "setup_cells": [
+    {
+      "cell": "B0-full-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.28606799403814587,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 1015697,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.09210299999999999,
+        "child_peak_rss_kib": 15032,
+        "cpu_percent": 0.8334554569221606,
+        "cpu_seconds": 0.05,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26669056,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.999120839
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b0_full_q4b0setup01"
+    },
+    {
+      "cell": "B0-shim-full-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.2842460704703649,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 842930,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.106716,
+        "child_peak_rss_kib": 14564,
+        "cpu_percent": 0.8461838104078112,
+        "cpu_seconds": 0.05,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26091520,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.908881662
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_shim_full_q4shimsetup01"
+    },
+    {
+      "cell": "B1-native-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.28479605368604166,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 903165,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.11984999999999998,
+        "child_peak_rss_kib": 15348,
+        "cpu_percent": 1.0102193287235102,
+        "cpu_seconds": 0.06,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 27045888,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.939304297
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b1_native_q4b1nsetup01"
+    },
+    {
+      "cell": "B1-full-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.28477343570383273,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 821779,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.11309,
+        "child_peak_rss_kib": 15024,
+        "cpu_percent": 1.1834300591746274,
+        "cpu_seconds": 0.07,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26157056,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.915009464
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b1_full_q4b1fsetup01"
+    },
+    {
+      "cell": "B2-native-native-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.28616982223504506,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 944390,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.10165099999999999,
+        "child_peak_rss_kib": 14740,
+        "cpu_percent": 1.0128624462174514,
+        "cpu_seconds": 0.06,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26513408,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.923805372
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b2_native_q4b2nsetup01"
+    },
+    {
+      "cell": "B2-native-full-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.28375292830372634,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 873282,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.11040899999999998,
+        "child_peak_rss_kib": 14728,
+        "cpu_percent": 1.0104192089708606,
+        "cpu_seconds": 0.06,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26443776,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.938129389
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b2_full_q4b2fsetup01"
+    },
+    {
+      "cell": "B2-composed-native-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.2865631554165764,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 986408,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.101355,
+        "child_peak_rss_kib": 15048,
+        "cpu_percent": 1.015078880028756,
+        "cpu_seconds": 0.06,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26750976,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.91087069
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b2c_native_q4b2cnsetup01"
+    },
+    {
+      "cell": "B2-composed-full-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.2846738420301622,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 2086411,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.10452399999999999,
+        "child_peak_rss_kib": 14520,
+        "cpu_percent": 1.168825484609481,
+        "cpu_seconds": 0.07,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 25624576,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.988918014
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b2c_full_q4b2cfsetup01"
+    },
+    {
+      "cell": "B3-native-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.284769538335254,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 1035921,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.100464,
+        "child_peak_rss_kib": 14964,
+        "cpu_percent": 0.8460831949398858,
+        "cpu_seconds": 0.05,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26574848,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.909584341
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b3_native_q4b3nsetup01"
+    },
+    {
+      "cell": "B3-full-normal",
+      "exit_code": 0,
+      "max_joint_excursion_rad": 0.285016803505709,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 807803,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.092004,
+        "child_peak_rss_kib": 14968,
+        "cpu_percent": 0.8369229889313115,
+        "cpu_seconds": 0.05,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26689536,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.974265334
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": null,
+      "trial": "docker_b3_full_q4b3fsetup01"
+    },
+    {
+      "cell": "B1-native-stop",
+      "exit_code": 0,
+      "max_joint_excursion_rad": null,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 884562,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.12351100000000001,
+        "child_peak_rss_kib": 14956,
+        "cpu_percent": 1.0135694661434769,
+        "cpu_seconds": 0.06,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26402816,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.919673195
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": {
+        "controller_zero_records": 1,
+        "first_settled_window_end_ms": 523.511999,
+        "individual_source_to_joint_parent": "UNKNOWN",
+        "last_post_trigger_nonzero_ms": null,
+        "moving_at_trigger": true,
+        "post_trigger_1s_joint_displacement_rad": 0.00020801140403081675,
+        "post_trigger_nonzero_controller_records": 0,
+        "pre_trigger_joint_samples": 6,
+        "source": "QUALIFICATION_STOP_NOT_POLICY_VERDICT",
+        "status": "PASS_STOP_SETUP",
+        "stop_reply_ms": 4.441205,
+        "stop_request_ms": 4.173445,
+        "trigger_ns": 2857591083069761
+      },
+      "trial": "docker_b1_native_q4b1nstop01"
+    },
+    {
+      "cell": "B1-full-stop",
+      "exit_code": 0,
+      "max_joint_excursion_rad": null,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 1683896,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.103668,
+        "child_peak_rss_kib": 14560,
+        "cpu_percent": 1.0042381830564926,
+        "cpu_seconds": 0.06,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26226688,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.97467822
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": {
+        "controller_zero_records": 1,
+        "first_settled_window_end_ms": 521.645744,
+        "individual_source_to_joint_parent": "UNKNOWN",
+        "last_post_trigger_nonzero_ms": null,
+        "moving_at_trigger": true,
+        "post_trigger_1s_joint_displacement_rad": 0.00023973108773023277,
+        "post_trigger_nonzero_controller_records": 0,
+        "pre_trigger_joint_samples": 6,
+        "source": "QUALIFICATION_STOP_NOT_POLICY_VERDICT",
+        "status": "PASS_STOP_SETUP",
+        "stop_reply_ms": 1.627311,
+        "stop_request_ms": 1.154329,
+        "trigger_ns": 2857617930619226
+      },
+      "trial": "docker_b1_full_q4b1fstop01"
+    },
+    {
+      "cell": "B2-composed-native-stop",
+      "exit_code": 0,
+      "max_joint_excursion_rad": null,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 979582,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.101573,
+        "child_peak_rss_kib": 14408,
+        "cpu_percent": 0.8338305286892062,
+        "cpu_seconds": 0.05,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26017792,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.996422328
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": {
+        "controller_zero_records": 1,
+        "first_settled_window_end_ms": 528.845629,
+        "individual_source_to_joint_parent": "UNKNOWN",
+        "last_post_trigger_nonzero_ms": 5.231276,
+        "moving_at_trigger": true,
+        "post_trigger_1s_joint_displacement_rad": 0.005068651230386356,
+        "post_trigger_nonzero_controller_records": 1,
+        "pre_trigger_joint_samples": 5,
+        "source": "QUALIFICATION_STOP_NOT_POLICY_VERDICT",
+        "status": "PASS_STOP_SETUP",
+        "stop_reply_ms": 5.341154,
+        "stop_request_ms": 5.052038,
+        "trigger_ns": 2857702749783125
+      },
+      "trial": "docker_b2c_native_q4b2cnstop01"
+    },
+    {
+      "cell": "B2-composed-full-stop",
+      "exit_code": 0,
+      "max_joint_excursion_rad": null,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 953781,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.093807,
+        "child_peak_rss_kib": 14952,
+        "cpu_percent": 0.8365140815109022,
+        "cpu_seconds": 0.05,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26251264,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.977185693
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": {
+        "controller_zero_records": 1,
+        "first_settled_window_end_ms": 523.092061,
+        "individual_source_to_joint_parent": "UNKNOWN",
+        "last_post_trigger_nonzero_ms": null,
+        "moving_at_trigger": true,
+        "post_trigger_1s_joint_displacement_rad": 0.0002178299736526057,
+        "post_trigger_nonzero_controller_records": 0,
+        "pre_trigger_joint_samples": 6,
+        "source": "QUALIFICATION_STOP_NOT_POLICY_VERDICT",
+        "status": "PASS_STOP_SETUP",
+        "stop_reply_ms": 4.330168,
+        "stop_request_ms": 4.047518,
+        "trigger_ns": 2857730113196963
+      },
+      "trial": "docker_b2c_full_q4b2cfstop01"
+    },
+    {
+      "cell": "B3-native-stop",
+      "exit_code": 0,
+      "max_joint_excursion_rad": null,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 1170601,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.101999,
+        "child_peak_rss_kib": 14908,
+        "cpu_percent": 1.351165163530665,
+        "cpu_seconds": 0.08,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 26554368,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.920815764
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": {
+        "controller_zero_records": 1,
+        "first_settled_window_end_ms": 518.063047,
+        "individual_source_to_joint_parent": "UNKNOWN",
+        "last_post_trigger_nonzero_ms": null,
+        "moving_at_trigger": true,
+        "post_trigger_1s_joint_displacement_rad": 0.00021626865398127748,
+        "post_trigger_nonzero_controller_records": 0,
+        "pre_trigger_joint_samples": 6,
+        "source": "QUALIFICATION_STOP_NOT_POLICY_VERDICT",
+        "status": "PASS_STOP_SETUP",
+        "stop_reply_ms": 5.689952,
+        "stop_request_ms": 5.417691,
+        "trigger_ns": 2857777553081901
+      },
+      "trial": "docker_b3_native_q4b3nstop01"
+    },
+    {
+      "cell": "B3-full-stop",
+      "exit_code": 0,
+      "max_joint_excursion_rad": null,
+      "reasons": [],
+      "sender_resource": {
+        "boundary_acquisition_span_ns": 1021785,
+        "boundary_time_uncertainty_note": "procfs read occurred inside recorded bracket; endpoint timestamp is upper bound",
+        "capture_sample_count": 61,
+        "child_final_cpu_seconds": 0.098621,
+        "child_peak_rss_kib": 14356,
+        "cpu_percent": 1.0048480286531638,
+        "cpu_seconds": 0.06,
+        "label": "sender",
+        "missing_indices": [],
+        "observed_peak_rss_bytes": 25665536,
+        "reason": "OBSERVED_CAPTURE_WITH_FINAL_ACCOUNTING",
+        "status": "PASS",
+        "wall_seconds": 5.971052168
+      },
+      "source_count": 120,
+      "status": "QUALIFIED_SETUP",
+      "stop": {
+        "controller_zero_records": 1,
+        "first_settled_window_end_ms": 519.502403,
+        "individual_source_to_joint_parent": "UNKNOWN",
+        "last_post_trigger_nonzero_ms": null,
+        "moving_at_trigger": true,
+        "post_trigger_1s_joint_displacement_rad": 0.00022621236822462087,
+        "post_trigger_nonzero_controller_records": 0,
+        "pre_trigger_joint_samples": 6,
+        "source": "QUALIFICATION_STOP_NOT_POLICY_VERDICT",
+        "status": "PASS_STOP_SETUP",
+        "stop_reply_ms": 2.223127,
+        "stop_request_ms": 1.954464,
+        "trigger_ns": 2857801963554147
+      },
+      "trial": "docker_b3_full_q4b3fstop01"
+    }
+  ],
+  "specific_source_to_controller_joint_parent": "UNKNOWN_INTERVAL_ONLY",
+  "status": "D1_QUALIFICATION_PASS"
+}
