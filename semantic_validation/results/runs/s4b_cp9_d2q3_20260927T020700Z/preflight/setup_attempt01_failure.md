@@ -1,0 +1,3 @@
+# CP9 pre-container setup failure
+
+The first invocation of the frozen `qualification_schedule.csv` B0 command exited 1 at `trial.mkdir(exist_ok=False)` because the new CP9 root lacked an empty `raw/` parent directory. No trial directory, Docker container, Gazebo process, sender input, policy verdict or robot observation was created. This is a result-root provisioning error, not a defense failure. The frozen code, analyzer, fixture and schedule were not edited. Correction: create only the empty CP9 `raw/` parent; then invoke the same registered B0 trial ID. This is a setup-only retry and remains visible in this record.
