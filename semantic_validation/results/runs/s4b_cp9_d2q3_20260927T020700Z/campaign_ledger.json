@@ -1,0 +1,35 @@
+{
+  "schema": "XRROS-S4B-campaign-ledger-v1",
+  "research_protocol": "XRROS-S4-1.0.0",
+  "research_protocol_sha256": "3a40337121f8d687dc68036ff2ffc85a1bc6eda275a700ba7d9e8119cd322969",
+  "prior_immutable_campaign": {
+    "id": "XRROS-S4B-D2Q2-1.0.0",
+    "freeze_commit": "cd6f67950d956fc734f4f2cfb3c43f217ab6d1ab",
+    "result_commit": "494441d087efb4b099a8be72579642621931fea8",
+    "qualification_verdict": "PARTIAL_BLOCKED_MEASUREMENT",
+    "executed_first_attempts": 8,
+    "b0_shim_equivalence": "PASS",
+    "b1_and_b3_native_full": "MEASUREMENT_QUALIFIED",
+    "b2_native_both": "BLOCKED_MEASUREMENT_DUPLICATE_LOG_MONOTONIC_NS",
+    "b2_composed_both": "NOT_RUN",
+    "formal_verdict": "NOT_STARTED"
+  },
+  "campaign": {
+    "id": "XRROS-S4B-D2Q3-1.0.0",
+    "parent_commit": "494441d087efb4b099a8be72579642621931fea8",
+    "causal_hypothesis": "The CP8 B2 pre-spin DDS match reached a trace.log call that already inserts monotonic_ns, but the expanded match had the same key; a distinct key and a direct-branch regression prevent the deterministic startup crash without changing monitor, oracle, XR predicate or original receiver.",
+    "source_diff": "analysis/source_diff_from_cp8.patch",
+    "source_diff_sha256": "ddc088726a24494dbdd8c4167af2895fbc606abfab6b81c4eda9ef1f666d145f",
+    "protocol_file": "semantic_validation/results/S4B_CP9_D2_QUALIFICATION_PROTOCOL.md",
+    "protocol_sha256": "0ab41779bf3ea02c7ed8d1be688f381a3e1c50186a460b17135d13103ca99765",
+    "required_regression_tests": ["direct DDS-match log branch", "A-H mapper lineage", "analyzer positive/negative", "D2 sender/property", "CP8 B2 failure negative control", "CP8 B3 accepted-parent positive control"],
+    "preflight_verdict": "PASS_HOST_REUSING_UNCHANGED_CP8_OFFICIAL_COMPONENT",
+    "preflight_evidence": ["preflight/test_monitor_readiness.stderr", "preflight/test_mapper_lineage.stderr", "preflight/test_cp9_audit.stderr", "preflight/test_d2_sender.stderr"],
+    "freeze_commit": "PENDING_COMMIT",
+    "trial_ids": ["docker_b0_full_cp9d2setup01", "docker_shim_full_cp9d2setup01", "docker_b1_native_cp9d2setup01", "docker_b1_full_cp9d2setup01", "docker_b2_native_cp9d2setup01", "docker_b2_full_cp9d2setup01", "docker_b2c_native_cp9d2setup01", "docker_b2c_full_cp9d2setup01", "docker_b3_native_cp9d2setup01", "docker_b3_full_cp9d2setup01"],
+    "retry_budget_per_cell": {"initial_attempts": 1, "setup_only_retries": 2},
+    "qualification_verdict": "NOT_STARTED_BEFORE_FREEZE",
+    "formal_verdict": "NOT_STARTED",
+    "next_action": "After freeze push/SHA alignment, requalify B0/shim then follow all ten CP9 first-attempt setup cells; examine every B2 original-neutral property/status/downstream association before any formal freeze."
+  }
+}
