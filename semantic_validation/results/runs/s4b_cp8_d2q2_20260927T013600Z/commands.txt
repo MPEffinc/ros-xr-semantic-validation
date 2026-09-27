@@ -1,0 +1,29 @@
+CP8 prospective preflight commands; working directory /home/cclab/ros_xr unless stated.
+
+Read-only integrity:
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+sha256sum -c semantic_validation/results/runs/s4b_cp7c_d2_qualification_20260926T185100Z/freeze_inputs.sha256
+sha256sum -c semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/freeze_inputs.sha256
+sha256sum -c semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/runtime_evidence_manifest.sha256
+(cd semantic_validation/results/runs/s4b_cp7c_d2_qualification_20260926T185100Z && sha256sum -c runtime_evidence_manifest.sha256)
+
+Host tests, working directory semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z:
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_mapper_lineage_state.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_cp8_audit.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_d2_sender.py
+PYTHONDONTWRITEBYTECODE=1 python3 -c 'import pathlib,sys; sys.path.insert(0,"analysis"); import cp8_qualification_audit as q; old=pathlib.Path("../s4b_cp7c_d2_qualification_20260926T185100Z/raw"); print(q.mapper_cache_audit(old/"docker_b3_native_cp7d2setup01","b3")["status"]); print(q.monitor_call_audit(old/"docker_b2c_native_cp7d2setup01")["status"])'
+
+Official monitor component test attempted with trial-owned `sg docker -c 'docker run ...'`, image s4b-rosmonitoring-humble:20260922, --network none, --cap-drop ALL, --security-opt no-new-privileges, --user 1000:1000, read-only /official, /monitor_ws/install, /d1deps, /code and vendor workspace mounts; /results was this root/preflight/monitor_<regime>. All attempts used `/code/run_monitor_preflight.sh <regime>` and the real generated monitor/oracle.
+native attempt01: ROS_DOMAIN_ID=184; only install mount; exit 1 before oracle, ROS setup + `set -u` error; see preflight/monitor_native/attempt01_failure.md.
+native attempt02: ROS_DOMAIN_ID=184; `set -u` removed but only install mount; exit 1 before oracle, missing workspace build/src and custom message; see preflight/monitor_native/attempt02_failure.md.
+native attempt03: ROS_DOMAIN_ID=184; additionally `-v /tmp/s4closure_docker_build:/home/noah/ws_moveit/build:ro -v /home/cclab/ros_xr/semantic_validation/targets/docker_teleop/ros_backend1.1/src:/home/noah/ws_moveit/src:ro`; exit 0, preflight/monitor_native/summary.json.
+full attempt01: same complete mounts, ROS_DOMAIN_ID=185, INFO_REGIME=full, `/code/run_monitor_preflight.sh full`; exit 0, preflight/monitor_full/summary.json.
+
+No Gazebo or original receiver was launched by these component tests. The exact future Gazebo setup commands are frozen in qualification_schedule.csv and must not be reported as executed until present in commands.jsonl.
+
+Final static freeze checks, working directory /home/cclab/ros_xr:
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md semantic_validation/results/S4B_CP8_D2_QUALIFICATION_PROTOCOL.md
+python3 -m json.tool semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/campaign_ledger.json
+python3 -m compileall -q semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/inputs semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/analysis
+sha256sum -c semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/freeze_inputs.sha256
+git diff --check
