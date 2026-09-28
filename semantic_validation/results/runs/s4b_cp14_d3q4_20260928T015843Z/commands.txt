@@ -1,0 +1,7 @@
+# Working checkpoint only; no Q4 Gazebo runtime or formal trial.
+git status --short --branch
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+python3 -m py_compile semantic_validation/results/runs/s4b_cp14_d3q4_20260928T015843Z/inputs/d1_nodes.py semantic_validation/results/runs/s4b_cp14_d3q4_20260928T015843Z/inputs/source_path_readiness.py
+python3 semantic_validation/results/runs/s4b_cp14_d3q4_20260928T015843Z/analysis/test_q4_source_path_readiness.py
+# Q3 source/analysis mechanically copied into a separate unfrozen Q4 working directory; no Q3 original was modified.
+# working_inputs.sha256 enumerates this checkpoint's source and analysis bytes, not a runtime/freeze input manifest.
