@@ -1,5 +1,7 @@
 # XR→ROS 연구 현황판
 
+OpenVR C-X Q2 re-audit 16/16 qualified; scoped OpenVR C-ID/C-MON formal freeze (2026-09-29): XRROS-S4B-OVRCXF1-1.0.0, root `runs/s4b_ovr_cx_formal_20260928T223012Z/`, 100 trials (20 cells × 5), scorer tests 4/4. **No formal C-X trial at freeze.** See `S4B_OVR_CX_FORMAL_FREEZE.md`.
+
 OpenVR C-X Q1 result / Q2 registration (2026-09-29): 14/16 qualified, B0/shim PASS (0.150 ms); two cells blocked by records missing because of the injected fault (monitor-queue lag before an oracle kill; Servo drops after a heartbeat stop). Analyzer-only Q2 re-audit of retained raw registered before running. See `S4B_OVR_CX_Q1_QUALIFICATION_RESULT.md`, `S4B_OVR_CX_Q2_REAUDIT_PROTOCOL.md`.
 
 OpenVR C-ID/C-MON coverage Q1 freeze (2026-09-29): root `runs/s4b_ovr_cx_q1_20260928T220949Z/`, XRROS-S4B-OVRCXQ1-1.0.0. OpenVR per-poll binding (Docker cid_binding over raw acquired pose+grip), poll-150 DUPLICATE_ID / MISMATCH injection, shared checks for B1/B3/official-B2 oracle; Docker C-MON injector reused at poll 150. Tests 3/3 + 8/8 (one retained test-expectation fix). 16 setup cells; 100-trial formal proposal; MISSING_FIELD/MISSING_ID, B2-native C-ID, I_NATIVE NOT_RUN (scoped). **No C-X Gazebo trial at freeze.** See `S4B_OVR_CX_Q1_QUALIFICATION_PROTOCOL.md`.
