@@ -25,7 +25,7 @@ variant='b2c' if args.composed else args.mode
 trial=ROOT/'raw'/f'{args.stack}_{variant}_{args.regime}_{args.attempt}'
 trial.mkdir(parents=True, exist_ok=False)
 trial.chmod(0o777)  # Only the new trial output directory; container UID mapping.
-name=f's4cp13d3q3_{args.stack}_{variant}_{args.regime}_{args.attempt}'
+name=f's4cp14d3q4_{args.stack}_{variant}_{args.regime}_{args.attempt}'
 def run(argv, label, timeout=240):
     with (ROOT/'commands.jsonl').open('a') as f:
         f.write(json.dumps({'time_ns':time.time_ns(),'argv':argv,'trial':trial.name})+'\n')

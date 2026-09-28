@@ -226,7 +226,10 @@ class Mapper(ReceivedPoseToTargetTwist):
         result = super()._on_pose_states(msg)
         applied_snapshot = {'last_rx_time': self._last_rx_time,
                             'tracked': self._tracked,
-                            'have_target': self._have_target}
+                            'have_target': self._have_target,
+                            'teleop_enabled': self._teleop_enable,
+                            'position_session_active': self._position_session_active,
+                            'position_recenter_pending': self._position_recenter_pending}
         self.lineage.apply_after_original_callback(candidate, applied_snapshot)
         log('mapper_applied_after_original_callback', exact_parent=candidate,
             state=applied_snapshot, payload_sha256=digest(msg))
@@ -292,35 +295,44 @@ if MODE == 'b2':
     for attempt in range(1, 13):
         neutral = receiver._neutral_state(source='readiness_calibration')
         msg = receiver._make_msg(neutral, receiver.get_clock().now().to_msg())
+        payload = message_to_ordereddict(msg)
         origin = {'origin': 'ORIGINAL_NEUTRAL', 'reason': 'readiness_calibration'}
+        created_ns = time.monotonic_ns()
         if REGIME == 'full':
-            envelope = make_envelope(message_to_ordereddict(msg), origin, time.monotonic_ns())
+            envelope = make_envelope(payload, origin, created_ns)
             key = envelope['envelope_monotonic_ns']
-            receiver.pub.target.publish(String(data=canonical(envelope)))
         else:
-            edge = bind('calibration_monitor_input', msg, origin)
-            key = edge['payload_sha256']
-            receiver.pub.target.publish(msg)
+            key = digest(msg)
         record = {'attempt': attempt, 'regime': REGIME, 'key': key,
-                  'published_monotonic_ns': time.monotonic_ns(),
-                  'native_payload': message_to_ordereddict(msg),
+                  'created_monotonic_ns': created_ns,
+                  'native_payload': payload,
                   'source_sample': False, 'control_input': False}
         with calibration_path.open('a') as stream:
             stream.write(json.dumps(record, sort_keys=True) + '\n')
-        log('source_path_calibration_publish', attempt=attempt, key=key,
+        # Record every attempt before DDS publish. Even a lost attempt remains.
+        log('source_path_calibration_attempt', **record)
+        if REGIME == 'full':
+            receiver.pub.target.publish(String(data=canonical(envelope)))
+        else:
+            bind('calibration_monitor_input', msg, origin)
+            receiver.pub.target.publish(msg)
+        log('source_path_calibration_publish_return', attempt=attempt, key=key,
             dds_subscription_count=receiver.pub.target.get_subscription_count())
         until = time.monotonic() + .25
+        result = {'ok': False, 'reason': 'NO_EXACT_ACK_BEFORE_ATTEMPT_DEADLINE', 'key': key}
         while time.monotonic() < until:
             executor.spin_once(timeout_sec=.02)
-            try:
-                result = exact_ack(root, REGIME, key)
-            except json.JSONDecodeError:
-                continue
+            result = exact_ack(root, REGIME, record)
             if result['ok']:
                 acknowledged = {'attempt': attempt, 'key': key,
                                 'ack_monotonic_ns': time.monotonic_ns(),
                                 'boundary': result}
                 break
+        with (root / 'calibration_verdicts.jsonl').open('a') as stream:
+            stream.write(json.dumps({'attempt': attempt, 'key': key,
+                                     'result': result,
+                                     'verdict_monotonic_ns': time.monotonic_ns()},
+                                    sort_keys=True) + '\n')
         if acknowledged:
             break
     if acknowledged is None:
@@ -328,6 +340,7 @@ if MODE == 'b2':
     (root / 'source_path_calibration.ready').write_text(json.dumps(acknowledged, sort_keys=True))
     log('source_path_calibration_ack', **acknowledged)
     receiver.source_path_ready = True
+    log('receiver_timer_release', key=acknowledged['key'])
 Path(os.environ['TRIAL_ROOT'], 'd1_nodes.ready').write_text(json.dumps({
     'mode': MODE, 'regime': REGIME, 'nodes': [node.get_name() for node in nodes],
     'monotonic_ns': time.monotonic_ns(),

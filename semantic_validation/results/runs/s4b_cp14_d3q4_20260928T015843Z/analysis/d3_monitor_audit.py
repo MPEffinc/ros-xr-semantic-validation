@@ -1,7 +1,7 @@
 """Exact original-output/official-oracle/guarded-receipt association for D3.
 
-Tick events are audited separately. Publication attempts prove neither DDS
-delivery nor a downstream callback; every missing boundary remains invalid.
+Calibration attempts are a separate class. No original neutral is excluded.
+Publication attempts alone prove neither DDS delivery nor subscriber receipt.
 """
 import hashlib
 import json
@@ -21,34 +21,40 @@ def canonical_hash(payload):
 
 def audit(root, regime):
     lineage = rows(root / 'lineage.jsonl')
-    props = [r for r in rows(root / 'property.jsonl')
-             if r.get('event_kind') != 'tick']
-    statuses = [r for r in rows(root / f'monitor_{regime}_status.jsonl')
-                if r.get('status') == 'event' and r.get('interface') != '/s4b/d3/tick']
+    calibration = rows(root / 'calibration.jsonl')
+    calibration_ids = [r['key'] for r in calibration]
+    calibration_set = set(calibration_ids)
+    errors = []
+    if len(calibration_set) != len(calibration_ids):
+        errors.append('DUPLICATE_CALIBRATION_ID')
     stage = 'receiver_envelope' if regime == 'full' else 'receiver_native_monitor_input'
     pubs = [r for r in lineage if r.get('stage') == stage]
-    outputs = [r for r in lineage if r.get('kind') == 'monitor_output_received'
-               and r.get('regime') == regime]
-    errors = []
+    original_key = ((lambda r: r['monitor_event_id']) if regime == 'full'
+                    else (lambda r: r['payload_sha256']))
+    if any(original_key(r) in calibration_set for r in pubs):
+        errors.append('ORIGINAL_AND_CALIBRATION_ID_COLLISION')
+    property_all = [r for r in rows(root / 'property.jsonl')
+                    if r.get('event_kind') != 'tick']
+    status_all = [r for r in rows(root / f'monitor_{regime}_status.jsonl')
+                  if r.get('status') == 'event' and r.get('interface') != '/s4b/d3/tick']
+    output_all = [r for r in lineage if r.get('kind') == 'monitor_output_received'
+                  and r.get('regime') == regime]
+    property_key = ((lambda r: r['monitor_event_id']) if regime == 'full'
+                    else (lambda r: r['payload_sha256']))
+    status_key = ((lambda r: json.loads(r['event']['data'])['envelope_monotonic_ns'])
+                  if regime == 'full' else (lambda r: canonical_hash(r['payload'])))
+    output_key = ((lambda r: r['monitor_event_id']) if regime == 'full'
+                  else (lambda r: r['payload_sha256']))
+    props = [r for r in property_all if property_key(r) not in calibration_set]
+    statuses = [r for r in status_all if status_key(r) not in calibration_set]
+    outputs = [r for r in output_all if output_key(r) not in calibration_set]
     by_type = []
-    if regime == 'full':
-        for collection, key in ((pubs, lambda r: r['monitor_event_id']),
-                                (props, lambda r: r['monitor_event_id']),
-                                (statuses, lambda r: json.loads(r['event']['data'])['envelope_monotonic_ns']),
-                                (outputs, lambda r: r['monitor_event_id'])):
-            table = defaultdict(list)
-            for record in collection:
-                table[key(record)].append(record)
-            by_type.append(table)
-    else:
-        for collection, key in ((pubs, lambda r: r['payload_sha256']),
-                                (props, lambda r: r['payload_sha256']),
-                                (statuses, lambda r: canonical_hash(r['payload'])),
-                                (outputs, lambda r: r['payload_sha256'])):
-            table = defaultdict(list)
-            for record in collection:
-                table[key(record)].append(record)
-            by_type.append(table)
+    for collection, key in ((pubs, original_key), (props, property_key),
+                            (statuses, status_key), (outputs, output_key)):
+        table = defaultdict(list)
+        for record in collection:
+            table[key(record)].append(record)
+        by_type.append(table)
     publication, property_by, status_by, output_by = by_type
     if set(publication) != set(property_by) or set(publication) != set(status_by):
         errors.append('ORIGINAL_PUBLICATION_PROPERTY_STATUS_ID_SET_MISMATCH')
@@ -71,5 +77,5 @@ def audit(root, regime):
     return dict(status='PASS' if not errors else 'BLOCKED_MEASUREMENT',
                 original_publications=len(pubs), property_events=len(props),
                 official_status_events=len(statuses), guarded_receipts=len(outputs),
-                issue_count=len(errors), issues=errors[:100],
-                exact_monitor_internal_publish_time='UNKNOWN')
+                calibration_attempts=len(calibration), issue_count=len(errors),
+                issues=errors[:100], exact_monitor_internal_publish_time='UNKNOWN')

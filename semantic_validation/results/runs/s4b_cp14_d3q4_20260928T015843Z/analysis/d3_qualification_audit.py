@@ -19,6 +19,7 @@ from q3_measurement_audit import rows, source_origin, callback_latency, resource
 from lifecycle_resource_audit import trial as lifecycle_trial
 from d3_monitor_audit import audit as source_monitor_audit
 from post_capture_audit import audit as lifecycle_audit
+from calibration_audit import audit as calibration_audit
 
 ARM = ('shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
        'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint')
@@ -150,7 +151,7 @@ def monitor_events(root, regime):
 
 
 def inspect(mode, regime):
-    name = f'docker_{mode}_{regime}_cp13d3setup01'
+    name = f'docker_{mode}_{regime}_cp14d3setup01'
     root = RAW / name
     if not root.exists():
         return dict(trial=name, status='NOT_RUN')
@@ -192,6 +193,9 @@ def inspect(mode, regime):
     if monitor and monitor['issues']:
         issues.append('OFFICIAL_TICK_EVENT_ASSOCIATION_INCOMPLETE')
     source_monitor = source_monitor_audit(root, regime) if mode in ('b2', 'b2c') else None
+    calibration = calibration_audit(root, regime) if mode in ('b2', 'b2c') else None
+    if calibration and calibration['status'] != 'PASS':
+        issues.append('CALIBRATION_SOURCE_PATH_OR_BARRIER_INCOMPLETE')
     if source_monitor and source_monitor['issues']:
         issues.append('OFFICIAL_SOURCE_EVENT_ASSOCIATION_INCOMPLETE')
     post_capture = lifecycle_audit(root, mode)
@@ -217,7 +221,8 @@ def inspect(mode, regime):
                 fault_trigger_note='B0 comparison proxy; B1/B2/B3 local receipt differs and is scored separately',
                 callback_exact_joins=None if callback is None else callback['exact_joins'],
                 callback_missing=None if callback is None else callback['missing'],
-                monitor=monitor, source_monitor=source_monitor, post_capture=post_capture,
+                monitor=monitor, source_monitor=source_monitor,
+                calibration=calibration, post_capture=post_capture,
                 receiver_coverage=coverage, control=control,
                 resources=measurements['resources']['status'], lifecycle=measurements['lifecycle']['status'],
                 policy_verdict='NOT_SCORED_BY_SETUP_AUDIT',
@@ -257,7 +262,7 @@ def main():
     schedule = list(csv.DictReader((ROOT / 'qualification_schedule.csv').open()))
     assert [(x['mode'], x['regime']) for x in schedule] == MODES
     verdicts = [inspect(mode, regime) for mode, regime in MODES]
-    pair_result = pair('docker_b0_full_cp13d3setup01', 'docker_shim_full_cp13d3setup01')
+    pair_result = pair('docker_b0_full_cp14d3setup01', 'docker_shim_full_cp14d3setup01')
     qualified = all(x['status'] == 'MEASUREMENT_QUALIFIED' for x in verdicts)
     result = dict(status='D3_SETUP_COMPLETE' if qualified and pair_result and pair_result['status'] == 'PASS'
                   else 'D3_FORMAL_BLOCKED', cells=verdicts, b0_shim_equivalence=pair_result,

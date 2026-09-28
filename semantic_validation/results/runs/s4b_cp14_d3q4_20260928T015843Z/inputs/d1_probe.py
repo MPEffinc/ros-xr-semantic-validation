@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from resource_sampler import snapshot
 from receiver_coverage import check_receiver_coverage
+from source_path_readiness import exact_ack
 
 import rclpy
 from controller_manager_msgs.srv import ListControllers
@@ -142,6 +143,8 @@ while time.monotonic() < deadline:
         continue
     if stack == 'docker' and not (root / 'sender.ready').exists():
         continue
+    if stack == 'docker' and (root / 'sent.jsonl').exists() and (root / 'sent.jsonl').stat().st_size:
+        continue  # Source index zero until the common barrier.
     if stack == 'docker' and mode != 'b0' and not (root / 'd1_nodes.ready').exists():
         continue
     if stack == 'docker' and not (root / 'd3_tick.ready').exists():
@@ -168,6 +171,7 @@ while time.monotonic() < deadline:
         continue
     monitor_events = []
     monitor_dds_match = None
+    calibration_ack = None
     if mode == 'b2':
         marker = root / 'monitor_dds_match.ready'
         if not marker.exists():
@@ -178,6 +182,30 @@ while time.monotonic() < deadline:
             continue
         if monitor_dds_match.get('monitor_subscription_count', 0) < 1:
             continue
+        calibration_marker = root / 'source_path_calibration.ready'
+        if not calibration_marker.exists():
+            continue
+        try:
+            calibration_ack = json.loads(calibration_marker.read_text())
+            attempts = [json.loads(line) for line in (root / 'calibration.jsonl').read_text().splitlines() if line]
+            selected = [row for row in attempts if row.get('attempt') == calibration_ack.get('attempt')
+                        and row.get('key') == calibration_ack.get('key')]
+            released = [json.loads(line) for line in (root / 'lineage.jsonl').read_text().splitlines()
+                        if line and '"kind": "receiver_timer_release"' in line]
+            confirmed = exact_ack(root, regime, selected[0]) if len(selected) == 1 else {'ok': False}
+        except (OSError, ValueError, KeyError, json.JSONDecodeError):
+            continue
+        if not confirmed.get('ok') or len(released) != 1:
+            continue
+        if not (monitor_dds_match['dds_match_monotonic_ns'] <= selected[0]['created_monotonic_ns']
+                <= confirmed['oracle_decision_monotonic_ns']
+                <= confirmed['guarded_receipt_monotonic_ns']
+                <= calibration_ack['ack_monotonic_ns']
+                <= released[0]['monotonic_ns']):
+            continue
+        calibration_ack = dict(calibration_ack, verified_boundary=confirmed,
+                               receiver_timer_release_ns=released[0]['monotonic_ns'],
+                               selected_created_ns=selected[0]['created_monotonic_ns'])
     if mode == 'b2':
         status_file = root / ('monitor_full_status.jsonl' if regime == 'full' else 'monitor_native_status.jsonl')
         if not status_file.exists():
@@ -223,6 +251,7 @@ while time.monotonic() < deadline:
     last = dict(position_error=position_error, drift=drift, speed=speed,
                 joint_samples=len(window), increasing_stamps=increasing,
                 monitor_dds_match=monitor_dds_match,
+                source_path_calibration=calibration_ack,
                 graph=current_graph, controllers=states, servo_service=servo_service,
                 participant_clocks=clocks,
                 monitor_oracle_positive_events=sum(row.get('status') == 'event' and
