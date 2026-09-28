@@ -1,0 +1,4 @@
+cp -a ../s4b_cp18_d4q2_20260928T052627Z/{inputs,analysis} . ; declared edits (preflight/d4q2_to_d4lq1_input_delta.txt)
+(cd analysis && PYTHONDONTWRITEBYTECODE=1 python3 test_d4_preflight.py)   # attempt 1: 1 FAIL (lateness under host load, retained); rerun 16/16 PASS
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/d4_setup_audit.py              # empty -> NOT_RUN
+After D4 formal completes AND this freeze is pushed: python3 inputs/run_qualification.py --start 1 --end 15 ; python3 analysis/d4_setup_audit.py

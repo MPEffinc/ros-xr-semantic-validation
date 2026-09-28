@@ -1,0 +1,29 @@
+test_delivery_audit_negatives (__main__.DelayedDelivery.test_delivery_audit_negatives) ... ok
+test_fifo_release_after_fresh_b1_decision (__main__.DelayedDelivery.test_fifo_release_after_fresh_b1_decision) ... FAIL
+test_parameterized_monitor_events_equals_q6_at_300 (__main__.DelayedDelivery.test_parameterized_monitor_events_equals_q6_at_300) ... ok
+test_timing_values (__main__.DelayedDelivery.test_timing_values) ... ok
+test_b1_rejection_survives_original_idle_disconnect (__main__.IdleDisconnect.test_b1_rejection_survives_original_idle_disconnect) ... ok
+test_no_reconnect_without_gap (__main__.IdleDisconnect.test_no_reconnect_without_gap) ... ok
+test_drain_uses_recorded_stamp (__main__.Joins.test_drain_uses_recorded_stamp) ... ok
+test_fixture_rejects_stamp_regeneration_and_reuse (__main__.Joins.test_fixture_rejects_stamp_regeneration_and_reuse) ... ok
+test_modules_resolve_to_d4_root (__main__.Joins.test_modules_resolve_to_d4_root) ... ok
+test_analyzer_expectation_and_uncertainty (__main__.Predicate.test_analyzer_expectation_and_uncertainty) ... ok
+test_default_profile_is_f250 (__main__.Predicate.test_default_profile_is_f250) ... ok
+test_stamps (__main__.Predicate.test_stamps) ... ok
+test_thresholds_inclusive_each_profile (__main__.Predicate.test_thresholds_inclusive_each_profile) ... ok
+test_all_conditions_b1_full_f250 (__main__.SenderLoopback.test_all_conditions_b1_full_f250) ... ok
+test_native_and_b0_never_withhold (__main__.SenderLoopback.test_native_and_b0_never_withhold) ... ok
+test_profiles_change_only_threshold (__main__.SenderLoopback.test_profiles_change_only_threshold) ... ok
+
+======================================================================
+FAIL: test_fifo_release_after_fresh_b1_decision (__main__.DelayedDelivery.test_fifo_release_after_fresh_b1_decision)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp20_d4lq1_20260928T053735Z/analysis/test_d4_preflight.py", line 214, in test_fifo_release_after_fresh_b1_decision
+    self.assertLess(d['max_release_lateness_ms'], 5.0)
+AssertionError: 24.6672 not less than 5.0
+
+----------------------------------------------------------------------
+Ran 16 tests in 116.918s
+
+FAILED (failures=1)
