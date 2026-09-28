@@ -1,0 +1,78 @@
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_nodes.py semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_nodes.py
+--- semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_nodes.py	2026-09-27 16:20:29.508921010 +0900
++++ semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_nodes.py	2026-09-28 10:06:41.299146116 +0900
+@@ -25,6 +25,7 @@
+ from mapper_lineage_state import MapperLineageState
+ from d3_silence import SourceSilence
+ from trace import Publisher, bind, consume, digest, EDGES, log
++from source_payload_hash import source_payload_sha256
+ 
+ MODE = os.environ['MODE']
+ REGIME = os.environ['INFO_REGIME']
+@@ -66,7 +67,7 @@
+             log('original_receiver_source_stored', sample_id=sample_id,
+                 receiver_receipt_monotonic_ns=receipt_ns,
+                 receiver_cache_monotonic_ns=int(self._last_packet_time_monotonic * 1_000_000_000),
+-                payload_sha256=digest(payload))
++                payload_sha256=source_payload_sha256(payload))
+         return result
+ 
+     def _make_msg(self, state, stamp):
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_probe.py semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_probe.py
+--- semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_probe.py	2026-09-27 16:25:21.820274175 +0900
++++ semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_probe.py	2026-09-28 10:07:26.583843297 +0900
+@@ -4,6 +4,7 @@
+ import time
+ from pathlib import Path
+ from resource_sampler import snapshot
++from receiver_coverage import check_receiver_coverage
+ 
+ import rclpy
+ from controller_manager_msgs.srv import ListControllers
+@@ -293,4 +294,15 @@
+     event('d3_tick_incomplete', tick_count=len(ticks))
+     raise SystemExit(16)
+ node.destroy_node()
++if stack == 'docker' and mode != 'b0':
++    lineage_path = root / 'lineage.jsonl'
++    lineage_rows = [json.loads(line) for line in lineage_path.read_text().splitlines() if line]
++    coverage = check_receiver_coverage(sent, lineage_rows)
++    (root / 'receiver_coverage.json').write_text(json.dumps(coverage, sort_keys=True) + '\n')
++    if not coverage['ok']:
++        event('receiver_source_coverage_incomplete',
++              expected=coverage['expected_count'], seen=coverage['seen_count'],
++              stored=coverage['stored_count'])
++        raise SystemExit(17)
++
+ rclpy.shutdown()
+Only in semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs: receiver_coverage.py
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/run_owned.py semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/run_owned.py
+--- semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/run_owned.py	2026-09-27 16:57:20.307316458 +0900
++++ semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/run_owned.py	2026-09-28 10:08:54.255639367 +0900
+@@ -9,6 +9,7 @@
+ ROOT=Path(__file__).resolve().parents[1]
+ REPO=ROOT.parents[3]
+ Q3=ROOT.parent/'s4b_cp5b_measurement_20260923T054101Z'
++Q1=ROOT.parent/'s4b_cp11_d3q1_20260927T071000Z'
+ parser=argparse.ArgumentParser()
+ parser.add_argument('stack',choices=['docker'])
+ parser.add_argument('mode',choices=['b0','shim','b1','b2','b3'])
+@@ -24,7 +25,7 @@
+ trial=ROOT/'raw'/f'{args.stack}_{variant}_{args.regime}_{args.attempt}'
+ trial.mkdir(parents=True, exist_ok=False)
+ trial.chmod(0o777)  # Only the new trial output directory; container UID mapping.
+-name=f's4cp11d3_{args.stack}_{variant}_{args.regime}_{args.attempt}'
++name=f's4cp12d3q2_{args.stack}_{variant}_{args.regime}_{args.attempt}'
+ def run(argv, label, timeout=240):
+     with (ROOT/'commands.jsonl').open('a') as f:
+         f.write(json.dumps({'time_ns':time.time_ns(),'argv':argv,'trial':trial.name})+'\n')
+@@ -34,7 +35,7 @@
+     return run(['sg','docker','-c',shlex.join(['docker',*argv])],label,timeout)
+ mounts=[f'{ROOT}/inputs:/code:ro',f'{trial}:/results',
+         '/tmp/rosmonitoring_s4a_20260922:/official:ro',
+-        f'{ROOT}/monitor_ws/install:/monitor_ws/install:ro',
++        f'{Q1}/monitor_ws/install:/monitor_ws/install:ro',
+         f'{Q3}/deps:/d1deps:ro']
+ if args.stack=='docker':
+     src=REPO/'semantic_validation/targets/docker_teleop/ros_backend1.1'
+Only in semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs: source_payload_hash.py
