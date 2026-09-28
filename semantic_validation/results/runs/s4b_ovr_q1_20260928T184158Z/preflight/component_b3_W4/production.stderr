@@ -1,0 +1,27 @@
+[WARN] [1790621472.806978050] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[WARN] [1790621472.807005169] [rcl]: 'localhost_only' is enabled, 'automatic_discovery_range' and 'static_peers' will be ignored.
+FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+[INFO] [1790621472.877565052] [quest_teleop_node]: Quest 3 MoveIt Servo Bridge: ONLINE.
+[INFO] [1790621472.877804133] [quest_teleop_node]: HOLD RIGHT GRIP: Robot follows hand.
+[INFO] [1790621472.877996002] [quest_teleop_node]: RELEASE GRIP: Robot stops; hand position resets.
+[INFO] [1790621474.406603989] [quest_teleop_node]: Teleop Engaged: Relative tracking active.
+[INFO] [1790621478.206579867] [quest_teleop_node]: Teleop Disengaged.
+[INFO] [1790621478.406633312] [quest_teleop_node]: Teleop Engaged: Relative tracking active.
+[INFO] [1790621483.406507169] [quest_teleop_node]: Teleop Disengaged.
+Traceback (most recent call last):
+  File "/code/ovr_production.py", line 182, in <module>
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 757, in _wait_for_ready_callbacks
+    wait_set = _rclpy.WaitSet(
+               ^^^^^^^^^^^^^^^
+rclpy._rclpy_pybind11.RCLError: failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:130
