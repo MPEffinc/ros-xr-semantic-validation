@@ -1,0 +1,78 @@
+{
+  "cases": [
+    {
+      "expected_safe": true,
+      "guarded_receipt": true,
+      "label": "valid",
+      "official_decision": "forwarded",
+      "ok": true,
+      "property_safe": true,
+      "reason": "ARMED_VALID"
+    },
+    {
+      "expected_safe": true,
+      "guarded_receipt": true,
+      "label": "cached_repeat_same_ingestion",
+      "official_decision": "forwarded",
+      "ok": true,
+      "property_safe": true,
+      "reason": "ARMED_VALID"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "mismatch",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "STATE_COMMAND_MISMATCH"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "missing_id",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "MISSING_SOURCE_EVENT_ID"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "missing_generation",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "MISSING_REQUIRED_FIELD"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "duplicate_id_new_ingestion",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "DUPLICATE_SOURCE_EVENT_ID"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "valid_but_latched",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "DISARMED_DWELL"
+    },
+    {
+      "expected_safe": true,
+      "guarded_receipt": true,
+      "label": "release_neutral",
+      "official_decision": "forwarded",
+      "ok": true,
+      "property_safe": true,
+      "reason": "INTENTIONAL_UNGRIPPED_NEUTRAL"
+    }
+  ],
+  "official_revision": "d03aa5b44e29b76c0e108a098817bdf5aa98e322",
+  "status": "PASS_COMPONENT_PREFLIGHT"
+}
