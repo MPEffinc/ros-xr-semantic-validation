@@ -1,0 +1,3 @@
+(cd analysis && python3 test_d6.py)  # attempt 1: 5/6 (dwell-boundary jitter, retained); rerun 6/6
+(cd analysis && python3 test_d5_rearm.py; python3 test_d5_sender.py)  # regression 16/16; 4/5 then 5/5 after boundary tolerance
+After freeze push: python3 inputs/run_qualification.py --start 1 --end 14 ; python3 analysis/d6_setup_audit.py
