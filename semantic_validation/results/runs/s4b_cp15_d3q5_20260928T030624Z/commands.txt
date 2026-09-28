@@ -1,0 +1,11 @@
+# Prospective Q5 preflight commands, run before freeze/Gazebo.
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+python3 inputs/run_calibration_component.py --regime native --scenario positive --attempt setup01
+python3 inputs/run_calibration_component.py --regime full --scenario positive --attempt setup01
+for regime in native full; do for scenario in absent_oracle absent_guarded_subscriber; do python3 inputs/run_calibration_component.py --regime "$regime" --scenario "$scenario" --attempt setup01 || exit; done; done
+python3 analysis/q5_preflight_audit.py
+for f in analysis/test_*.py; do python3 "$f" || exit; done > preflight/host_regression.stdout 2> preflight/host_regression.stderr
+python3 -m py_compile inputs/*.py analysis/*.py
+sha256sum -c semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/local_install_artifacts.sha256
+# Six actual component command/exit pairs are preserved in preflight/official_*/command.json and exit.json.
+# No Q5 Gazebo command before prospective freeze.
