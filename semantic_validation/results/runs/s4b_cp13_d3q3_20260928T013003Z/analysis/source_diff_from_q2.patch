@@ -1,0 +1,130 @@
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_nodes.py semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/inputs/d1_nodes.py
+--- semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_nodes.py	2026-09-28 10:06:41.299146116 +0900
++++ semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/inputs/d1_nodes.py	2026-09-28 10:31:26.132982817 +0900
+@@ -26,6 +26,7 @@
+ from d3_silence import SourceSilence
+ from trace import Publisher, bind, consume, digest, EDGES, log
+ from source_payload_hash import source_payload_sha256
++from post_capture_lifecycle import capture_has_ended
+ 
+ MODE = os.environ['MODE']
+ REGIME = os.environ['INFO_REGIME']
+@@ -33,6 +34,7 @@
+ 
+ class Receiver(QuestControllerReceiver):
+     def __init__(self):
++        self.post_capture_quiesced = False
+         self.state_origins = {}
+         self.receipt_by_sample_id = {}
+         self.selected = None
+@@ -49,6 +51,19 @@
+         else:
+             self.pub = Publisher(original_pub, 'receiver', lambda: self.selected)
+ 
++    def _publish_loop(self):
++        # Prospective trial lifecycle, strictly after the fixed D3 outcome
++        # capture. Never inspect XR state or suppress an already published event.
++        if capture_has_ended(os.environ['TRIAL_ROOT']):
++            if not self.post_capture_quiesced:
++                self.post_capture_quiesced = True
++                log('post_capture_receiver_quiesced',
++                    capture_end_marker=str(Path(os.environ['TRIAL_ROOT']) / 'capture_end.ready'))
++                Path(os.environ['TRIAL_ROOT'], 'receiver_quiesced.ready').write_text(
++                    str(time.monotonic_ns()) + '\n')
++            return
++        return super()._publish_loop()
++
+     def _parse_payload(self, payload, *args, **kwargs):
+         state = super()._parse_payload(payload, *args, **kwargs)
+         self.state_origins[id(state)] = (state, payload.get('_qualification'))
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_probe.py semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/inputs/d1_probe.py
+--- semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/d1_probe.py	2026-09-28 10:07:26.583843297 +0900
++++ semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/inputs/d1_probe.py	2026-09-28 10:37:39.851446832 +0900
+@@ -2,6 +2,7 @@
+ import json
+ import os
+ import time
++import sys
+ from pathlib import Path
+ from resource_sampler import snapshot
+ from receiver_coverage import check_receiver_coverage
+@@ -293,7 +294,50 @@
+         any(row.get('source_sample_id') is not None for row in ticks)):
+     event('d3_tick_incomplete', tick_count=len(ticks))
+     raise SystemExit(16)
+-node.destroy_node()
++if stack == 'docker' and mode != 'b0':
++    quiesce_deadline = time.monotonic() + 2.0
++    while not (root / 'receiver_quiesced.ready').exists() and time.monotonic() < quiesce_deadline:
++        spin(.02)
++    if not (root / 'receiver_quiesced.ready').exists():
++        event('post_capture_receiver_quiesce_missing')
++        raise SystemExit(18)
++    quiesce_rows = [x for x in (json.loads(line) for line in
++                    (root / 'lineage.jsonl').read_text().splitlines() if line)
++                    if x.get('kind') == 'post_capture_receiver_quiesced']
++    if len(quiesce_rows) != 1:
++        event('post_capture_receiver_quiesce_ambiguous', count=len(quiesce_rows))
++        raise SystemExit(18)
++    event('post_capture_receiver_quiesce_ack', quiesce_ns=quiesce_rows[0]['monotonic_ns'])
++    if mode == 'b2':
++        sys.path.insert(0, '/analysis')
++        from d3_monitor_audit import audit as source_monitor_audit
++        drain_deadline = time.monotonic() + 2.0
++        drain_result = None
++        tick_property_count = tick_status_count = 0
++        while time.monotonic() < drain_deadline:
++            spin(.02)
++            try:
++                drain_result = source_monitor_audit(root, regime)
++                tick_property_count = sum(
++                    json.loads(line).get('event_kind') == 'tick'
++                    for line in (root / 'property.jsonl').read_text().splitlines() if line)
++                status_file = root / ('monitor_full_status.jsonl' if regime == 'full'
++                                      else 'monitor_native_status.jsonl')
++                tick_status_count = sum(
++                    (row.get('status') == 'event' and row.get('interface') == '/s4b/d3/tick')
++                    for row in (json.loads(line) for line in status_file.read_text().splitlines() if line))
++            except json.JSONDecodeError:
++                continue  # A writer has not completed its current JSONL line.
++            if drain_result['status'] == 'PASS' and tick_property_count == tick_status_count == 300:
++                break
++        if (drain_result is None or drain_result['status'] != 'PASS' or
++                tick_property_count != 300 or tick_status_count != 300):
++            event('post_capture_monitor_drain_incomplete', result=drain_result,
++                  tick_property_count=tick_property_count, tick_status_count=tick_status_count)
++            raise SystemExit(19)
++        event('post_capture_monitor_drain_ack', result=drain_result,
++              tick_property_count=tick_property_count, tick_status_count=tick_status_count)
++
+ if stack == 'docker' and mode != 'b0':
+     lineage_path = root / 'lineage.jsonl'
+     lineage_rows = [json.loads(line) for line in lineage_path.read_text().splitlines() if line]
+@@ -305,4 +349,5 @@
+               stored=coverage['stored_count'])
+         raise SystemExit(17)
+ 
++node.destroy_node()
+ rclpy.shutdown()
+Only in semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/inputs: post_capture_lifecycle.py
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/run_owned.py semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/inputs/run_owned.py
+--- semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/run_owned.py	2026-09-28 10:08:54.255639367 +0900
++++ semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/inputs/run_owned.py	2026-09-28 10:34:38.515523596 +0900
+@@ -25,7 +25,7 @@
+ trial=ROOT/'raw'/f'{args.stack}_{variant}_{args.regime}_{args.attempt}'
+ trial.mkdir(parents=True, exist_ok=False)
+ trial.chmod(0o777)  # Only the new trial output directory; container UID mapping.
+-name=f's4cp12d3q2_{args.stack}_{variant}_{args.regime}_{args.attempt}'
++name=f's4cp13d3q3_{args.stack}_{variant}_{args.regime}_{args.attempt}'
+ def run(argv, label, timeout=240):
+     with (ROOT/'commands.jsonl').open('a') as f:
+         f.write(json.dumps({'time_ns':time.time_ns(),'argv':argv,'trial':trial.name})+'\n')
+@@ -33,7 +33,7 @@
+     return result.returncode
+ def docker(argv,label,timeout=240):
+     return run(['sg','docker','-c',shlex.join(['docker',*argv])],label,timeout)
+-mounts=[f'{ROOT}/inputs:/code:ro',f'{trial}:/results',
++mounts=[f'{ROOT}/inputs:/code:ro',f'{ROOT}/analysis:/analysis:ro',f'{trial}:/results',
+         '/tmp/rosmonitoring_s4a_20260922:/official:ro',
+         f'{Q1}/monitor_ws/install:/monitor_ws/install:ro',
+         f'{Q3}/deps:/d1deps:ro']
