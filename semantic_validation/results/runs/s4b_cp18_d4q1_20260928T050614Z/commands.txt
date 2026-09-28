@@ -1,0 +1,7 @@
+D4Q1 preflight (cwd = this root unless stated; PYTHONDONTWRITEBYTECODE=1):
+cp -a ../s4b_cp16_d3q6_20260928T032320Z/inputs inputs   # then declared edits; see preflight/q6_to_d4q1_input_delta.txt
+Official component: for (full,F100) (full,F250) (full,F500) (native,F250): docker run ... python3 /code/d4_monitor_freshness_preflight.py --regime R  (exact argv in preflight/official_*/command.json)
+(cd analysis && python3 test_d4_preflight.py)   # first attempt 9 tests: 1 FAIL (Q6 module shadowing in host analyzer); fixed import order + module-location test; rerun 10/10 PASS
+python3 analysis/d4_setup_audit.py                # empty schedule -> NOT_RUN (preflight/empty_setup_summary.json)
+sha256sum -c ../../../../semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/local_install_artifacts.sha256 (from repo root)
+After freeze push + SHA alignment only: python3 inputs/run_qualification.py --start 1 --end 20 ; python3 analysis/d4_setup_audit.py

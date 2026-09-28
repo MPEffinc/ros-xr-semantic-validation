@@ -1,0 +1,79 @@
+{
+  "cases": [
+    {
+      "expected_safe": true,
+      "guarded_receipt": true,
+      "label": "fresh_age_0",
+      "official_decision": "forwarded",
+      "ok": true,
+      "property_safe": true,
+      "reason": "VALID_D1",
+      "verdict_raw": "currently_true"
+    },
+    {
+      "expected_safe": true,
+      "guarded_receipt": true,
+      "label": "fresh_below_F",
+      "official_decision": "forwarded",
+      "ok": true,
+      "property_safe": true,
+      "reason": "VALID_D1",
+      "verdict_raw": "currently_true"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "stale_above_F",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "STALE_SOURCE",
+      "verdict_raw": "currently_false"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "future_plus_1s",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "FUTURE_TIME",
+      "verdict_raw": "currently_false"
+    },
+    {
+      "expected_safe": false,
+      "guarded_receipt": false,
+      "label": "historical_epoch_1p0",
+      "official_decision": "blocked",
+      "ok": true,
+      "property_safe": false,
+      "reason": "STALE_SOURCE",
+      "verdict_raw": "currently_false"
+    },
+    {
+      "expected_safe": true,
+      "guarded_receipt": true,
+      "label": "ungripped_stale",
+      "official_decision": "forwarded",
+      "ok": true,
+      "property_safe": true,
+      "reason": "INTENTIONAL_UNGRIPPED_NEUTRAL",
+      "verdict_raw": "currently_true"
+    },
+    {
+      "expected_safe": true,
+      "guarded_receipt": true,
+      "label": "original_neutral",
+      "official_decision": "forwarded",
+      "ok": true,
+      "property_safe": true,
+      "reason": "ORIGINAL_NEUTRAL",
+      "verdict_raw": "currently_true"
+    }
+  ],
+  "freshness_ns": 250000000,
+  "monitor_id": "d3_full_guard",
+  "official_revision": "d03aa5b44e29b76c0e108a098817bdf5aa98e322",
+  "regime": "full",
+  "status": "PASS_COMPONENT_PREFLIGHT"
+}
