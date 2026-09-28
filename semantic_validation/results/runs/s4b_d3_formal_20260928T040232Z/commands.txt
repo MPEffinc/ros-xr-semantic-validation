@@ -1,0 +1,15 @@
+CP17 D3 formal pre-outcome freeze commands (cwd /home/cclab/ros_xr unless stated):
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md semantic_validation/results/S4B_CP16_D3_Q6_QUALIFICATION_PROTOCOL.md
+sha256sum -c semantic_validation/results/runs/s4b_cp16_d3q6_20260928T032320Z/freeze_inputs.sha256
+(cd semantic_validation/results/runs/s4b_cp16_d3q6_20260928T032320Z && sha256sum -c runtime_evidence_manifest.sha256)
+sha256sum -c semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/local_install_artifacts.sha256
+Working directory semantic_validation/results/runs/s4b_d3_formal_20260928T040232Z (PYTHONDONTWRITEBYTECODE=1):
+python3 inputs/make_schedule.py
+(cd analysis && python3 test_d3_formal_audit.py)      # 14 fixture tests A-J etc. on mutated COPIES of Q6 setup raw
+(cd analysis && python3 preflight_on_setup.py)        # SOFTWARE_PREFLIGHT_ON_QUALIFICATION_RAW_NOT_FORMAL
+python3 analysis/d3_formal_audit.py --all             # before runtime: 50 NOT_RUN; saved as preflight_empty_summary.json
+python3 -m py_compile inputs/*.py analysis/*.py
+
+After freeze push and SHA alignment only:
+python3 inputs/run_formal.py --start N --end M        # committed rows only; attempts.jsonl + commands.jsonl append
+python3 analysis/d3_formal_audit.py --all             # complete frozen summary -> analysis/formal_summary.json
