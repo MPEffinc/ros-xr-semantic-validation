@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s2_docker_baseline_20260922T080640Z/inputs/s2_tcp_trials.py", line 99, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s2_docker_baseline_20260922T080640Z/inputs/s2_tcp_trials.py", line 63, in main
+    first = socket.create_connection((args.host, args.port), timeout=5.0)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 852, in create_connection
+    raise exceptions[0]
+  File "/usr/lib/python3.12/socket.py", line 832, in create_connection
+    sock = socket(af, socktype, proto)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted

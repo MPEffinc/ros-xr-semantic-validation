@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/code/runtime_probe.py", line 106, in <module>
+    sock=socket.create_connection(('127.0.0.1',5005),timeout=3) if STACK=='docker' else None
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused

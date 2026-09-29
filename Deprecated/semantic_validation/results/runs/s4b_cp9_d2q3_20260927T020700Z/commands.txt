@@ -1,0 +1,17 @@
+CP9 prospective prefreeze commands, cwd /home/cclab/ros_xr unless stated:
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+sha256sum semantic_validation/results/S4B_CP9_D2_QUALIFICATION_PROTOCOL.md
+sha256sum -c semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/freeze_inputs.sha256
+sha256sum -c semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/runtime_evidence_manifest.sha256
+diff -ruN semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/inputs semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs
+diff -u semantic_validation/results/runs/s4b_cp8_d2q2_20260927T013600Z/analysis/cp8_qualification_audit.py semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/analysis/cp9_qualification_audit.py
+PYTHONDONTWRITEBYTECODE=1 python3 -c 'import pathlib, ast; root=pathlib.Path("semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z"); [ast.parse(p.read_text()) for p in list((root/"inputs").glob("*.py"))+list((root/"analysis").glob("*.py"))]'
+
+Working directory semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z:
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_monitor_readiness.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_mapper_lineage_state.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_cp9_audit.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_d2_sender.py
+
+Read-only negative/positive controls: CP8 failed B2 native raw is BLOCKED_MEASUREMENT under monitor_call_audit; CP8 B3 native corrected cache-parent raw is PASS under mapper_cache_audit. CP8's official ROSMonitoring/TLOracle no-Gazebo native/full 20/20 neutral component preflights are reused unchanged, not re-run or reclassified as Gazebo evidence.
+The trial-owned Gazebo setup commands are prospectively fixed in qualification_schedule.csv and will be written to commands.jsonl only if actually executed after the freeze push.

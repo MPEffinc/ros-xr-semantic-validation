@@ -1,0 +1,436 @@
+[INFO] [launch]: All log files can be found below /tmp/.ros/log/2026-09-28-20-15-46-520088-0bad346426b8-241
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container_mt-1]: process started with pid [264]
+[component_container_mt-1] [WARN] [1790626546.729169132] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[component_container_mt-1] [WARN] [1790626546.729178586] [rcl]: 'localhost_only' is enabled, 'automatic_discovery_range' and 'static_peers' will be ignored.
+[component_container_mt-1] [INFO] [1790626546.969609584] [ur_servo_container]: Load Library: /opt/ros/jazzy/lib/librobot_state_publisher_node.so
+[component_container_mt-1] [INFO] [1790626546.971520407] [ur_servo_container]: Found class: rclcpp_components::NodeFactoryTemplate<robot_state_publisher::RobotStatePublisher>
+[component_container_mt-1] [INFO] [1790626546.971535773] [ur_servo_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<robot_state_publisher::RobotStatePublisher>
+[component_container_mt-1] [INFO] [1790626546.977440526] [robot_state_publisher]: Robot initialized
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/robot_state_publisher' in container '/ur_servo_container'
+[INFO] [servo_node-2]: process started with pid [318]
+[servo_node-2] [WARN] [1790626551.754480779] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[servo_node-2] [WARN] [1790626551.754490355] [rcl]: 'localhost_only' is enabled, 'automatic_discovery_range' and 'static_peers' will be ignored.
+[servo_node-2] [WARN] [1790626551.777459777] [rcl.logging_rosout]: Publisher already registered for node name: 'servo_node'. If this is due to multiple nodes with the same name then all logs for the logger named 'servo_node' will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[servo_node-2] [WARN] [1790626551.780543975] [rcl.logging_rosout]: Publisher already registered for node name: 'servo_node'. If this is due to multiple nodes with the same name then all logs for the logger named 'servo_node' will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[servo_node-2] [WARN] [1790626551.782616915] [servo_node]: Could not enable FIFO RT scheduling policy. Continuing with the default.
+[servo_node-2] [WARN] [1790626551.782681778] [servo_node]: Realtime kernel is recommended for better performance.
+[servo_node-2] [INFO] [1790626551.784576857] [servo_node.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[servo_node-2] [INFO] [1790626551.784605787] [servo_node.moveit.core.robot_model]: Loading robot model 'ur5_robot'...
+[servo_node-2] [INFO] [1790626551.816040114] [servo_node.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'ur5_arm': 1 1 1 1 1 1
+[servo_node-2] [INFO] [1790626552.216665956] [servo_node.moveit.ros.current_state_monitor]: Listening to joint states on topic '/joint_states'
+[servo_node-2] [INFO] [1790626552.553576550] [servo_node.moveit.ros.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[servo_node-2] [INFO] [1790626552.553601918] [servo_node.moveit.ros.planning_scene_monitor]: Starting planning scene monitor
+[servo_node-2] [INFO] [1790626552.554603920] [servo_node.moveit.ros.planning_scene_monitor]: Listening to '/monitored_planning_scene'
+[servo_node-2] [INFO] [1790626552.554619736] [servo_node.moveit.ros.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[servo_node-2] [INFO] [1790626552.555036088] [servo_node.moveit.ros.planning_scene_monitor]: Listening to 'collision_object'
+[servo_node-2] [INFO] [1790626552.555496079] [servo_node.moveit.ros.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[servo_node-2] [INFO] [1790626557.556287745] [servo_node.moveit.ros.planning_scene_monitor]: Failed to call service get_planning_scene, have you launched move_group or called psm.providePlanningSceneService()?
+[servo_node-2] [INFO] [1790626557.556698943] [servo_node.moveit.ros.planning_scene_monitor]: Publishing maintained planning scene on '/servo_node/publish_planning_scene'
+[servo_node-2] [INFO] [1790626557.556927115] [servo_node.moveit.ros.move_group.collision_monitor]: Collision monitor started
+[servo_node-2] [WARN] [1790626557.556950219] [servo_node.moveit.ros.servo]: No smoothing plugin loaded
+[servo_node-2] [INFO] [1790626557.556954873] [servo_node.moveit.ros.servo]: Servo initialized successfully
+[servo_node-2] [INFO] [1790626557.560425828] [servo_node]: Waiting to receive robot state update.
+[servo_node-2] [INFO] [1790626569.157043712] [servo_node.moveit.ros.move_group.collision_monitor]: Collision monitor stopped
+[servo_node-2] [INFO] [1790626570.576503044] [servo_node.moveit.ros.move_group.collision_monitor]: Collision monitor started
+[servo_node-2] [WARN] [1790626573.266141454] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.286137795] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.306147969] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.326147471] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.346156396] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.366149122] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.386153128] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.406140603] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.426140809] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.446139066] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.466136238] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.486143488] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.506146484] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.526145385] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.546143354] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.566141485] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.586138807] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.606149399] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.626148724] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.646146655] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.666144129] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.686139489] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.706137509] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.726145605] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.746143101] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.766142566] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.786142583] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.806141571] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.826140239] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.846143043] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.866144405] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.886146438] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.906137443] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.926171754] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.946163218] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.966154289] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626573.986144649] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.006144032] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.026143622] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.046140102] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.066141453] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.086143270] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.106138636] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.126146268] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.146138391] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.166148760] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.186139666] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.206146637] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.226145062] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.246145516] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.266145258] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.286145434] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.306145872] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.326216908] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.346207722] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.366220634] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.386216366] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.406215110] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.426201731] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.446208674] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.466143945] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.486143887] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.506143654] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.526139330] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.546139938] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.566137820] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.586138569] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.606140390] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.626150719] [servo_node.moveit.ros.servo]: Moving closer to a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.646145734] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.666144586] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.686140294] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.706139519] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.726148584] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.746146735] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.766143710] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.786143810] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.806140953] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.826156579] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.846140710] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.866147530] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.886151050] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.906143296] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.926145527] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.946140769] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.966142316] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626574.986141404] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.006141688] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.026151171] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.046144185] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.066146017] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.086222855] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.106216587] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.126220090] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.146208667] [servo_node.moveit.ros.servo]: Moving away from a singularity, decelerating
+[servo_node-2] [WARN] [1790626575.166205127] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.186205431] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.206205040] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.226213908] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.246214535] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.266215141] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.286203903] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.306199174] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.326233380] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.346212274] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.366202163] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.386162997] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.406154933] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.426159605] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.446143967] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.466146411] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.486141629] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.506140114] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.526159314] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.546144409] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.566142899] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.586146507] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.606147662] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.626144853] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.646141267] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.666143109] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.686152361] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.706140370] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.726143878] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.746144788] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.766144594] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.786150250] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.806142955] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.826150350] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.846141087] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.866151899] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.886146343] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.906148235] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.926147056] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.946143441] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.966145478] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626575.986145121] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.006147277] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.026147518] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.046144356] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.066143148] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.086141534] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.106146349] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.126149336] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.146150555] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.166147543] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.186142448] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.206146159] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.226146880] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.246142261] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.266144879] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.286139107] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.306148962] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.326145232] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.346143686] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.366141765] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.386144791] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.406143535] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.426142760] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.446143251] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.466186403] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.486190967] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.506143898] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.526150481] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.546145304] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.566143416] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.586141008] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.606149215] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.626149506] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.646196055] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.666214852] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.686208536] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.706208466] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.726205961] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.746200519] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.766202964] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.786202669] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.806220902] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.826213458] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.846219309] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.866207126] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.886255150] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.906188107] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.926153763] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.946150505] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.966141459] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626576.986149267] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.006140155] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.026144867] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.046139618] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.066142327] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.086138941] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.106135421] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.126147385] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.146144675] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.166148077] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.186150917] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.206145780] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.226143787] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.246156942] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.266144560] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.286145535] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.306191091] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.326191194] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.346188940] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.366143179] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.386145550] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.406186484] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.426144989] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.446145601] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.466143223] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.486139450] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.506142465] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.526144050] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.546140632] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.566221070] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.586218003] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.606209751] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.626245433] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.646166222] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.666164733] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.686147474] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.706139078] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.726144304] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.746143447] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.766148542] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.786157285] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.806216436] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.826186944] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.846147383] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.866142412] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.886150191] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.906145151] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.926154750] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.946193535] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.966199187] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626577.986153164] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.006142481] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.026147023] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.046148296] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.066156859] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.086151695] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.106142836] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.126137931] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.146136952] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.166135133] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.186136677] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.206149654] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.226157927] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.246138354] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.266153325] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.286149767] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.306140684] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.326138712] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.346138395] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.366138626] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.386143469] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.406140305] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.426137391] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.446137005] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.466142137] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.486134314] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.506127938] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.526140472] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.546135842] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.566135464] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.586137629] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.606136115] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.626136398] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.646136248] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.666136387] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.686143792] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.706149936] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.726152422] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.746141147] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.766135375] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.786132724] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.806131429] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.826135864] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.846144731] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.866131976] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.886135107] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.906140880] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.926137982] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.946134207] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.966136295] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626578.986135836] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.006142480] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.026138420] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.046144061] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.066131912] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.086130858] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.106148805] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.126136649] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.146135101] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.166148368] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.186134265] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.206135544] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.226133650] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.246135479] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.266135969] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.286130398] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.306130788] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.326139076] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.346135088] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.366133501] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.386145086] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.406158015] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.426149426] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.446161500] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.466140598] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.486136543] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.506139831] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.526138738] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.546144798] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.566139910] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.586134275] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.606147085] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.626142470] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.646148272] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.666140736] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.686137879] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.706140221] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.726143076] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.746141154] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.766140341] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.786146189] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.806134736] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.826141551] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.846139741] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.866135649] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.886131737] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.906140597] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.926136969] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.946141611] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.966137061] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626579.986152419] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.006143973] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.026136602] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.046136941] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.066134228] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.086137134] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.106138503] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.126136150] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.146140247] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.166133665] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.186139384] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.206143630] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.226139794] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.246135148] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.266139703] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.286135213] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.306144336] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.326140447] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.346136365] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.366138016] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.386134993] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.406143699] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.426140324] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.446152357] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.466153635] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.486149142] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.506149600] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.526141957] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.546139172] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.566135658] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.586152895] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.606137748] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.626143259] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.646142994] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.666140688] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.686138911] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.706133703] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.726139117] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.746133931] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.766136088] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.786141282] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.806142043] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.826144329] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.846144000] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.866138722] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.886153439] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.906158793] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.926144954] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.946138755] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.966144024] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626580.986141241] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.006138055] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.026148758] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.046128340] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.066139198] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.086140874] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.106136129] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.126138765] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.146141365] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.166152003] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.186139110] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.206136968] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.226144383] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.246137525] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop
+[servo_node-2] [WARN] [1790626581.266138581] [servo_node.moveit.ros.servo]: Very close to a singularity, emergency stop

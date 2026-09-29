@@ -1,0 +1,326 @@
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_nodes.py semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_nodes.py
+--- semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_nodes.py	2026-09-27 11:08:14.583937434 +0900
++++ semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_nodes.py	2026-09-27 16:20:29.508921010 +0900
+@@ -23,6 +23,7 @@
+ from monitor_readiness import record_monitor_match
+ from d1_contract import canonical, d1_allow, make_envelope, verify_transport
+ from mapper_lineage_state import MapperLineageState
++from d3_silence import SourceSilence
+ from trace import Publisher, bind, consume, digest, EDGES, log
+ 
+ MODE = os.environ['MODE']
+@@ -32,6 +33,7 @@
+ class Receiver(QuestControllerReceiver):
+     def __init__(self):
+         self.state_origins = {}
++        self.receipt_by_sample_id = {}
+         self.selected = None
+         super().__init__()
+         original_pub = self.pub
+@@ -52,13 +54,29 @@
+         return state
+ 
+     def _store_payload(self, payload):
+-        log('source_received', metadata=payload.get('_qualification'), original_payload=payload)
+-        return super()._store_payload(payload)
++        metadata = payload.get('_qualification') or {}
++        sample_id = metadata.get('sample_id')
++        receipt_ns = time.monotonic_ns()
++        if sample_id is not None:
++            self.receipt_by_sample_id[sample_id] = receipt_ns
++        log('source_received', metadata=payload.get('_qualification'), original_payload=payload,
++            receiver_receipt_monotonic_ns=receipt_ns)
++        result = super()._store_payload(payload)
++        if sample_id is not None:
++            log('original_receiver_source_stored', sample_id=sample_id,
++                receiver_receipt_monotonic_ns=receipt_ns,
++                receiver_cache_monotonic_ns=int(self._last_packet_time_monotonic * 1_000_000_000),
++                payload_sha256=digest(payload))
++        return result
+ 
+     def _make_msg(self, state, stamp):
+         entry = self.state_origins.get(id(state))
+-        self.selected = (entry[1] if entry and entry[0] is state else
+-                         {'origin': 'ORIGINAL_NEUTRAL', 'reason': state['source']})
++        if entry and entry[0] is state and entry[1] is not None:
++            self.selected = dict(entry[1])
++            self.selected['receiver_receipt_monotonic_ns'] = self.receipt_by_sample_id.get(
++                self.selected.get('sample_id'))
++        else:
++            self.selected = {'origin': 'ORIGINAL_NEUTRAL', 'reason': state['source']}
+         return super()._make_msg(state, stamp)
+ 
+ 
+@@ -132,12 +150,43 @@
+         self.lineage = MapperLineageState()
+         super().__init__()
+         self.pub = Publisher(self.pub, 'mapper', self.lineage.timer_parent)
++        if MODE == 'b3':
++            self.silence = SourceSilence()
++            self.silence_fired = False
++            self.tick_subscription = self.create_subscription(
++                String, '/s4b/d3/common_tick', self._on_d3_tick, 20)
++
++    def _on_d3_tick(self, wire):
++        tick = json.loads(wire.data)
++        if tick.get('kind') != 'health_tick':
++            return
++        state = self.silence.tick(time.monotonic_ns())
++        log('b3_silence_tick', tick_id=tick['tick_id'], state=state,
++            info_regime=REGIME)
++        if state['state'] == 'SOURCE_SILENCE' and not self.silence_fired:
++            self.silence_fired = True
++            log('b3_mapper_verdict', event_kind='health_tick',
++                tick_id=tick['tick_id'], verdict=False,
++                reason='SOURCE_SILENCE',
++                parent_sample_id=state['last_sample_id'],
++                trigger_monotonic_ns=state['trigger_ns'])
+ 
+     def _on_pose_states(self, msg):
+         candidate = consume('mapper', msg)
+         self.lineage.observe(candidate)
+         if MODE == 'b3':
+             origin = candidate['parent'] if candidate else None
++            if (REGIME == 'full' and origin and origin.get('sample_id') is not None
++                    and origin.get('receiver_receipt_monotonic_ns') is not None):
++                new_source = self.silence.receive(
++                    origin['sample_id'], origin['receiver_receipt_monotonic_ns'],
++                    bool(msg.teleop_enable),
++                    bool((origin.get('native_state') or {}).get('isTracked')),
++                    origin.get('generation_id'))
++                if new_source:
++                    log('b3_real_source_selected', sample_id=origin['sample_id'],
++                        receiver_receipt_monotonic_ns=origin['receiver_receipt_monotonic_ns'],
++                        info_regime=REGIME)
+             if REGIME == 'full' and origin and 'sample_id' in origin:
+                 verdict, reason = d1_allow(origin.get('native_state'), bool(msg.teleop_enable),
+                                            origin.get('source_timestamp_ns'), time.monotonic_ns(),
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_probe.py semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_probe.py
+--- semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_probe.py	2026-09-27 11:07:15.702255217 +0900
++++ semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_probe.py	2026-09-27 16:25:21.820274175 +0900
+@@ -12,7 +12,7 @@
+ from rclpy.qos import qos_profile_sensor_data
+ from rosidl_runtime_py.convert import message_to_ordereddict
+ from sensor_msgs.msg import JointState
+-from std_msgs.msg import Float64MultiArray
++from std_msgs.msg import Float64MultiArray, String
+ from std_srvs.srv import Trigger
+ from trajectory_msgs.msg import JointTrajectory
+ 
+@@ -45,6 +45,10 @@
+         carrier_root = '/s4b/d1/envelope' if regime == 'full' else '/s4b/d1/native_input'
+         topics += [(carrier_root, carrier), (carrier_root + '_mon', carrier)]
+     edges = [x for x, _ in topics[1:]]
++    topics += [('/s4b/d3/common_tick', String)]
++    if mode == 'b2':
++        topics += [('/s4b/d3/tick_mon', String),
++                   ('/s4b/d3/tick', String)]
+     controller_name = 'joint_group_velocity_controller'
+     servo_service = '/servo_node/start_servo'
+ else:
+@@ -78,11 +82,12 @@
+ probe_time_namespace = os.readlink('/proc/self/ns/time')
+ 
+ def participant_clocks():
+-    required = ['gazebo', 'clock', 'rsp', 'servo', 'sender', 'resources', 'recorder']
++    required = ['gazebo', 'clock', 'rsp', 'servo', 'sender', 'resources', 'recorder', 'tick']
+     if mode == 'b0': required += ['receiver', 'mapper', 'bridge']
+     else: required += ['observed']
+     if mode == 'b2': required += ['oracle', 'monitor']
+     if mode in ('b1', 'b3') or (mode == 'b2' and os.environ.get('COMPOSED') == '1'): required += ['stop_adapter']
++    if mode == 'b1': required += ['source_gate']
+     records = {}
+     for label in required:
+         path = root / f'participant_clock_{label}.json'
+@@ -137,6 +142,10 @@
+         continue
+     if stack == 'docker' and mode != 'b0' and not (root / 'd1_nodes.ready').exists():
+         continue
++    if stack == 'docker' and not (root / 'd3_tick.ready').exists():
++        continue
++    if stack == 'docker' and mode == 'b1' and not (root / 'd3_source_gate.ready').exists():
++        continue
+     if not (root / 'resource_sampler.ready').exists():
+         continue
+     clocks = participant_clocks()
+@@ -184,12 +193,22 @@
+     graph_ok = all(len(current_graph[name]['publishers']) >= 1 and
+                    len(current_graph[name]['subscriptions']) >= 2 for name in edges)
+     graph_ok &= len(current_graph['/joint_states']['publishers']) >= 1
++    if stack == 'docker':
++        tick_graph = current_graph['/s4b/d3/common_tick']
++        graph_ok &= set(tick_graph['publishers']) == {'d3_common_health_tick'}
++        graph_ok &= 'cp1_recorder' in tick_graph['subscriptions']
++        if mode == 'b3':
++            graph_ok &= 'hand_pose_mapper' in tick_graph['subscriptions']
+     if stack == 'docker' and mode == 'b2':
+         carrier_root = '/s4b/d1/envelope' if regime == 'full' else '/s4b/d1/native_input'
+-        guard = 'd1_full_guard' if regime == 'full' else 'd1_native_guard'
++        guard = 'd3_full_guard' if regime == 'full' else 'd3_native_guard'
+         graph_ok &= set(current_graph['/received_pose_states']['publishers']) == {'d1_lossless_stripper'}
+         graph_ok &= set(current_graph[carrier_root]['publishers']) == {guard}
+         graph_ok &= set(current_graph[carrier_root + '_mon']['publishers']) == {'quest_controller_receiver'}
++        graph_ok &= set(current_graph['/s4b/d3/tick_mon']['publishers']) == {'d3_common_health_tick'}
++        graph_ok &= guard in current_graph['/s4b/d3/tick_mon']['subscriptions']
++        graph_ok &= set(current_graph['/s4b/d3/tick']['publishers']) == {guard}
++        graph_ok &= 'cp1_recorder' in current_graph['/s4b/d3/tick']['subscriptions']
+     services = {name: types for name, types in node.get_service_names_and_types()}
+     service_ok = servo_service in services
+     if not (graph_ok and service_ok):
+@@ -259,5 +278,19 @@
+     event('source_incomplete', sent_records=len(sent), expected=120,
+           sender_done=(root / 'sender.done').exists())
+     raise SystemExit(14)
++real = [row for row in sent if row.get('sent')]
++silent = [row['index'] for row in sent if row.get('reason') == 'INTENTIONAL_NO_SOURCE_BYTES']
++if (len(real) != 100 or silent != list(range(56, 76)) or
++        any(json.loads(row['wire'])['_qualification']['sample_id'] != f"docker:{row['index']}"
++            for row in real)):
++    event('d3_source_schedule_invalid', actual_real=len(real), silent_indices=silent)
++    raise SystemExit(15)
++tick_path = root / 'd3_ticks.jsonl'
++ticks = [json.loads(line) for line in tick_path.read_text().splitlines()] if tick_path.exists() else []
++if (not (root / 'd3_tick.done').exists() or len(ticks) != 300 or
++        [row['index'] for row in ticks] != list(range(300)) or
++        any(row.get('source_sample_id') is not None for row in ticks)):
++    event('d3_tick_incomplete', tick_count=len(ticks))
++    raise SystemExit(16)
+ node.destroy_node()
+ rclpy.shutdown()
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_rosmonitoring.yaml semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_rosmonitoring.yaml
+--- semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_rosmonitoring.yaml	2026-09-27 11:07:15.702166322 +0900
++++ semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_rosmonitoring.yaml	2026-09-27 16:20:56.576883750 +0900
+@@ -1,15 +1,17 @@
+ monitors:
+   - monitor:
+-      id: d1_full_guard
++      id: d3_full_guard
+       log: /results/monitor_full_events.jsonl
+       status: {enabled: true, log: /results/monitor_full_status.jsonl}
+       oracle: {url: 127.0.0.1, port: 18841, timeout: 0.05, action: nothing}
+       topics:
+         - {name: /s4b/d1/envelope, type: std_msgs.msg.String, action: filter, publishers: [source]}
++        - {name: /s4b/d3/tick, type: std_msgs.msg.String, action: filter, publishers: [source]}
+   - monitor:
+-      id: d1_native_guard
++      id: d3_native_guard
+       log: /results/monitor_native_events.jsonl
+       status: {enabled: true, log: /results/monitor_native_status.jsonl}
+       oracle: {url: 127.0.0.1, port: 18842, timeout: 0.05, action: nothing}
+       topics:
+         - {name: /s4b/d1/native_input, type: teleop_bridge_msgs.msg.ReceivedPoseStates, action: filter, publishers: [source]}
++        - {name: /s4b/d3/tick, type: std_msgs.msg.String, action: filter, publishers: [source]}
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_sender.py semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_sender.py
+--- semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/d1_sender.py	2026-09-27 11:07:15.702175827 +0900
++++ semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/d1_sender.py	2026-09-27 16:13:14.604422367 +0900
+@@ -9,7 +9,7 @@
+ root = Path(os.environ['TRIAL_ROOT'])
+ mode = os.environ['MODE']
+ regime = os.environ['INFO_REGIME']
+-assert os.environ['CASE_ID'] == 'D2', 'this prospective sender is D2 only'
++assert os.environ['CASE_ID'] == 'D3', 'this prospective sender is D3 only'
+ (root / 'sender.ready').write_text('source index 0 armed; waiting for barrier\n')
+ while not (root / 'barrier.json').exists():
+     time.sleep(.005)
+@@ -25,7 +25,15 @@
+                  'active' if index < 56 else 'fault_window' if index < 76 else 'tail')
+         teleop = phase in ('reference', 'active', 'fault_window')
+         x = .35 if phase in ('active', 'fault_window') else .2
+-        tracked = phase != 'fault_window'
++        # The D3 fault is absence of bytes, never a fabricated invalid sample.
++        # Preserve twenty planned slots but no source timestamp or sample ID.
++        if 56 <= index < 76:
++            output.write(json.dumps(dict(index=index, phase=phase,
++                         scheduled_ns=scheduled_ns, sent=False,
++                         sample_ns=None, send_ns=None, wire=None,
++                         allowed=None, reason='INTENTIONAL_NO_SOURCE_BYTES')) + '\n')
++            continue
++        tracked = True
+         sample_ns = time.monotonic_ns()
+         metadata = dict(sample_id=f'docker:{index}', generation_id=1,
+                         source_timestamp_ns=sample_ns,
+@@ -58,8 +66,8 @@
+                     regime=regime))+'\n')
+         if allowed:
+             sock.sendall(wire.encode())
+-        output.write(json.dumps(dict(index=index, phase=phase, scheduled_ns=scheduled_ns,
++        output.write(json.dumps(dict(index=index, phase=phase, scheduled_ns=scheduled_ns, sent=bool(allowed),
+                                      sample_ns=sample_ns, send_ns=send_ns, wire=wire,
+                                      allowed=allowed, reason=reason)) + '\n')
+ sock.close()
+-(root / 'sender.done').write_text('120 source indices attempted\n')
++(root / 'sender.done').write_text('120 planned slots, 100 real source samples\n')
+Only in semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs: d3_monitor_tick_preflight.py
+Only in semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs: d3_silence.py
+Only in semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs: d3_source_gate_tick.py
+Only in semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs: d3_tick_process_preflight.py
+Only in semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs: d3_tick_publisher.py
+Only in semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs: d3_tloracle_property.py
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/launch.sh semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/launch.sh
+--- semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/launch.sh	2026-09-27 11:07:15.702186757 +0900
++++ semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/launch.sh	2026-09-27 16:25:51.366008512 +0900
+@@ -40,15 +40,15 @@
+     if [ "$MODE" = b2 ]; then
+       source /monitor_ws/install/setup.bash
+       export PYTHONPATH=/code:/d1deps:${PYTHONPATH:-}
+-      export XR_D1_PROPERTY_LOG=/results/property.jsonl
++      export XR_D3_PROPERTY_LOG=/results/property.jsonl
+       if [ "$INFO_REGIME" = full ]; then
+-        monitor_id=d1_full_guard
++        monitor_id=d3_full_guard
+         oracle_port=18841
+       else
+-        monitor_id=d1_native_guard
++        monitor_id=d3_native_guard
+         oracle_port=18842
+       fi
+-      start oracle python3 -u /official/oracle/TLOracle/oracle.py --online --discrete --property d1_tloracle_property --port "$oracle_port"
++      start oracle python3 -u /official/oracle/TLOracle/oracle.py --online --discrete --property d3_tloracle_property --port "$oracle_port"
+       start monitor ros2 run monitor "$monitor_id"
+     fi
+     start observed python3 /code/d1_nodes.py
+@@ -56,6 +56,10 @@
+       start stop_adapter python3 /code/d1_stop_adapter.py
+     fi
+   fi
++  start tick python3 /code/d3_tick_publisher.py
++  if [ "$MODE" = b1 ]; then
++    start source_gate python3 /code/d3_source_gate_tick.py
++  fi
+   sleep 2
+   ros2 control list_controllers > /results/controllers.txt
+   ros2 node list > /results/nodes.txt
+Only in semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs: run_d3_monitor_preflight.sh
+diff -ru '--exclude=__pycache__' '--exclude=*.pyc' semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/run_owned.py semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/run_owned.py
+--- semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/inputs/run_owned.py	2026-09-27 11:08:14.583984930 +0900
++++ semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs/run_owned.py	2026-09-27 16:57:20.307316458 +0900
+@@ -22,9 +22,9 @@
+     parser.error('--stop-diagnostic requires B1, B3, or B2-composed')
+ variant='b2c' if args.composed else args.mode
+ trial=ROOT/'raw'/f'{args.stack}_{variant}_{args.regime}_{args.attempt}'
+-trial.mkdir(exist_ok=False)
++trial.mkdir(parents=True, exist_ok=False)
+ trial.chmod(0o777)  # Only the new trial output directory; container UID mapping.
+-name=f's4cp9d2_{args.stack}_{variant}_{args.regime}_{args.attempt}'
++name=f's4cp11d3_{args.stack}_{variant}_{args.regime}_{args.attempt}'
+ def run(argv, label, timeout=240):
+     with (ROOT/'commands.jsonl').open('a') as f:
+         f.write(json.dumps({'time_ns':time.time_ns(),'argv':argv,'trial':trial.name})+'\n')
+@@ -34,7 +34,7 @@
+     return run(['sg','docker','-c',shlex.join(['docker',*argv])],label,timeout)
+ mounts=[f'{ROOT}/inputs:/code:ro',f'{trial}:/results',
+         '/tmp/rosmonitoring_s4a_20260922:/official:ro',
+-        f'{Q3}/monitor_ws/install:/monitor_ws/install:ro',
++        f'{ROOT}/monitor_ws/install:/monitor_ws/install:ro',
+         f'{Q3}/deps:/d1deps:ro']
+ if args.stack=='docker':
+     src=REPO/'semantic_validation/targets/docker_teleop/ros_backend1.1'
+@@ -51,7 +51,7 @@
+       '--entrypoint','sleep','-e','ROS_DOMAIN_ID=181','-e','ROS_LOCALHOST_ONLY=1','-e',f'STACK={args.stack}','-e',f'MODE={args.mode}','-e',f'INFO_REGIME={args.regime}']
+ argv += ['-e',f'COMPOSED={int(args.composed)}']
+ argv += ['-e',f'STOP_DIAG={int(args.stop_diagnostic)}']
+-argv += ['-e','CASE_ID=D2']
++argv += ['-e','CASE_ID=D3']
+ for mount in mounts: argv+=['-v',mount]
+ if args.stack=='docker': argv+=['--user','1000:1000','-e','HOME=/home/noah']
+ argv += [image,'infinity']

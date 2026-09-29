@@ -1,0 +1,15 @@
+[INFO] [1790474384.859958576] [quest_controller_receiver]: QuestControllerReceiver listening on TCP 0.0.0.0:5005, publishing /received_pose_states @ 60.0 Hz
+[INFO] [1790474384.860392343] [quest_controller_receiver]: Dual-arm fanout enabled: left=/left_arm/received_pose_states, right=/right_arm/received_pose_states
+[INFO] [1790474384.860720584] [quest_controller_receiver]: stale_timeout_sec=0.250, analog_press_threshold=0.55, client_idle_disconnect_sec=1.50, frame_id=unity_world
+[INFO] [1790474384.892965511] [hand_pose_mapper]: Mapping /received_pose_states -> /target_twist_states, target_frame=base_link, ee_frame=tool0, stale_timeout_sec=0.250
+[INFO] [1790474384.893453250] [hand_pose_mapper]: linear: kp=2.000, max=0.300, deadband=0.005 | angular: kp=4.000, max=1.500, deadband=0.020
+[INFO] [1790474384.893813481] [hand_pose_mapper]: control_mode_default=hand_pose, gamepad_deadband=0.150, gamepad_linear_speed_xyz=[0.3, 0.3, 0.3], gamepad_linear_sign_xyz=[1.0, -1.0, 1.0], gamepad_rotation_mode=stick_modifier, gamepad_angular_speed_xyz=[0.55, 0.7, 0.7], gamepad_angular_sign_xyz=[1.0, 1.0, -1.0]
+[INFO] [1790474384.894160408] [hand_pose_mapper]: pos_map_axes=['x', 'z', 'y'], pos_map_signs=[1.0, -1.0, 1.0], position_mapping_mode=world_delta, rot_map_axes=['x', 'z', 'y'], rot_map_signs=[1.0, -1.0, 1.0], rot_scale_xyz=[1.0, 1.0, 1.0], debug_rotation_mapping=False, debug_rotation_log_period_sec=0.250, scale_xyz=[1.0, 1.0, 1.0], offset_xyz=[0.0, 0.0, 0.0], min_xyz=[0.15, -0.5, 0.05], max_xyz=[0.75, 0.5, 0.7]
+[INFO] [1790474384.894597715] [hand_pose_mapper]: attachment absolute: position=True, enable_rotation=False, rotation=True, attachment_kp_angular=1.400, attachment_max_angular_speed=0.650, attachment_angular_deadband=0.0300, base_xyz=[0.0, 0.0, 0.0], base_xyzw=[0.0, 0.0, 0.0, 1.0], tool_pos_offset_xyz=[0.0, 0.0, 0.0], tool_rot_offset_xyzw=[0.0, 0.0, 0.0, 1.0]
+[INFO] [1790474384.907899859] [servo_command_bridge]: TargetTwist->Servo bridge started: /target_twist_states -> /servo_node/delta_twist_cmds, publish_rate_hz=60.0, stale_timeout_sec=0.250, require_tracked=True, auto_start_servo=True, start_on_reset_release=True
+Traceback (most recent call last):
+  File "/code/d1_nodes.py", line 214, in <module>
+    log('pre_spin_monitor_dds_match', **match)
+  File "/code/trace.py", line 19, in log
+    f.write(json.dumps(dict(kind=kind, monotonic_ns=time.monotonic_ns(), **data), sort_keys=True)+'\n')
+TypeError: dict() got multiple values for keyword argument 'monotonic_ns'

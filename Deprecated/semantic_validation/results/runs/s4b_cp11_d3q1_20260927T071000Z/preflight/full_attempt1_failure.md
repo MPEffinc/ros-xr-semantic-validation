@@ -1,0 +1,3 @@
+# D3 official-monitor component attempt 1
+
+Status: SETUP_FAILURE, no oracle property event or policy result. The isolated `s4d3q1_tick_full` container started, but `d3_monitor_tick_preflight.py` exited before ROS initialization with `ModuleNotFoundError: No module named 'teleop_bridge_msgs'`. The copied vendor install overlay contains develop hooks referring to `/home/noah/ws_moveit/build`; attempt 1 omitted that read-only mount. See `full_test.stderr`, `full_test.stdout`, container/stop logs. Prospective attempt 2 adds only the previously qualified read-only `/tmp/s4closure_docker_build:/home/noah/ws_moveit/build:ro` mount. No policy, fixture, oracle or monitor source change; attempt 1 is retained and not classified as ROSMonitoring failure.

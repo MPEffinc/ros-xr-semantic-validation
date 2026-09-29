@@ -1,86 +1,50 @@
-# --- Secrets / credentials: never commit ---
+# Root .gitignore for the authority_continuity workspace.
+# The archived project keeps its original rules in Deprecated/.gitignore
+# (git applies them relative to Deprecated/, so archived ignore semantics are unchanged).
+
+# --- Secrets / credentials: never commit (public repository) ---
 *.pem
 *.key
+*.crt
 *.p12
 *.pfx
+*.jks
+*.keystore
 id_rsa*
 id_ed25519*
 id_ecdsa*
 *credentials*
-*.secret
+*secret*
+*token*
+!**/*token*.md
 .env
 .env.*
+*.kdbx
 
-# --- Vendored/pinned upstream clones ---
-# These are full git checkouts of third-party repositories pinned to the
-# exact commit hashes already documented in semantic_validation/results/
-# (EVIDENCE_LEDGER.md and the per-stack result docs). They are reproducible
-# via the documented `<repo-url>@<commit>` and are not tracked here to avoid
-# committing nested .git directories, third-party history, and large vendored
-# binaries (Unity packages, model assets, git pack files).
-frameworks/
-# V2 framework work products are authored metadata and source-audit records, not vendored
-# upstream source. Keep the former versioned while an optional per-framework `upstream/`
-# checkout remains ignored.
-!semantic_validation/frameworks/
-!semantic_validation/frameworks/*/
-!semantic_validation/frameworks/*/*.md
-!semantic_validation/frameworks/*/manifest.yaml
-!semantic_validation/frameworks/*/PINNED_REVISION
-semantic_validation/frameworks/*/upstream/
-semantic_validation/targets/
-# ROS-TCP Endpoint is an optional upstream checkout in the isolated ROS
-# workspace.  Its exact origin/revision is recorded in framework metadata.
-ros_env/ros2_ws/src/ros_tcp_endpoint/
+# --- Third-party upstream checkouts (pinned by SHA in docs, never tracked) ---
+authority_continuity/references/upstream/
+authority_continuity/references/papers/*.pdf
 
-# --- Large raw hardware-capture logs ---
-# semantic_validation/logs/quest_hw/ contains the raw canonical Quest 3
-# hardware-run JSONL captures (~307MB total; one file exceeds GitHub's
-# 100MB per-file limit). These stay local only. Every canonical result
-# document that cites them (SPES_QUEST_HW_RESULT.md, SPES_HW_REANALYSIS.md,
-# EVIDENCE_LEDGER.md) references their path for local reproduction; do not
-# re-scope this rule to other semantic_validation/logs/ subdirectories
-# without checking size first.
-semantic_validation/logs/quest_hw/
-# A failed, root-owned first attempt is intentionally retained locally for
-# forensics but is not a canonical result.
-semantic_validation/logs/spes_ros_pi_20260907T041500Z/
-# Intermediate automation diagnostics are retained locally but are not the
-# canonical final run.  The final 20260907T043540Z evidence remains tracked.
-semantic_validation/logs/questless_all_20260907T042910Z/
-semantic_validation/logs/questless_all_20260907T042941Z/
-semantic_validation/logs/questless_all_20260907T043157Z/
-semantic_validation/logs/questless_all_20260907T043234Z/
-semantic_validation/logs/questless_all_20260907T043318Z/
-semantic_validation/logs/questless_all_20260907T043433Z/
-semantic_validation/logs/spes_questless_all_20260907T043157Z/
-semantic_validation/logs/spes_questless_all_20260907T043234Z/
-semantic_validation/logs/spes_questless_all_20260907T043318Z/
-semantic_validation/logs/spes_questless_all_20260907T043433Z/
+# --- Large / raw run outputs (keep local; commit summaries + hashes) ---
+authority_continuity/results/raw/
+*.bag
+*.db3
+*.mcap
 
 # --- Build artifacts / caches ---
 __pycache__/
 *.pyc
 *.pyo
+.pytest_cache/
 node_modules/
 build/
 install/
 log/
 *.egg-info/
-Library/
-Temp/
-Obj/
-.pytest_cache/
 
-# --- Editor / OS cruft ---
+# --- Editor / OS / local tool state ---
 .DS_Store
 *.swp
-
-# --- Downloaded OS images / installer caches (not committed) ---
-.cache/
-local_artifacts/
-
-# Superseded Spes native-orchestration diagnostics retained locally for forensics.
-# 081000Z failed before ROS init; 082000Z passed but was superseded by the final 083000Z run.
-semantic_validation/results/runs/spes_native_hardware_day_selftest_20260914T081000Z/
-semantic_validation/results/runs/spes_native_hardware_day_selftest_20260914T082000Z/
+.agents/
+.claude/
+.codex/

@@ -1,0 +1,14 @@
+CP10 D2 formal pre-outcome freeze commands, cwd /home/cclab/ros_xr unless stated:
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+sha256sum -c semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/freeze_inputs.sha256
+sha256sum -c semantic_validation/results/runs/s4b_cp9_d2q3_20260927T020700Z/runtime_evidence_manifest.sha256
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d2_formal_20260927T022400Z/inputs/make_schedule.py
+PYTHONDONTWRITEBYTECODE=1 python3 -c 'import ast,pathlib; root=pathlib.Path("semantic_validation/results/runs/s4b_d2_formal_20260927T022400Z"); [ast.parse(p.read_text()) for p in list((root/"inputs").glob("*.py"))+list((root/"analysis").glob("*.py"))]'
+
+Working directory semantic_validation/results/runs/s4b_d2_formal_20260927T022400Z:
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_formal_audit.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/preflight_on_setup.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/test_pair_on_setup.py
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/formal_audit.py --all  # before runtime: all NOT_RUN; saved as preflight_empty_summary.json
+
+After freeze push: invoke `python3 inputs/run_formal.py --start N --end M` only over committed schedule rows; use `PYTHONDONTWRITEBYTECODE=1 python3 analysis/formal_audit.py --order N` for each executed trial, then `--all` for the complete summary. Actual Docker argv are appended to commands.jsonl; no such argv is claimed before first runtime.

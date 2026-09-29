@@ -1,0 +1,31 @@
+[INFO] [1788758754.727355287] [semantic_robot_sink]: logging to ~/semantic_robot_endpoint_logs/quest2ros2_simulationinput_pi_20260907T052547Z/semantic_robot_sink_20260907T052554Z.jsonl
+[INFO] [1788758754.729582884] [semantic_robot_sink]: NOTE: no actuator, no semantic validation, no fail-close gating. accept_decision is always ACCEPTED_NO_SEMANTIC_GATING -- do not cite reception here as a safety or semantic-boundary finding.
+Traceback (most recent call last):
+  File "/home/cclab/ros2_ws/build/semantic_robot_endpoint/semantic_robot_endpoint/semantic_robot_sink.py", line 143, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cclab/ros2_ws/install/semantic_robot_endpoint/lib/semantic_robot_endpoint/semantic_robot_sink", line 33, in <module>
+    sys.exit(load_entry_point('semantic-robot-endpoint', 'console_scripts', 'semantic_robot_sink')())
+  File "/home/cclab/ros2_ws/build/semantic_robot_endpoint/semantic_robot_endpoint/semantic_robot_sink.py", line 148, in main
+    rclpy.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+    _shutdown(context=context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+    return context.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+    self.__context.shutdown()
+rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241

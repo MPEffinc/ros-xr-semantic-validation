@@ -1,0 +1,25 @@
+{
+  "status": "PASS_STATIC_AND_CHILD_UNIT_ONLY",
+  "child_exit_failure": 7,
+  "child_exit_success": 0,
+  "missing_monitor": 17,
+  "running_oracle": 0,
+  "sender_completion_asserted_by_probe": true,
+  "participant_clock_wrapper_passed": true,
+  "stop_adapter_has_no_xr_semantic_predicate": true,
+  "generated_official_interfaces": [
+    {
+      "name": "d1_full_guard",
+      "input": "/s4b/d1/envelope_mon",
+      "forwarded_output": "/s4b/d1/envelope",
+      "action": "filter"
+    },
+    {
+      "name": "d1_native_guard",
+      "input": "/s4b/d1/native_input_mon",
+      "forwarded_output": "/s4b/d1/native_input",
+      "action": "filter"
+    }
+  ],
+  "caveat": "No actual ROS DDS graph, oracle connection or Gazebo in this test"
+}

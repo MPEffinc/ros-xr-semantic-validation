@@ -1,0 +1,43 @@
+diff --git a/tmp/s4cp2_moveit2_2_12_4/moveit_ros/moveit_servo/src/servo_node.cpp b/tmp/s4cp2_servo_overlay_pkg/src/servo_node.cpp
+index 7b842c8..3935843 100644
+--- a/tmp/s4cp2_moveit2_2_12_4/moveit_ros/moveit_servo/src/servo_node.cpp
++++ b/tmp/s4cp2_servo_overlay_pkg/src/servo_node.cpp
+@@ -46,6 +46,11 @@
+ 
+ #include <moveit/utils/logger.hpp>
+ #include <moveit_servo/servo_node.hpp>
++#include <fcntl.h>
++#include <time.h>
++#include <unistd.h>
++#include <cstdio>
++#include <cstdlib>
+ 
+ namespace moveit_servo
+ {
+@@ -210,6 +215,26 @@ void ServoNode::poseCallback(const geometry_msgs::msg::PoseStamped::ConstSharedP
+ {
+   latest_pose_ = *msg;
+   new_pose_msg_ = true;
++  // CP2 observational overlay: no change to gate, payload or command selection.
++  const char* path = std::getenv("XR_SERVO_CALLBACK_LOG");
++  if (path && msg)
++  {
++    struct timespec ts;
++    clock_gettime(CLOCK_MONOTONIC, &ts);
++    char line[768];
++    const int n = std::snprintf(line, sizeof(line),
++      "{\"stage\":\"pose_callback\",\"monotonic_ns\":%lld,\"stamp_sec\":%d,\"stamp_nanosec\":%u,\"frame_id\":\"%s\",\"position\":[%.17g,%.17g,%.17g],\"orientation\":[%.17g,%.17g,%.17g,%.17g]}\n",
++      static_cast<long long>(ts.tv_sec) * 1000000000LL + ts.tv_nsec,
++      msg->header.stamp.sec, msg->header.stamp.nanosec, msg->header.frame_id.c_str(),
++      msg->pose.position.x, msg->pose.position.y, msg->pose.position.z,
++      msg->pose.orientation.x, msg->pose.orientation.y, msg->pose.orientation.z, msg->pose.orientation.w);
++    const int fd = open(path, O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0666);
++    if (fd >= 0)
++    {
++      if (n > 0 && n < static_cast<int>(sizeof(line))) { const auto written = write(fd, line, n); (void)written; }
++      close(fd);
++    }
++  }
+ }
+ 
+ std::optional<KinematicState> ServoNode::processJointJogCommand(const moveit::core::RobotStatePtr& robot_state)

@@ -1,0 +1,4 @@
+python3 inputs/make_schedule.py
+(cd analysis && python3 test_ovr_formal_audit.py)  # 5/5
+python3 analysis/ovr_formal_audit.py  # empty: 205 NOT_RUN
+After freeze push: python3 inputs/run_formal.py --start 1 --end 205 ; python3 analysis/ovr_formal_audit.py

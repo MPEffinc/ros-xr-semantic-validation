@@ -1,0 +1,14 @@
+Checkpoint: S4-B CP5-B / XRROS-S4B-Q3-1.0.0 prospective Docker D1 measurement qualification.
+Date: 2026-09-23 UTC. Before freeze, no Q3 Gazebo trial has run.
+Parent CP5-A preregistration commit: 1fe262210fd1fe885609bf5e6264a3c91d5d4c0f.
+Frozen research protocol: XRROS-S4-1.0.0, SHA-256 3a40337121f8d687dc68036ff2ffc85a1bc6eda275a700ba7d9e8119cd322969.
+Q2 qualification protocol: SHA-256 fa20addad4c6020cac1bb728ba90403813c95dcebaf2f14091363259ccdf2ead.
+Q3 prospective protocol: SHA-256 af491bc111997851d6f179b29108a8f5c59e7450a101d068ca884c62e13460d8.
+Docker vendor revision: Noah727/Docker_Teleop 64cbdde88bc52c6a80d37f994752e50f95ba537e; checkout clean at preflight.
+Official ROSMonitoring revision: d03aa5b44e29b76c0e108a098817bdf5aa98e322; version 3.0.0.
+Trial Humble image: s4b-rosmonitoring-humble:20260922; ID sha256:a880da84ea9821f0e07adecca52f5882c3f6982509d157a8a73792624f6445f2; digest identical.
+Trial ROS_DOMAIN_ID=181, ROS_LOCALHOST_ONLY=1, Docker --network none --cap-drop ALL --security-opt no-new-privileges; Gazebo-only servo_gz.launch.py, no robot driver/physical arm.
+Existing lab containers docker_teleop_sim, openvr_sim and ros_env-ros-1 were active at preflight and are not touched. New trial containers are named s4cp5_*.
+Host and Q2 participant clock contract: CLOCK_MONOTONIC, same boot/time namespace, prior calibrated uncertainty <1 ms. All new Q3 participants still require per-trial ACK; no prior pass is inherited as runtime proof.
+Source fixture SHA-256 of normalized 120-index D1 loopback: 20dcbc12db4f54f3660f00662ed554c220a5de35ba1b2116d40e727ba83c918b. Q3 sender, d1_contract and monitor YAML are byte-identical to Q2; see input_manifest.sha256.
+Local reusable read-only build mounts: /tmp/s4closure_docker_install, /tmp/s4closure_docker_build, /tmp/rosmonitoring_s4a_20260922. No network, Docker socket permission or laboratory setting changed.

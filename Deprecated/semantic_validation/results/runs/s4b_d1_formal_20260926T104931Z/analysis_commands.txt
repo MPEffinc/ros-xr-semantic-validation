@@ -1,0 +1,23 @@
+# Runtime and principal read-only analysis commands executed after freeze 751e128cf870b17f202e414f21bee51835cfc7c0.
+# Every underlying Docker create/inspect/exec/stop argv, trial ID and exit is in commands.jsonl (200 records).
+sha256sum -c semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/freeze_inputs.sha256
+sha256sum -c semantic_validation/results/runs/s4b_cp6b_resource_q4_20260923T070559Z/freeze_inputs.sha256
+python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/inputs/run_formal.py --start 1 --end 1
+python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/inputs/run_formal.py --start 2 --end 10
+python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/inputs/run_formal.py --start 11 --end 20
+python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/inputs/run_formal.py --start 21 --end 30
+python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/inputs/run_formal.py --start 31 --end 40
+python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/inputs/run_formal.py --start 41 --end 50
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/formal_audit.py --order 1
+for i in 2 3 4 5 6 7 8 9 10; do PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/formal_audit.py --order "$i"; done
+for i in 11 12 13 14 15 16 17 18 19 20; do PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/formal_audit.py --order "$i"; done
+for i in 21 22 23 24 25 26 27 28 29 30; do PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/formal_audit.py --order "$i"; done
+for i in 31 32 33 34 35 36 37 38 39 40; do PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/formal_audit.py --order "$i"; done
+for i in 41 42 43 44 45 46 47 48 49 50; do PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/formal_audit.py --order "$i"; done
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/formal_audit.py --all
+for trial in semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/raw/docker_d1_r*; do PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_cp6b_resource_q4_20260923T070559Z/analysis/q4_measurement_audit.py "$trial" "semantic_validation/results/runs/s4b_d1_formal_20260926T104931Z/analysis/q4_measurements/$(basename "$trial").json"; done
+
+# One ad hoc Python summary command after order 11-20 had a syntax typo and exited 1;
+# all ten frozen per-trial analyzer runs preceding it had succeeded. A corrected
+# read-only summary was run; no frozen analyzer, input or raw file was changed.
+# Incidents are detailed in analysis/incident_r02_b2c_full.md and incident_r05_b2_full.md.

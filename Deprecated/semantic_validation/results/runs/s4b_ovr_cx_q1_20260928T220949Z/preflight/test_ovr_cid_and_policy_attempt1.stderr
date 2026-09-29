@@ -1,0 +1,44 @@
+test_bound_uninjected_positive_control (__main__.Cid.test_bound_uninjected_positive_control) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+test_duplicate (__main__.Cid.test_duplicate) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+test_mismatch (__main__.Cid.test_mismatch) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+FAIL
+
+======================================================================
+FAIL: test_mismatch (__main__.Cid.test_mismatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/analysis/test_ovr_cid.py", line 43, in test_mismatch
+    self.assertTrue(all(not o[0] and o[1] == 'DISARMED_HELD_GRIP' for o in out[151:500]))
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.093s
+
+FAILED (failures=1)
+test_indices_and_grip_consistency (__main__.Schedule.test_indices_and_grip_consistency) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+test_stale_rejected (__main__.Schedule.test_stale_rejected) ... ok
+test_unbound_state_rejected (__main__.Schedule.test_unbound_state_rejected) ... ok
+test_w1_shape (__main__.Schedule.test_w1_shape) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+test_w2_w3_block_every_grip_sample (__main__.Schedule.test_w2_w3_block_every_grip_sample) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+test_w4_auto (__main__.Schedule.test_w4_auto) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+test_w4_explicit (__main__.Schedule.test_w4_explicit) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+test_w5_disconnect_generation (__main__.Schedule.test_w5_disconnect_generation) ... FAKE_OPENVR_CONFIG valid=True tracking_result=Running_OK grip=True grip_sequence=- motion_step=[0.0, 0.0, 0.0] motion_max_steps=0
+ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.226s
+
+OK

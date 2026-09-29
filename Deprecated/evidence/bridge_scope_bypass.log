@@ -1,0 +1,78 @@
+{
+  "attack_runtime_performed": false,
+  "candidates": [
+    {
+      "candidate": "Quest2ROS2 plus ros_tcp_communication",
+      "different_robot_or_action_scope": false,
+      "disqualifier": "fixed source has no client authentication, role, ACL, or client-to-ROS-principal mapping",
+      "distinct_credentials_verified": false,
+      "evidence_level": "CONFIRMED_BY_SOURCE_AND_PRIOR_RUNTIME",
+      "fixed_revisions": {
+        "Quest2ROS2": "07aaf651",
+        "ros_tcp_communication": "5c5f08956d4bc7a045c321214b0bc03c63eb20a7"
+      },
+      "shared_bridge_ros_authority": true
+    },
+    {
+      "candidate": "HORUS multi-operator bridge",
+      "different_robot_or_action_scope": false,
+      "disqualifier": "app_id, role, and session_id are client assertions in the tested public path, not authenticated principals",
+      "distinct_credentials_verified": false,
+      "evidence_level": "CONFIRMED_BY_SOURCE_AND_PRIOR_RUNTIME",
+      "fixed_revision": "eca75cbf559f09ff793d8993338b2f1ffed1adfd",
+      "shared_bridge_ros_authority": true
+    },
+    {
+      "candidate": "COMPAS XR MQTT workflow",
+      "different_robot_or_action_scope": false,
+      "disqualifier": "project topics and message headers do not provide authenticated per-user robot/action scope or a shared ROS enforcement principal",
+      "distinct_credentials_verified": false,
+      "evidence_level": "CONFIRMED_BY_SOURCE",
+      "fixed_revision": "b86e6fbbacdc8e84183fc08c846176a1c79304ca",
+      "shared_bridge_ros_authority": false
+    },
+    {
+      "candidate": "RobotWebTools rosbridge plus ROSAuth",
+      "different_robot_or_action_scope_in_maintained_bridge": false,
+      "disqualifier": "ROSAuth authenticates a connection; current rosbridge resource globs are server-wide rather than credential-bound per-client robot scopes",
+      "distinct_credentials_possible": true,
+      "evidence_level": "CONFIRMED_BY_OFFICIAL_PROTOCOL_AND_SOURCE_REVIEW",
+      "official_sources": [
+        "https://github.com/RobotWebTools/rosbridge_suite/blob/ros2/ROSBRIDGE_PROTOCOL.md",
+        "https://github.com/RobotWebTools/rosbridge_suite/blob/ros2/rosbridge_server/scripts/rosbridge_websocket.py",
+        "https://github.com/GT-RAIL/rosauth"
+      ],
+      "runtime_candidate_added": false,
+      "shared_bridge_ros_authority": true
+    }
+  ],
+  "evidence_hashes": {
+    "/home/cclab/ros_xr/AUTHORIZATION_CONTINUITY_RESULTS.md": "7c71e97f48a195691baa8565534d5118fe49a808bd0308900dbd5692aff1362f",
+    "/home/cclab/ros_xr/DECISIVE_FOLLOWUP_RESULTS.md": "e0b87467a15b54a4398bcc661c942de35096180d2c492dadde39a4c9393d454b",
+    "/home/cclab/ros_xr/XR_BRIDGE_ANALYSIS.md": "da5b40c1dc78c002a5810fa60b7202f05bc278ddd8ccaaa2dce0178e0d2bc1d5",
+    "/home/cclab/ros_xr/evidence/quest2ros2_identity.txt": "c6333fdf885af9d94b4e3beed9132b2335f9bbce13a377df7788127351ac8898",
+    "/home/cclab/ros_xr/evidence/quest2ros2_runtime.log": "4ebc5abcac18461cdcfdcd8a4e34322ebc24f8ccd0261ea65ed92ccc3bcb1773"
+  },
+  "final_classification": "UNCONFIRMED_REAL_THREAT_BOUNDARY_UNAVAILABLE",
+  "generated_at": "2026-08-27T04:46:31.930920Z",
+  "negative_control_note": "Prior SROS2 runtime correctly blocked the low direct ROS principal, but this is not a substitute for a real upstream authenticated A/B scope boundary.",
+  "prior_runtime_checks": {
+    "compas_custom_executor_boundary_documented": true,
+    "horus_self_asserted_identity_documented": true,
+    "quest_direct_low_sros2_block": true,
+    "quest_no_auth_boundary_documented": true,
+    "quest_shared_bridge_allow": true
+  },
+  "probe_pass": true,
+  "real_authenticated_multi_principal_threat_boundary_available": false,
+  "reason": "No inspected public XR-ROS/shared-bridge implementation simultaneously provided verified distinct credentials, credential-bound Robot/Action scopes, and a shared downstream ROS authority. Creating roles or omitting an ACL would be an artificial testbed.",
+  "schema": "xr2act-authenticated-scope-audit/v1",
+  "security_meaning": "NO_VULNERABILITY_CLAIM",
+  "selection_requirements": [
+    "different verified credentials for A and B",
+    "different explicit robot or action scopes",
+    "one shared bridge-side ROS process/enclave",
+    "broad downstream ROS authority"
+  ],
+  "track": "C_AUTHENTICATED_SHARED_BRIDGE_SCOPE_BYPASS"
+}

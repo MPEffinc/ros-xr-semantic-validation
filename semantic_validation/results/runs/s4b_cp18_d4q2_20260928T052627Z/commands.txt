@@ -1,4 +1,0 @@
-cp -a ../s4b_cp18_d4q1_20260928T050614Z/{inputs,analysis} .   # then declared edits (preflight/q1_to_q2_input_delta.txt; analysis transport check + tests)
-(cd analysis && PYTHONDONTWRITEBYTECODE=1 python3 test_d4_preflight.py)   # 12/12 PASS
-PYTHONDONTWRITEBYTECODE=1 python3 analysis/d4_setup_audit.py              # empty -> NOT_RUN
-After freeze push + SHA alignment: python3 inputs/run_qualification.py --start 1 --end 5 ; python3 analysis/d4_setup_audit.py

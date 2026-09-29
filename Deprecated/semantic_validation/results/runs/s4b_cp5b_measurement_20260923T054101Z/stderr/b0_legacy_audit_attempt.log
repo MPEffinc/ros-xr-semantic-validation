@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/analysis/d1_qualification_audit.py", line 31, in audit
+    exact = callback_audit.audit('Docker', root.name, 'bridge_servo_input', 'servo_callback_payload.jsonl', callback_audit.key_bridge, callback_audit.key_humble)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/analysis/callback_audit.py", line 41, in audit
+    pubs = [r for r in read(root / 'lineage.jsonl')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/analysis/callback_audit.py", line 10, in read
+    return [json.loads(line) for line in path.read_text().splitlines() if line]
+                                         ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp5b_measurement_20260923T054101Z/raw/docker_b0_full_q3b0setup01/lineage.jsonl'

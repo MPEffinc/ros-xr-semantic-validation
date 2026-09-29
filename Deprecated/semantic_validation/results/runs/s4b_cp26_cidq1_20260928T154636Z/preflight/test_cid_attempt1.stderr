@@ -1,0 +1,29 @@
+test_every_command_field_mutation_is_a_mismatch (__main__.Binding.test_every_command_field_mutation_is_a_mismatch) ... FAIL
+test_missing_fields_and_id (__main__.Binding.test_missing_fields_and_id) ... ok
+test_reference_regenerated_downstream_would_hide_the_mismatch (__main__.Binding.test_reference_regenerated_downstream_would_hide_the_mismatch) ... ok
+test_state_claim_mismatch_detected (__main__.Binding.test_state_claim_mismatch_detected) ... ok
+test_valid_sample_binds_at_every_check_point (__main__.Binding.test_valid_sample_binds_at_every_check_point) ... ok
+test_coverage_uses_wire_ids (__main__.CoverageAndDrain.test_coverage_uses_wire_ids) ... ok
+test_drain_matches_wire_id_and_stamp (__main__.CoverageAndDrain.test_drain_matches_wire_id_and_stamp) ... ok
+test_cached_repeat_is_not_duplicate_new_ingestion_is (__main__.Duplicates.test_cached_repeat_is_not_duplicate_new_ingestion_is) ... ok
+test_kinds (__main__.Sender.test_kinds) ... ok
+
+======================================================================
+FAIL: test_every_command_field_mutation_is_a_mismatch (__main__.Binding.test_every_command_field_mutation_is_a_mismatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cclab/ros_xr/semantic_validation/results/runs/s4b_cp26_cidq1_20260928T154636Z/analysis/test_cid.py", line 68, in test_every_command_field_mutation_is_a_mismatch
+    self.assertEqual(check(meta, proj), (False, 'STATE_COMMAND_MISMATCH'), path)
+AssertionError: Tuples differ: (True, 'BOUND') != (False, 'STATE_COMMAND_MISMATCH')
+
+First differing element 0:
+True
+False
+
+- (True, 'BOUND')
++ (False, 'STATE_COMMAND_MISMATCH') : ('controls', 'teleop_enable')
+
+----------------------------------------------------------------------
+Ran 9 tests in 72.609s
+
+FAILED (failures=1)

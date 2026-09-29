@@ -1,0 +1,38 @@
+# S4-B qualification command record (UTC 2026-09-22)
+
+# Context and protocol integrity
+git status --short --branch
+git rev-parse HEAD
+git rev-parse origin/main
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+git -C /tmp/rosmonitoring_s4a_20260922 rev-parse HEAD
+
+# Isolated ROSMonitoring images; pre-existing containers were not modified.
+sg docker -c 'docker image inspect docker-teleop-humble:local openvr-jazzy-sim:local ...'
+sg docker -c 'docker build -f inputs/Dockerfile.humble_rosmonitoring -t s4b-rosmonitoring-humble:20260922 .'
+sg docker -c 'docker build -f inputs/Dockerfile.jazzy_rosmonitoring -t s4b-rosmonitoring-jazzy:20260922 .'
+
+# The first Humble official test failed because example_interfaces was absent.
+# Dockerfiles were amended to install ros-<distro>-example-interfaces, then rerun.
+sg docker -c 'docker run --rm --network host -e ROS_DOMAIN_ID=173 ... s4b-rosmonitoring-humble:20260922 bash /results/inputs/run_official_ros2_integration.sh'
+sg docker -c 'docker run --rm --network host -e ROS_DOMAIN_ID=174 ... s4b-rosmonitoring-jazzy:20260922 bash /results/inputs/run_official_ros2_integration.sh'
+
+# Custom Docker_Teleop message source was copied read-only from the preserved
+# container, then rebuilt in the disposable qualification workspace.
+sg docker -c 'docker cp docker_teleop_sim:/home/noah/ws_moveit/src/teleop_bridge_msgs .../inputs/teleop_bridge_msgs_src'
+
+# Edge runs 01 and 02 are retained as fixture-debug evidence.  Run 01 omitted
+# publishers:[source]; run 02 used the wrong nested custom-message event shape.
+# Run 03 is the successful qualification result.
+sg docker -c 'docker run --rm --network host -e ROS_DOMAIN_ID=177 ... s4b-rosmonitoring-humble:20260922 bash /results/inputs/run_rosmonitoring_edge_cases.sh'
+
+# Qualification-only lineage carrier and barrier primitive; neither is claimed
+# as original-controller integration or a B0-B3 defense experiment.
+python3 inputs/lineage_contract_probe.py
+python3 inputs/start_barrier_probe.py
+python3 analysis/analyze_qualification.py
+
+# Attempted Docker/OpenVR environment continuation was rejected by the execution
+# platform usage limit.  No Gazebo process or existing container was changed.
+sg docker -c 'docker inspect ...; docker exec ...'  # BLOCKED_ENV before execution
+

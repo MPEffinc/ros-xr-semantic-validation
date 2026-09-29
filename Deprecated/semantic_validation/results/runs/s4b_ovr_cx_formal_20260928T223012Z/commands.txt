@@ -1,0 +1,4 @@
+python3 inputs/make_schedule.py
+(cd analysis && python3 test_cx_formal_audit.py)  # 4/4
+python3 analysis/cx_formal_audit.py  # empty: 100 NOT_RUN
+After freeze push: python3 inputs/run_formal.py --start 1 --end 100 ; python3 analysis/cx_formal_audit.py

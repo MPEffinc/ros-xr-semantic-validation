@@ -1,8 +1,0 @@
-monitors:
-  - monitor:
-      id: ovr_full_guard
-      log: /results/monitor_full_events.jsonl
-      status: {enabled: true, log: /results/monitor_full_status.jsonl}
-      oracle: {url: 127.0.0.1, port: 18851, timeout: 0.05, action: nothing}
-      topics:
-        - {name: /s4b/ovr/envelope, type: std_msgs.msg.String, action: filter, publishers: [source]}

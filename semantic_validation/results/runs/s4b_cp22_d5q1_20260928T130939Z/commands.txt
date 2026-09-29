@@ -1,6 +1,0 @@
-cp -a ../s4b_cp20_d4lq2_20260928T104414Z/inputs inputs ; declared edits (preflight/d4lq2_to_d5q1_input_delta.txt)
-(cd analysis && python3 test_d5_rearm.py)   # 13/13
-(cd analysis && python3 test_d5_sender.py)  # 5/5
-docker run ... python3 /code/d5_monitor_rearm_preflight.py --policy {R_EXPLICIT,R_AUTO}  # both PASS; argv in preflight/official_full_*_rearm/command.json
-python3 analysis/d5_setup_audit.py  # empty -> NOT_RUN
-After freeze push: python3 inputs/run_qualification.py --start 1 --end 14 ; python3 analysis/d5_setup_audit.py

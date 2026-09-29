@@ -1,0 +1,16 @@
+Checkpoint: S4-B CP2 qualification, 2026-09-23 UTC
+Repository baseline: e795aa3bc6b6b15f7c492949f065eb607b2502e3
+Frozen protocol XRROS-S4-1.0.0 SHA-256: 3a40337121f8d687dc68036ff2ffc85a1bc6eda275a700ba7d9e8119cd322969
+Docker vendor revision: 64cbdde88bc52c6a80d37f994752e50f95ba537e (clean)
+OpenVR vendor revision: 170dad582d624f536359a3192a7f829669c2b031 (clean)
+Humble image: s4b-rosmonitoring-humble:20260922 sha256:a880da84ea9821f0e07adecca52f5882c3f6982509d157a8a73792624f6445f2
+Jazzy image: s4b-rosmonitoring-jazzy:20260922 sha256:e45048ddcac4d189e9315b870fb471ac925f7c2faa2c8e3c888498be15e6ff26
+ROS_DOMAIN_ID: 181; ROS_LOCALHOST_ONLY: 1; Docker networking: none
+Humble Servo package: ros-humble-moveit-servo 2.5.9-1jammy.20260804.224212
+Jazzy Servo package: ros-jazzy-moveit-servo 2.12.4-1noble.20260905.075156
+Official Jazzy Servo source: moveit2 tag 2.12.4, commit 1ade0e9dcf50dbbbc3a984b995c786cf12736235
+Local, non-vendor observation overlay library: /tmp/s4cp2_servo_ws/install/moveit_servo/lib/libmoveit_servo_lib_ros.so.2.12.4
+Overlay byte size: 35297344; SHA-256: dbee79dd5cfffc088719bfe87c679ae413bfd942f4b31db5ccc197b8966377b7
+Overlay source patch and build logs: inputs/servo_node_observation.patch; stdout/servo_overlay_build_retry.log; stderr/servo_overlay_build_retry.log
+No Quest/physical robot/robot driver. Every trial owns a separate container with --network none; stopped trial containers retained for inspection.
+Each trial's environment.stdout, barrier.json, controllers.txt, services.txt, ROS topics/events and stdout/stderr are authoritative runtime evidence; this summary is not a substitute.

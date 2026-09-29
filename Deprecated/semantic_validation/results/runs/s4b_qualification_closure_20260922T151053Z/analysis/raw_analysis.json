@@ -1,0 +1,4027 @@
+{
+  "docker_b0_01": {
+    "events": [],
+    "exit": {
+      "launch_exit": 1
+    },
+    "final_joint_position": null,
+    "lineage_consume_associations": {},
+    "lineage_publish_counts": {},
+    "phases": {},
+    "source_parent_null": 0
+  },
+  "docker_b0_02": {
+    "events": [],
+    "exit": {
+      "launch_exit": 1
+    },
+    "final_joint_position": null,
+    "lineage_consume_associations": {},
+    "lineage_publish_counts": {},
+    "phases": {},
+    "source_parent_null": 0
+  },
+  "docker_b0_03": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2528986366251910,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 3.1528782985416155e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2528986893037919,
+        "observed": [
+          2.3424134695595257e-08,
+          -1.570000073138381,
+          1.5700259101092588,
+          -2.720767366538749e-05,
+          1.570000085861572,
+          8.008175714310553e-10
+        ],
+        "position_error": 2.720767366538749e-05,
+        "ready": true,
+        "velocity": 6.182122522235822e-11,
+        "window_samples": 31
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2528986893257073
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2528986894337537,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2528987899913622,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2528987900107471,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2528988704128657,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2528988704309505,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2528989709895040,
+        "name": "active"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2528989710320302,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2528991717333406,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2528991717392268
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      1.8430452142601996e-08,
+      -1.317393790672802,
+      1.2832773425118762,
+      0.034305356023790264,
+      1.570000080867903,
+      8.003070405219406e-10
+    ],
+    "lineage_consume_associations": {},
+    "lineage_publish_counts": {},
+    "phases": {
+      "active": {
+        "end_ns": 2528989709895040,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2528988704309505,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2780275749600454,
+          "max_velocity_rad_s": 0.6256895636933427,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.10724642373358684,
+          "max_velocity_rad_s": 0.29540038920839895,
+          "samples": 29
+        },
+        "start_ns": 2528988704309505,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "idle": {
+        "end_ns": 2528987899913622,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2528986894337537,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 6.200660068001818e-11,
+          "max_velocity_rad_s": 6.182121481401737e-11,
+          "samples": 60
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.047782139444194e-11,
+          "max_velocity_rad_s": 6.18211766501009e-11,
+          "samples": 30
+        },
+        "start_ns": 2528986894337537,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 60,
+          "/received_pose_states": 61,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "reference": {
+        "end_ns": 2528988704128657,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2528987900107471,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.8344129270812015e-11,
+          "max_velocity_rad_s": 6.18211835889948e-11,
+          "samples": 47
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.0477820520303936e-11,
+          "max_velocity_rad_s": 6.18211835889948e-11,
+          "samples": 30
+        },
+        "start_ns": 2528987900107471,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 48,
+          "/joint_states": 47,
+          "/received_pose_states": 48,
+          "/servo_node/delta_twist_cmds": 49,
+          "/target_twist_states": 49
+        }
+      },
+      "tail": {
+        "end_ns": 2528991717333406,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2528989710320302,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.005807467851124848,
+          "max_velocity_rad_s": 0.1717648708027807,
+          "samples": 118
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.361044775829214e-11,
+          "max_velocity_rad_s": 7.056793691062602e-11,
+          "samples": 29
+        },
+        "start_ns": 2528989710320302,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 120,
+          "/joint_states": 118,
+          "/received_pose_states": 121,
+          "/servo_node/delta_twist_cmds": 120,
+          "/target_twist_states": 120
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "docker_external_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529242202487269,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 2.8375903948600623e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529242727506991,
+        "observed": [
+          2.342413469557383e-08,
+          -1.570000073138381,
+          1.5700259101092588,
+          -2.7207673665384905e-05,
+          1.570000085861572,
+          8.008175713034032e-10
+        ],
+        "position_error": 2.7207673665384905e-05,
+        "ready": true,
+        "velocity": 6.18211766501009e-11,
+        "window_samples": 28
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529242727932006
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529242730124143,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529243730211466,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529243730605045,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529244538462246,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529244539042524,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529245545755004,
+        "name": "active"
+      },
+      {
+        "kind": "external_stop_request",
+        "monotonic_ns": 2529245545857008,
+        "reason": "OPERATOR_QUALIFICATION"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529245548183964,
+        "name": "/servo_node/stop_servo",
+        "request": "std_srvs.srv.Trigger_Request()"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529245555012129,
+        "name": "/servo_node/stop_servo",
+        "response": "std_srvs.srv.Trigger_Response(success=True, message='')"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529245555379950,
+        "name": "stopped_input_continues",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529247057114751,
+        "name": "stopped_input_continues"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529247057500242,
+        "name": "recovered_release",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529247660378514,
+        "name": "recovered_release"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529247661066152,
+        "name": "/servo_node/start_servo",
+        "request": "std_srvs.srv.Trigger_Request()"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529247680105231,
+        "name": "/servo_node/start_servo",
+        "response": "std_srvs.srv.Trigger_Response(success=True, message='')"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529247680414381,
+        "name": "new_reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529248484562325,
+        "name": "new_reference"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529248484957969,
+        "name": "resumed",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.5,
+        "z": 0.25
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529249486560880,
+        "name": "resumed"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529249487057437,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529250490879306,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2529250490981090
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      1.3841937605900922e-08,
+      -0.956948906191666,
+      0.7900059668699738,
+      0.1673736968512315,
+      1.570000076279115,
+      7.994164423675898e-10
+    ],
+    "lineage_consume_associations": {
+      "EXACT_SERIALIZED_PAYLOAD": 1840
+    },
+    "lineage_publish_counts": {
+      "bridge_servo_input": 919,
+      "mapper": 920,
+      "receiver": 921
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2529245545755004,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529244539042524,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2686931410216782,
+          "max_velocity_rad_s": 0.6939466069935663,
+          "samples": 54
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.10850775023524983,
+          "max_velocity_rad_s": 0.457438506031014,
+          "samples": 27
+        },
+        "start_ns": 2529244539042524,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 54,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 61,
+          "/target_twist_states": 60
+        }
+      },
+      "idle": {
+        "end_ns": 2529243730211466,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529242730124143,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 5.570084499840816e-11,
+          "max_velocity_rad_s": 6.182121828346432e-11,
+          "samples": 54
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.732494270660398e-11,
+          "max_velocity_rad_s": 6.182121828346432e-11,
+          "samples": 27
+        },
+        "start_ns": 2529242730124143,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 54,
+          "/received_pose_states": 61,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 61
+        }
+      },
+      "new_reference": {
+        "end_ns": 2529248484562325,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529247680414381,
+          "name": "new_reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 5.364301999510879e-05,
+          "max_velocity_rad_s": 0.1637058230274177,
+          "samples": 44
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.9748204727629854e-11,
+          "max_velocity_rad_s": 8.992648813099802e-11,
+          "samples": 27
+        },
+        "start_ns": 2529247680414381,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 48,
+          "/joint_states": 44,
+          "/received_pose_states": 48,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 48
+        }
+      },
+      "recovered_release": {
+        "end_ns": 2529247660378514,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529247057500242,
+          "name": "recovered_release",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 0.08627296873730506,
+          "max_velocity_rad_s": 0.1637058230339709,
+          "samples": 32
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.07235797377945852,
+          "max_velocity_rad_s": 0.16370582303301623,
+          "samples": 27
+        },
+        "start_ns": 2529247057500242,
+        "topic_counts": {
+          "/joint_states": 32,
+          "/received_pose_states": 36,
+          "/servo_node/delta_twist_cmds": 36,
+          "/target_twist_states": 36
+        }
+      },
+      "reference": {
+        "end_ns": 2529244538462246,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529243730605045,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.519125045422505e-11,
+          "max_velocity_rad_s": 6.18211835889948e-11,
+          "samples": 44
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.732494084990776e-11,
+          "max_velocity_rad_s": 6.18211835889948e-11,
+          "samples": 27
+        },
+        "start_ns": 2529243730605045,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 48,
+          "/joint_states": 44,
+          "/received_pose_states": 48,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 48
+        }
+      },
+      "resumed": {
+        "end_ns": 2529249486560880,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529248484957969,
+          "name": "resumed",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.5,
+          "z": 0.25
+        },
+        "joints": {
+          "max_excursion_rad": 0.18464210991167274,
+          "max_velocity_rad_s": 0.44491006709172465,
+          "samples": 54
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.07661116309973437,
+          "max_velocity_rad_s": 0.23739980028692156,
+          "samples": 28
+        },
+        "start_ns": 2529248484957969,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 54,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "stopped_input_continues": {
+        "end_ns": 2529247057114751,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529245555379950,
+          "name": "stopped_input_continues",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.22263991933595184,
+          "max_velocity_rad_s": 0.1647178785358922,
+          "samples": 81
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.07514097277381815,
+          "max_velocity_rad_s": 0.16370582303906558,
+          "samples": 28
+        },
+        "start_ns": 2529245555379950,
+        "topic_counts": {
+          "/joint_states": 81,
+          "/received_pose_states": 90,
+          "/servo_node/delta_twist_cmds": 91,
+          "/target_twist_states": 90
+        }
+      },
+      "tail": {
+        "end_ns": 2529250490879306,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529249487057437,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.004370005557094103,
+          "max_velocity_rad_s": 0.13489786815331758,
+          "samples": 53
+        },
+        "last_half_second": {
+          "max_excursion_rad": 4.6127546227126004e-11,
+          "max_velocity_rad_s": 1.0434052059860033e-10,
+          "samples": 27
+        },
+        "start_ns": 2529249487057437,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 53,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 61,
+          "/target_twist_states": 60
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "docker_health_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2557625434083719,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 3.257973871831051e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2557625966102953,
+        "observed": [
+          2.3424134694704367e-08,
+          -1.5700000731043025,
+          1.5700259102276126,
+          -2.7207545448325848e-05,
+          1.570000085861572,
+          8.008175719348426e-10
+        ],
+        "position_error": 2.7207545448325848e-05,
+        "ready": true,
+        "velocity": 6.182118011954785e-11,
+        "window_samples": 32
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2557625966347173
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557625967430335,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557626972386772,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557626972727846,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557627779827423,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557627780146579,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557628782694498,
+        "name": "active"
+      },
+      {
+        "kind": "external_stop_request",
+        "monotonic_ns": 2557628782707799,
+        "reason": "OPERATOR_QUALIFICATION"
+      },
+      {
+        "kind": "health_trigger",
+        "monotonic_ns": 2557628782788795
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557628782924263,
+        "name": "health_wait",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557630288839886,
+        "name": "health_wait"
+      },
+      {
+        "kind": "health_adapter_observed",
+        "monotonic_ns": 2557630288895269,
+        "stopped": true
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2557630289059807,
+        "name": "recovered_release",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557630898416566,
+        "name": "recovered_release"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2557630899794701,
+        "name": "/servo_node/start_servo",
+        "request": "std_srvs.srv.Trigger_Request()"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2557630910850028,
+        "name": "/servo_node/start_servo",
+        "response": "std_srvs.srv.Trigger_Response(success=True, message='')"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2557630911027774,
+        "name": "new_reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557631716050532,
+        "name": "new_reference"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2557631716249310,
+        "name": "resumed",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.5,
+        "z": 0.25
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557632722148779,
+        "name": "resumed"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557632722434062,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557633727648782,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2557633727683326
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      1.5238505284663044e-08,
+      -1.0411037508092036,
+      0.8930948372864885,
+      0.14853152815041523,
+      1.570000077675954,
+      7.992323709047569e-10
+    ],
+    "lineage_consume_associations": {
+      "EXACT_CANONICAL_ROS_FIELDS": 1813
+    },
+    "lineage_publish_counts": {
+      "bridge_servo_input": 905,
+      "mapper": 906,
+      "receiver": 907
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2557628782694498,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557627780146579,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2787337099040206,
+          "max_velocity_rad_s": 0.6256895637252904,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.11052146957734843,
+          "max_velocity_rad_s": 0.283959991599107,
+          "samples": 30
+        },
+        "start_ns": 2557627780146579,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "health_wait": {
+        "end_ns": 2557630288839886,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557628782924263,
+          "name": "health_wait",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.0912966144945884e-05,
+          "max_velocity_rad_s": 0.169770406137916,
+          "samples": 88
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.3504754526347824e-11,
+          "max_velocity_rad_s": 7.029341692055269e-11,
+          "samples": 29
+        },
+        "start_ns": 2557628782924263,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 1,
+          "/joint_states": 88,
+          "/received_pose_states": 90,
+          "/servo_node/delta_twist_cmds": 90,
+          "/target_twist_states": 91
+        }
+      },
+      "idle": {
+        "end_ns": 2557626972386772,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557625967430335,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 6.095564235859114e-11,
+          "max_velocity_rad_s": 6.182119746678261e-11,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.942686277824743e-11,
+          "max_velocity_rad_s": 6.182119746678261e-11,
+          "samples": 29
+        },
+        "start_ns": 2557625967430335,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 61
+        }
+      },
+      "new_reference": {
+        "end_ns": 2557631716050532,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2557630911027774,
+          "name": "new_reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 5.504352529328571e-11,
+          "max_velocity_rad_s": 7.029342038999964e-11,
+          "samples": 47
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.3504754526347824e-11,
+          "max_velocity_rad_s": 7.029342038999964e-11,
+          "samples": 29
+        },
+        "start_ns": 2557630911027774,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 49,
+          "/joint_states": 47,
+          "/received_pose_states": 48,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 48
+        }
+      },
+      "recovered_release": {
+        "end_ns": 2557630898416566,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2557630289059807,
+          "name": "recovered_release",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 4.188094315793478e-11,
+          "max_velocity_rad_s": 7.029341345110574e-11,
+          "samples": 36
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.3504754526347824e-11,
+          "max_velocity_rad_s": 7.029341345110574e-11,
+          "samples": 29
+        },
+        "start_ns": 2557630289059807,
+        "topic_counts": {
+          "/joint_states": 36,
+          "/received_pose_states": 37,
+          "/servo_node/delta_twist_cmds": 37,
+          "/target_twist_states": 36
+        }
+      },
+      "reference": {
+        "end_ns": 2557627779827423,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557626972727846,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.939509143099237e-11,
+          "max_velocity_rad_s": 6.182118705844175e-11,
+          "samples": 48
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.04778214113826e-11,
+          "max_velocity_rad_s": 6.182118705844175e-11,
+          "samples": 30
+        },
+        "start_ns": 2557626972727846,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 49,
+          "/joint_states": 48,
+          "/received_pose_states": 49,
+          "/servo_node/delta_twist_cmds": 49,
+          "/target_twist_states": 48
+        }
+      },
+      "resumed": {
+        "end_ns": 2557632722148779,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2557631716249310,
+          "name": "resumed",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.5,
+          "z": 0.25
+        },
+        "joints": {
+          "max_excursion_rad": 0.38235419840631824,
+          "max_velocity_rad_s": 0.9889877701487189,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.1535082134954201,
+          "max_velocity_rad_s": 0.39722480015403133,
+          "samples": 29
+        },
+        "start_ns": 2557631716249310,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 61
+        }
+      },
+      "tail": {
+        "end_ns": 2557633727648782,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557632722434062,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.008637853831772846,
+          "max_velocity_rad_s": 0.2552153823647376,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 4.555378296799972e-11,
+          "max_velocity_rad_s": 9.573978936028293e-11,
+          "samples": 29
+        },
+        "start_ns": 2557632722434062,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 59,
+          "/received_pose_states": 61,
+          "/servo_node/delta_twist_cmds": 61,
+          "/target_twist_states": 60
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "docker_hold_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529372393936872,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 2.942686068777012e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529374326226400,
+        "observed": [
+          2.3424134694574132e-08,
+          -1.5700000731029058,
+          1.5700259102324632,
+          -2.7207540193550816e-05,
+          1.570000085861572,
+          8.008175746453484e-10
+        ],
+        "position_error": 2.7207540193550816e-05,
+        "ready": true,
+        "velocity": 6.182118705844175e-11,
+        "window_samples": 29
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529374326620740
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529374328913738,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529375329540086,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529375329838109,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529376133327423,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529376133817015,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529377133915393,
+        "name": "active"
+      },
+      {
+        "kind": "external_stop_request",
+        "monotonic_ns": 2529377134102115,
+        "reason": "OPERATOR_QUALIFICATION"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529377136320057,
+        "name": "/servo_node/stop_servo",
+        "request": "std_srvs.srv.Trigger_Request()"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529377143513371,
+        "name": "/servo_node/stop_servo",
+        "response": "std_srvs.srv.Trigger_Response(success=True, message='')"
+      },
+      {
+        "kind": "controller_zero_request",
+        "monotonic_ns": 2529377146132198,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529377146943827,
+        "name": "stopped_input_continues",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529378650409259,
+        "name": "stopped_input_continues"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529378650774716,
+        "name": "recovered_release",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529379258727903,
+        "name": "recovered_release"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529379259957902,
+        "name": "/servo_node/start_servo",
+        "request": "std_srvs.srv.Trigger_Request()"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529379283659803,
+        "name": "/servo_node/start_servo",
+        "response": "std_srvs.srv.Trigger_Response(success=True, message='')"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529379284016594,
+        "name": "new_reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529380091112680,
+        "name": "new_reference"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529380091657559,
+        "name": "resumed",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.5,
+        "z": 0.25
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529381096818640,
+        "name": "resumed"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529381097163231,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529382100980945,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2529382101070582
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      1.5423688024591464e-08,
+      -1.0626238968140023,
+      0.9269032211766448,
+      0.13664089977142782,
+      1.5700000778612282,
+      7.974384823247863e-10
+    ],
+    "lineage_consume_associations": {
+      "EXACT_CANONICAL_ROS_FIELDS": 2102
+    },
+    "lineage_publish_counts": {
+      "bridge_servo_input": 1051,
+      "mapper": 1050,
+      "receiver": 1052
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2529377133915393,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529376133817015,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2608061506771788,
+          "max_velocity_rad_s": 0.6759576953696659,
+          "samples": 52
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.10980665364675879,
+          "max_velocity_rad_s": 0.4574878019976251,
+          "samples": 26
+        },
+        "start_ns": 2529376133817015,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 52,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "idle": {
+        "end_ns": 2529375329540086,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529374328913738,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 5.675180326562509e-11,
+          "max_velocity_rad_s": 6.182119746678261e-11,
+          "samples": 55
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.8375901448159362e-11,
+          "max_velocity_rad_s": 6.182118011954785e-11,
+          "samples": 28
+        },
+        "start_ns": 2529374328913738,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 55,
+          "/received_pose_states": 61,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "new_reference": {
+        "end_ns": 2529380091112680,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529379284016594,
+          "name": "new_reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 5.064215713446174e-11,
+          "max_velocity_rad_s": 6.936898971909855e-11,
+          "samples": 44
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.062083919758152e-11,
+          "max_velocity_rad_s": 6.936898971909855e-11,
+          "samples": 27
+        },
+        "start_ns": 2529379284016594,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 48,
+          "/joint_states": 44,
+          "/received_pose_states": 48,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 49
+        }
+      },
+      "recovered_release": {
+        "end_ns": 2529379258727903,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529378650774716,
+          "name": "recovered_release",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 3.7687186704715714e-11,
+          "max_velocity_rad_s": 6.936898971909855e-11,
+          "samples": 33
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.062083919758152e-11,
+          "max_velocity_rad_s": 6.936898971909855e-11,
+          "samples": 27
+        },
+        "start_ns": 2529378650774716,
+        "topic_counts": {
+          "/joint_states": 33,
+          "/received_pose_states": 36,
+          "/servo_node/delta_twist_cmds": 36,
+          "/target_twist_states": 37
+        }
+      },
+      "reference": {
+        "end_ns": 2529376133327423,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529375329838109,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.308933553593005e-11,
+          "max_velocity_rad_s": 6.182117318065394e-11,
+          "samples": 42
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.6273984513925947e-11,
+          "max_velocity_rad_s": 6.182117318065394e-11,
+          "samples": 26
+        },
+        "start_ns": 2529375329838109,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 48,
+          "/joint_states": 42,
+          "/received_pose_states": 48,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 48
+        }
+      },
+      "resumed": {
+        "end_ns": 2529381096818640,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529380091657559,
+          "name": "resumed",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.5,
+          "z": 0.25
+        },
+        "joints": {
+          "max_excursion_rad": 0.36662224046189096,
+          "max_velocity_rad_s": 0.8299071002516443,
+          "samples": 53
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.14639318607022134,
+          "max_velocity_rad_s": 0.5836856576517191,
+          "samples": 27
+        },
+        "start_ns": 2529380091657559,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 53,
+          "/received_pose_states": 61,
+          "/servo_node/delta_twist_cmds": 61,
+          "/target_twist_states": 60
+        }
+      },
+      "stopped_input_continues": {
+        "end_ns": 2529378650409259,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529377146943827,
+          "name": "stopped_input_continues",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 7.479843999158575e-05,
+          "max_velocity_rad_s": 0.2050906986303625,
+          "samples": 81
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.062083919758152e-11,
+          "max_velocity_rad_s": 6.93689862496516e-11,
+          "samples": 27
+        },
+        "start_ns": 2529377146943827,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 1,
+          "/joint_states": 81,
+          "/received_pose_states": 91,
+          "/servo_node/delta_twist_cmds": 90,
+          "/target_twist_states": 90
+        }
+      },
+      "tail": {
+        "end_ns": 2529382100980945,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529381097163231,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.008477197128365699,
+          "max_velocity_rad_s": 0.26964649891519893,
+          "samples": 54
+        },
+        "last_half_second": {
+          "max_excursion_rad": 4.122036045828281e-11,
+          "max_velocity_rad_s": 9.32437686090859e-11,
+          "samples": 27
+        },
+        "start_ns": 2529381097163231,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 54,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "docker_shim_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529043644382351,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 3.047782346459046e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529044190328969,
+        "observed": [
+          2.3424134695778368e-08,
+          -1.5700000731389396,
+          1.5700259101073186,
+          -2.7207675767307237e-05,
+          1.570000085861572,
+          8.008175714018239e-10
+        ],
+        "position_error": 2.7207675767307237e-05,
+        "ready": true,
+        "velocity": 6.18211905278887e-11,
+        "window_samples": 30
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529044190777391
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529044192232924,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529045196608840,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529045196910475,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529046001511576,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529046001841756,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529047007068995,
+        "name": "active"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529047007259808,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529049012176681,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2529049012243191
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      1.8437387016130372e-08,
+      -1.3179005602771359,
+      1.2839104078445824,
+      0.034119140160766115,
+      1.5700000808748216,
+      8.004776380037363e-10
+    ],
+    "lineage_consume_associations": {
+      "EXACT_SERIALIZED_PAYLOAD": 1449,
+      "UNKNOWN": 1
+    },
+    "lineage_publish_counts": {
+      "bridge_servo_input": 726,
+      "mapper": 723,
+      "receiver": 727
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2529047007068995,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529046001841756,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2769695959551668,
+          "max_velocity_rad_s": 0.625689563696993,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.11337080771018271,
+          "max_velocity_rad_s": 0.3293784512130777,
+          "samples": 30
+        },
+        "start_ns": 2529046001841756,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 61
+        }
+      },
+      "idle": {
+        "end_ns": 2529045196608840,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529044192232924,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 5.570084462232553e-11,
+          "max_velocity_rad_s": 6.18211835889948e-11,
+          "samples": 54
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.7324942564302445e-11,
+          "max_velocity_rad_s": 6.182118011954785e-11,
+          "samples": 27
+        },
+        "start_ns": 2529044192232924,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 54,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 61,
+          "/target_twist_states": 60
+        }
+      },
+      "reference": {
+        "end_ns": 2529046001511576,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529045196910475,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.7293168604797776e-11,
+          "max_velocity_rad_s": 6.18211905278887e-11,
+          "samples": 46
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.0477818812685515e-11,
+          "max_velocity_rad_s": 6.18211905278887e-11,
+          "samples": 30
+        },
+        "start_ns": 2529045196910475,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 49,
+          "/joint_states": 46,
+          "/received_pose_states": 49,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 48
+        }
+      },
+      "tail": {
+        "end_ns": 2529049012176681,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529047007259808,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.005883612034274899,
+          "max_velocity_rad_s": 0.1918996771314752,
+          "samples": 118
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.481082089251686e-11,
+          "max_velocity_rad_s": 7.053528247591423e-11,
+          "samples": 30
+        },
+        "start_ns": 2529047007259808,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 120,
+          "/joint_states": 118,
+          "/received_pose_states": 120,
+          "/servo_node/delta_twist_cmds": 120,
+          "/target_twist_states": 120
+        }
+      }
+    },
+    "source_parent_null": 2
+  },
+  "docker_stall_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529217345476835,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 3.152877926863558e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529217861826380,
+        "observed": [
+          2.3424134694563346e-08,
+          -1.5700000731020678,
+          1.5700259102353735,
+          -2.7207537040652277e-05,
+          1.570000085861572,
+          8.008175722167934e-10
+        ],
+        "position_error": 2.7207537040652277e-05,
+        "ready": true,
+        "velocity": 6.182119746678261e-11,
+        "window_samples": 31
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529217862064763
+      }
+    ],
+    "exit": {
+      "launch_exit": 1
+    },
+    "final_joint_position": [
+      2.3424134694563346e-08,
+      -1.5700000731020678,
+      1.5700259102353735,
+      -2.7207537040652277e-05,
+      1.570000085861572,
+      8.008175722167934e-10
+    ],
+    "lineage_consume_associations": {
+      "EXACT_SERIALIZED_PAYLOAD": 317
+    },
+    "lineage_publish_counts": {
+      "bridge_servo_input": 158,
+      "mapper": 158,
+      "receiver": 160
+    },
+    "phases": {},
+    "source_parent_null": 0
+  },
+  "docker_stall_02": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529384804527185,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 2.942686044721276e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529385366709756,
+        "observed": [
+          2.342413469549585e-08,
+          -1.5700000731294423,
+          1.5700259101403025,
+          -2.720764003468384e-05,
+          1.570000085861572,
+          8.008175715438893e-10
+        ],
+        "position_error": 2.720764003468384e-05,
+        "ready": true,
+        "velocity": 6.18211835889948e-11,
+        "window_samples": 29
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529385367334418
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529385369459368,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529386374665535,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529386374977043,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529387177161109,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529387177432567,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529388182974984,
+        "name": "active"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529388183427478,
+        "name": "sender_stall",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529389688212176,
+        "name": "sender_stall"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529389688772922,
+        "name": "recovered_release",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      }
+    ],
+    "exit": {
+      "launch_exit": 1
+    },
+    "final_joint_position": [
+      1.8220303624748686e-08,
+      -1.3032332247630176,
+      1.2651426640800312,
+      0.03840765528232973,
+      1.570000080657753,
+      7.99772685448044e-10
+    ],
+    "lineage_consume_associations": {
+      "EXACT_CANONICAL_ROS_FIELDS": 1458
+    },
+    "lineage_publish_counts": {
+      "bridge_servo_input": 728,
+      "mapper": 728,
+      "receiver": 731
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2529388182974984,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529387177432567,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.26754647198364556,
+          "max_velocity_rad_s": 0.6279764928661481,
+          "samples": 53
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.10435711025279826,
+          "max_velocity_rad_s": 0.4345946283260536,
+          "samples": 26
+        },
+        "start_ns": 2529387177432567,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 53,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "idle": {
+        "end_ns": 2529386374665535,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529385369459368,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 5.6751804715745495e-11,
+          "max_velocity_rad_s": 6.182120440567651e-11,
+          "samples": 55
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.732494211706905e-11,
+          "max_velocity_rad_s": 6.182120440567651e-11,
+          "samples": 27
+        },
+        "start_ns": 2529385369459368,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 55,
+          "/received_pose_states": 61,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "reference": {
+        "end_ns": 2529387177161109,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529386374977043,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.4140291102805944e-11,
+          "max_velocity_rad_s": 6.182120440567651e-11,
+          "samples": 43
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.7324942394895855e-11,
+          "max_velocity_rad_s": 6.182117318065394e-11,
+          "samples": 27
+        },
+        "start_ns": 2529386374977043,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 49,
+          "/joint_states": 43,
+          "/received_pose_states": 48,
+          "/servo_node/delta_twist_cmds": 49,
+          "/target_twist_states": 49
+        }
+      },
+      "sender_stall": {
+        "end_ns": 2529389688212176,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529388183427478,
+          "name": "sender_stall",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.034530568234398595,
+          "max_velocity_rad_s": 0.25403761559306043,
+          "samples": 80
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.0386804183990535e-11,
+          "max_velocity_rad_s": 7.154965508959776e-11,
+          "samples": 26
+        },
+        "start_ns": 2529388183427478,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 90,
+          "/joint_states": 80,
+          "/received_pose_states": 90,
+          "/servo_node/delta_twist_cmds": 90,
+          "/target_twist_states": 90
+        }
+      }
+    },
+    "source_parent_null": 1
+  },
+  "docker_stall_03": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2557472607598602,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 3.152877897725625e-11,
+        "expected": [
+          0,
+          -1.57,
+          1.57,
+          0,
+          1.57,
+          0
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2557473137475790,
+        "observed": [
+          2.342413469454681e-08,
+          -1.5700000731029058,
+          1.5700259102324632,
+          -2.7207540193528684e-05,
+          1.570000085861572,
+          8.008175721159044e-10
+        ],
+        "position_error": 2.7207540193528684e-05,
+        "ready": true,
+        "velocity": 6.18211766501009e-11,
+        "window_samples": 31
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2557473137677191
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557473138926407,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557474144255040,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557474144592605,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557474949070050,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557474949258299,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557475954312591,
+        "name": "active"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557475954661995,
+        "name": "sender_stall",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557477459605800,
+        "name": "sender_stall"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2557477459837992,
+        "name": "recovered_release",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      },
+      {
+        "generation": 2,
+        "kind": "sender_reconnected",
+        "monotonic_ns": 2557477459933419,
+        "phase": "recovered_release"
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557478060737889,
+        "name": "recovered_release"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2557478060935402,
+        "name": "new_reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557478870667101,
+        "name": "new_reference"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2557478870831874,
+        "name": "resumed",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.5,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557479878653236,
+        "name": "resumed"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2557479878855473,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2557480882215538,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2557480882247737
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      1.510420532050557e-08,
+      -1.0248154392661795,
+      0.8675518042305196,
+      0.15767213451259382,
+      1.5700000775415563,
+      7.994620820136942e-10
+    ],
+    "lineage_consume_associations": {
+      "EXACT_CANONICAL_ROS_FIELDS": 1829
+    },
+    "lineage_publish_counts": {
+      "bridge_servo_input": 914,
+      "mapper": 914,
+      "receiver": 915
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2557475954312591,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557474949258299,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2789038265307997,
+          "max_velocity_rad_s": 0.6256895637165507,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.10648028395027853,
+          "max_velocity_rad_s": 0.4104876485925637,
+          "samples": 29
+        },
+        "start_ns": 2557474949258299,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 60
+        }
+      },
+      "idle": {
+        "end_ns": 2557474144255040,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557473138926407,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 6.095564227049971e-11,
+          "max_velocity_rad_s": 6.182120787512346e-11,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.942686312044874e-11,
+          "max_velocity_rad_s": 6.182118011954785e-11,
+          "samples": 29
+        },
+        "start_ns": 2557473138926407,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 61,
+          "/target_twist_states": 60
+        }
+      },
+      "new_reference": {
+        "end_ns": 2557478870667101,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2557478060935402,
+          "name": "new_reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 5.7659432783907505e-11,
+          "max_velocity_rad_s": 7.213303218622791e-11,
+          "samples": 48
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.557709682411314e-11,
+          "max_velocity_rad_s": 7.2133025247334e-11,
+          "samples": 30
+        },
+        "start_ns": 2557478060935402,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 48,
+          "/joint_states": 48,
+          "/received_pose_states": 49,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 49
+        }
+      },
+      "recovered_release": {
+        "end_ns": 2557478060737889,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2557477459837992,
+          "name": "recovered_release",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.171107903516713e-11,
+          "max_velocity_rad_s": 7.213302871678096e-11,
+          "samples": 35
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.557709682411314e-11,
+          "max_velocity_rad_s": 7.213302871678096e-11,
+          "samples": 30
+        },
+        "start_ns": 2557477459837992,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 36,
+          "/joint_states": 35,
+          "/received_pose_states": 36,
+          "/servo_node/delta_twist_cmds": 36,
+          "/target_twist_states": 36
+        }
+      },
+      "reference": {
+        "end_ns": 2557474949070050,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557474144592605,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 4.939509177319368e-11,
+          "max_velocity_rad_s": 6.182120093622956e-11,
+          "samples": 48
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.047782156384853e-11,
+          "max_velocity_rad_s": 6.182120093622956e-11,
+          "samples": 30
+        },
+        "start_ns": 2557474144592605,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 48,
+          "/joint_states": 48,
+          "/received_pose_states": 49,
+          "/servo_node/delta_twist_cmds": 48,
+          "/target_twist_states": 49
+        }
+      },
+      "resumed": {
+        "end_ns": 2557479878653236,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2557478870831874,
+          "name": "resumed",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.5,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.3785863233782162,
+          "max_velocity_rad_s": 0.8772155275854,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.15511252534266917,
+          "max_velocity_rad_s": 0.3817539167443777,
+          "samples": 30
+        },
+        "start_ns": 2557478870831874,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 61,
+          "/joint_states": 59,
+          "/received_pose_states": 61,
+          "/servo_node/delta_twist_cmds": 61,
+          "/target_twist_states": 60
+        }
+      },
+      "sender_stall": {
+        "end_ns": 2557477459605800,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557475954661995,
+          "name": "sender_stall",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.03359737058782453,
+          "max_velocity_rad_s": 0.17013650092171326,
+          "samples": 89
+        },
+        "last_half_second": {
+          "max_excursion_rad": 3.557709682411314e-11,
+          "max_velocity_rad_s": 7.213303218622791e-11,
+          "samples": 30
+        },
+        "start_ns": 2557475954661995,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 91,
+          "/joint_states": 89,
+          "/received_pose_states": 90,
+          "/servo_node/delta_twist_cmds": 91,
+          "/target_twist_states": 90
+        }
+      },
+      "tail": {
+        "end_ns": 2557480882215538,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2557479878855473,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.004348321749780171,
+          "max_velocity_rad_s": 0.25578363233984225,
+          "samples": 59
+        },
+        "last_half_second": {
+          "max_excursion_rad": 4.816591570033779e-11,
+          "max_velocity_rad_s": 9.765851669008008e-11,
+          "samples": 30
+        },
+        "start_ns": 2557479878855473,
+        "topic_counts": {
+          "/joint_group_velocity_controller/commands": 60,
+          "/joint_states": 59,
+          "/received_pose_states": 60,
+          "/servo_node/delta_twist_cmds": 60,
+          "/target_twist_states": 61
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "openvr_b0_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529035584305697,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 0.0,
+        "expected": [
+          0,
+          0,
+          1.4232,
+          0.243,
+          4.6863,
+          1.6315
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529037369589305,
+        "observed": [
+          -2.515359085464297e-07,
+          1.0435727837432296e-08,
+          1.4232057332992554,
+          0.24299930036067963,
+          4.686300277709961,
+          1.6314997673034668
+        ],
+        "position_error": 5.733299255350488e-06,
+        "ready": true,
+        "velocity": 5.6453049182891846e-05,
+        "window_samples": 33
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529037369969431
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529037370171720,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529038376446747,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529038377015910,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529039179924909,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529039180359427,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529040186904794,
+        "name": "active"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529040187464517,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529042195388403,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2529042195495884
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      -0.27637913823127747,
+      -0.13906680047512054,
+      2.175637722015381,
+      -0.6368062496185303,
+      5.432272434234619,
+      0.8044261932373047
+    ],
+    "lineage_consume_associations": {},
+    "lineage_publish_counts": {},
+    "phases": {
+      "active": {
+        "end_ns": 2529040186904794,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529039180359427,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.20977449417114258,
+          "max_velocity_rad_s": 1.1564067602157593,
+          "samples": 54
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.12125921249389648,
+          "max_velocity_rad_s": 0.5082893967628479,
+          "samples": 29
+        },
+        "start_ns": 2529039180359427,
+        "topic_counts": {
+          "/joint_states": 54,
+          "/servo_node/pose_target_cmds": 51,
+          "/ur5_arm_controller/joint_trajectory": 51
+        }
+      },
+      "idle": {
+        "end_ns": 2529038376446747,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529037370171720,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.0,
+          "max_velocity_rad_s": 5.6453049182891846e-05,
+          "samples": 61
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.0,
+          "max_velocity_rad_s": 5.6453049182891846e-05,
+          "samples": 31
+        },
+        "start_ns": 2529037370171720,
+        "topic_counts": {
+          "/joint_states": 61
+        }
+      },
+      "reference": {
+        "end_ns": 2529039179924909,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529038377015910,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.7209948301315308,
+          "max_velocity_rad_s": 2.364588737487793,
+          "samples": 50
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.5903490781784058,
+          "max_velocity_rad_s": 2.364588737487793,
+          "samples": 31
+        },
+        "start_ns": 2529038377015910,
+        "topic_counts": {
+          "/joint_states": 50,
+          "/servo_node/pose_target_cmds": 40,
+          "/ur5_arm_controller/joint_trajectory": 40
+        }
+      },
+      "tail": {
+        "end_ns": 2529042195388403,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529040187464517,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.4544539451599121,
+          "max_velocity_rad_s": 0.6622644662857056,
+          "samples": 108
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.13005733489990234,
+          "max_velocity_rad_s": 0.6622644662857056,
+          "samples": 25
+        },
+        "start_ns": 2529040187464517,
+        "topic_counts": {
+          "/joint_states": 108,
+          "/ur5_arm_controller/joint_trajectory": 100
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "openvr_hold_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529390211861151,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 9.308109838457312e-13,
+        "expected": [
+          0,
+          0,
+          1.4232,
+          0.243,
+          4.6863,
+          1.6315
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529390902954971,
+        "observed": [
+          -2.5151180693683273e-07,
+          1.048180386931108e-08,
+          1.4232057332992554,
+          0.24299930036067963,
+          4.686300277709961,
+          1.6314997673034668
+        ],
+        "position_error": 5.733299255350488e-06,
+        "ready": true,
+        "velocity": 5.6451186537742615e-05,
+        "window_samples": 18
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529390903439805
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529390903743988,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529391904844835,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529391905434651,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529392707201206,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529392707758222,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529393715768220,
+        "name": "active"
+      },
+      {
+        "kind": "external_stop_request",
+        "monotonic_ns": 2529393715814892,
+        "reason": "OPERATOR_QUALIFICATION"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529393717590645,
+        "name": "/servo_node/pause_servo",
+        "request": "std_srvs.srv.SetBool_Request(data=True)"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529393776502867,
+        "name": "/servo_node/pause_servo",
+        "response": "std_srvs.srv.SetBool_Response(success=True, message='Servoing disabled')"
+      },
+      {
+        "duration_ns": 50000000,
+        "kind": "controller_hold_request",
+        "monotonic_ns": 2529393778040451,
+        "positions": [
+          -0.27632924914360046,
+          -0.1526796966791153,
+          2.162081480026245,
+          -0.5147996544837952,
+          4.985087871551514,
+          1.1031173467636108
+        ]
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529393778706034,
+        "name": "paused_input_continues",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529395282271691,
+        "name": "paused_input_continues"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529395282837357,
+        "name": "recovered_release",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529395886975702,
+        "name": "recovered_release"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529395888338248,
+        "name": "/servo_node/pause_servo",
+        "request": "std_srvs.srv.SetBool_Request(data=False)"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529395903682052,
+        "name": "/servo_node/pause_servo",
+        "response": "std_srvs.srv.SetBool_Response(success=True, message='Servoing enabled')"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529395904014510,
+        "name": "new_reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529396706812401,
+        "name": "new_reference"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529396707196249,
+        "name": "resumed",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.5,
+        "z": 0.25
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529397716191627,
+        "name": "resumed"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529397716686893,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529398718193799,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2529398718330656
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      -0.276379257440567,
+      -0.139749675989151,
+      2.175075054168701,
+      -0.6313101053237915,
+      5.583404541015625,
+      0.6892569065093994
+    ],
+    "lineage_consume_associations": {},
+    "lineage_publish_counts": {
+      "production_pose": 260
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2529393715768220,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529392707758222,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.21654129028320312,
+          "max_velocity_rad_s": 1.5429044961929321,
+          "samples": 62
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.1082468032836914,
+          "max_velocity_rad_s": 0.38420289754867554,
+          "samples": 31
+        },
+        "start_ns": 2529392707758222,
+        "topic_counts": {
+          "/joint_states": 62,
+          "/servo_node/pose_target_cmds": 50,
+          "/ur5_arm_controller/joint_trajectory": 51
+        }
+      },
+      "idle": {
+        "end_ns": 2529391904844835,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529390903743988,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 2.6760815785564773e-12,
+          "max_velocity_rad_s": 5.6451186537742615e-05,
+          "samples": 60
+        },
+        "last_half_second": {
+          "max_excursion_rad": 2.0943247136528953e-12,
+          "max_velocity_rad_s": 5.6451186537742615e-05,
+          "samples": 30
+        },
+        "start_ns": 2529390903743988,
+        "topic_counts": {
+          "/joint_states": 60
+        }
+      },
+      "new_reference": {
+        "end_ns": 2529396706812401,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529395904014510,
+          "name": "new_reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 0.21649479866027832,
+          "max_velocity_rad_s": 1.4088385105133057,
+          "samples": 51
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.14558792114257812,
+          "max_velocity_rad_s": 1.3084256649017334,
+          "samples": 32
+        },
+        "start_ns": 2529395904014510,
+        "topic_counts": {
+          "/joint_states": 51,
+          "/servo_node/pose_target_cmds": 40,
+          "/ur5_arm_controller/joint_trajectory": 39
+        }
+      },
+      "paused_input_continues": {
+        "end_ns": 2529395282271691,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529393778706034,
+          "name": "paused_input_continues",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 0.0041294097900390625,
+          "max_velocity_rad_s": 0.38293489813804626,
+          "samples": 95
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.0,
+          "max_velocity_rad_s": 0.00022562622325494885,
+          "samples": 31
+        },
+        "start_ns": 2529393778706034,
+        "topic_counts": {
+          "/joint_states": 95,
+          "/servo_node/pose_target_cmds": 76,
+          "/ur5_arm_controller/joint_trajectory": 1
+        }
+      },
+      "recovered_release": {
+        "end_ns": 2529395886975702,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529395282837357,
+          "name": "recovered_release",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 0.0,
+          "max_velocity_rad_s": 0.0002256243024021387,
+          "samples": 40
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.0,
+          "max_velocity_rad_s": 0.0002256243024021387,
+          "samples": 33
+        },
+        "start_ns": 2529395282837357,
+        "topic_counts": {
+          "/joint_states": 40
+        }
+      },
+      "reference": {
+        "end_ns": 2529392707201206,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529391905434651,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.6824532747268677,
+          "max_velocity_rad_s": 2.545050621032715,
+          "samples": 47
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.6104182004928589,
+          "max_velocity_rad_s": 2.545050621032715,
+          "samples": 30
+        },
+        "start_ns": 2529391905434651,
+        "topic_counts": {
+          "/joint_states": 47,
+          "/servo_node/pose_target_cmds": 40,
+          "/ur5_arm_controller/joint_trajectory": 39
+        }
+      },
+      "resumed": {
+        "end_ns": 2529397716191627,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529396707196249,
+          "name": "resumed",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.5,
+          "z": 0.25
+        },
+        "joints": {
+          "max_excursion_rad": 0.2369070053100586,
+          "max_velocity_rad_s": 1.0515047311782837,
+          "samples": 66
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.11692523956298828,
+          "max_velocity_rad_s": 0.3845638930797577,
+          "samples": 33
+        },
+        "start_ns": 2529396707196249,
+        "topic_counts": {
+          "/joint_states": 66,
+          "/servo_node/pose_target_cmds": 50,
+          "/ur5_arm_controller/joint_trajectory": 51
+        }
+      },
+      "tail": {
+        "end_ns": 2529398718193799,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529397716686893,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.2309417724609375,
+          "max_velocity_rad_s": 0.42047983407974243,
+          "samples": 62
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.10902881622314453,
+          "max_velocity_rad_s": 0.42047983407974243,
+          "samples": 29
+        },
+        "start_ns": 2529397716686893,
+        "topic_counts": {
+          "/joint_states": 62,
+          "/servo_node/pose_target_cmds": 1,
+          "/ur5_arm_controller/joint_trajectory": 50
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "openvr_shim_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529144300914374,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 1.163513729807164e-12,
+        "expected": [
+          0,
+          0,
+          1.4232,
+          0.243,
+          4.6863,
+          1.6315
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529146810476938,
+        "observed": [
+          -2.5150984583888203e-07,
+          1.0482699153158137e-08,
+          1.4232057332992554,
+          0.24299930036067963,
+          4.686300277709961,
+          1.6314997673034668
+        ],
+        "position_error": 5.733299255350488e-06,
+        "ready": true,
+        "velocity": 5.6453049182891846e-05,
+        "window_samples": 33
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529146811019079
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529146811407148,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529147812384588,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529147813014810,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529148613984246,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529148614351797,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529149616211891,
+        "name": "active"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529149616542042,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529151616774039,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2529151616844924
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      -0.276378870010376,
+      -0.13886088132858276,
+      2.1758127212524414,
+      -0.6384760737419128,
+      5.446413516998291,
+      0.7947099208831787
+    ],
+    "lineage_consume_associations": {},
+    "lineage_publish_counts": {
+      "production_pose": 90
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2529149616211891,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529148614351797,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2133960723876953,
+          "max_velocity_rad_s": 1.4159728288650513,
+          "samples": 63
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.10623931884765625,
+          "max_velocity_rad_s": 0.38440772891044617,
+          "samples": 31
+        },
+        "start_ns": 2529148614351797,
+        "topic_counts": {
+          "/joint_states": 63,
+          "/servo_node/pose_target_cmds": 50,
+          "/ur5_arm_controller/joint_trajectory": 50
+        }
+      },
+      "idle": {
+        "end_ns": 2529147812384588,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529146811407148,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 1.3962164757685969e-12,
+          "max_velocity_rad_s": 5.6453049182891846e-05,
+          "samples": 64
+        },
+        "last_half_second": {
+          "max_excursion_rad": 1.3962164757685969e-12,
+          "max_velocity_rad_s": 5.6453049182891846e-05,
+          "samples": 33
+        },
+        "start_ns": 2529146811407148,
+        "topic_counts": {
+          "/joint_states": 64
+        }
+      },
+      "reference": {
+        "end_ns": 2529148613984246,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529147813014810,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.6963142156600952,
+          "max_velocity_rad_s": 2.450686454772949,
+          "samples": 50
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.5751527547836304,
+          "max_velocity_rad_s": 2.450686454772949,
+          "samples": 30
+        },
+        "start_ns": 2529147813014810,
+        "topic_counts": {
+          "/joint_states": 50,
+          "/servo_node/pose_target_cmds": 40,
+          "/ur5_arm_controller/joint_trajectory": 39
+        }
+      },
+      "tail": {
+        "end_ns": 2529151616774039,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529149616542042,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.4723358154296875,
+          "max_velocity_rad_s": 0.4216923415660858,
+          "samples": 128
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.1199197769165039,
+          "max_velocity_rad_s": 0.4001675844192505,
+          "samples": 33
+        },
+        "start_ns": 2529149616542042,
+        "topic_counts": {
+          "/joint_states": 128,
+          "/ur5_arm_controller/joint_trajectory": 100
+        }
+      }
+    },
+    "source_parent_null": 0
+  },
+  "openvr_stop_01": {
+    "events": [
+      {
+        "boot_id": "37a3af0a-4c25-46ee-b682-eeca0be31c48",
+        "clock": "CLOCK_MONOTONIC",
+        "kind": "clock",
+        "monotonic_ns": 2529246293300194,
+        "time_namespace": "time:[4026531834]"
+      },
+      {
+        "drift": 1.6289192217300297e-12,
+        "expected": [
+          0,
+          0,
+          1.4232,
+          0.243,
+          4.6863,
+          1.6315
+        ],
+        "kind": "recorder_readiness",
+        "monotonic_ns": 2529247177531051,
+        "observed": [
+          -2.51511693249995e-07,
+          1.0474680678385084e-08,
+          1.4232057332992554,
+          0.24299930036067963,
+          4.686300277709961,
+          1.6314997673034668
+        ],
+        "position_error": 5.733299255350488e-06,
+        "ready": true,
+        "velocity": 5.6451186537742615e-05,
+        "window_samples": 35
+      },
+      {
+        "kind": "barrier_release",
+        "monotonic_ns": 2529247177982294
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529247178313196,
+        "name": "idle",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529248178672499,
+        "name": "idle"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529248179235780,
+        "name": "reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529248982296561,
+        "name": "reference"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529248983948038,
+        "name": "active",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.1
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529249989271634,
+        "name": "active"
+      },
+      {
+        "kind": "external_stop_request",
+        "monotonic_ns": 2529249989343818,
+        "reason": "OPERATOR_QUALIFICATION"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529249991916285,
+        "name": "/servo_node/pause_servo",
+        "request": "std_srvs.srv.SetBool_Request(data=True)"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529250072993275,
+        "name": "/servo_node/pause_servo",
+        "response": "std_srvs.srv.SetBool_Response(success=True, message='Servoing disabled')"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529250073439239,
+        "name": "paused_input_continues",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529251581585028,
+        "name": "paused_input_continues"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529251581851419,
+        "name": "recovered_release",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529252185724220,
+        "name": "recovered_release"
+      },
+      {
+        "kind": "service_request",
+        "monotonic_ns": 2529252187188851,
+        "name": "/servo_node/pause_servo",
+        "request": "std_srvs.srv.SetBool_Request(data=False)"
+      },
+      {
+        "kind": "service_reply",
+        "monotonic_ns": 2529252199051937,
+        "name": "/servo_node/pause_servo",
+        "response": "std_srvs.srv.SetBool_Response(success=True, message='Servoing enabled')"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529252199367249,
+        "name": "new_reference",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.35,
+        "z": 0.15
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529253001330604,
+        "name": "new_reference"
+      },
+      {
+        "generation": 2,
+        "kind": "phase_start",
+        "monotonic_ns": 2529253001979721,
+        "name": "resumed",
+        "teleop": true,
+        "tracked": true,
+        "x": 0.5,
+        "z": 0.25
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529254005460695,
+        "name": "resumed"
+      },
+      {
+        "generation": 1,
+        "kind": "phase_start",
+        "monotonic_ns": 2529254005800651,
+        "name": "tail",
+        "teleop": false,
+        "tracked": true,
+        "x": 0.2,
+        "z": 0
+      },
+      {
+        "kind": "phase_end",
+        "monotonic_ns": 2529255009650486,
+        "name": "tail"
+      },
+      {
+        "kind": "complete",
+        "monotonic_ns": 2529255009712311
+      }
+    ],
+    "exit": {
+      "launch_exit": 0
+    },
+    "final_joint_position": [
+      -0.27637940645217896,
+      -0.14098136126995087,
+      2.1740245819091797,
+      -0.6212408542633057,
+      5.633448600769043,
+      0.6456031799316406
+    ],
+    "lineage_consume_associations": {},
+    "lineage_publish_counts": {
+      "production_pose": 260
+    },
+    "phases": {
+      "active": {
+        "end_ns": 2529249989271634,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529248983948038,
+          "name": "active",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.1
+        },
+        "joints": {
+          "max_excursion_rad": 0.2112903594970703,
+          "max_velocity_rad_s": 1.547216534614563,
+          "samples": 58
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.1072072982788086,
+          "max_velocity_rad_s": 0.41310980916023254,
+          "samples": 29
+        },
+        "start_ns": 2529248983948038,
+        "topic_counts": {
+          "/joint_states": 58,
+          "/servo_node/pose_target_cmds": 50,
+          "/ur5_arm_controller/joint_trajectory": 50
+        }
+      },
+      "idle": {
+        "end_ns": 2529248178672499,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529247178313196,
+          "name": "idle",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 2.6760815785564773e-12,
+          "max_velocity_rad_s": 5.6451186537742615e-05,
+          "samples": 45
+        },
+        "last_half_second": {
+          "max_excursion_rad": 1.5125678487493133e-12,
+          "max_velocity_rad_s": 5.6451186537742615e-05,
+          "samples": 29
+        },
+        "start_ns": 2529247178313196,
+        "topic_counts": {
+          "/joint_states": 45
+        }
+      },
+      "new_reference": {
+        "end_ns": 2529253001330604,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529252199367249,
+          "name": "new_reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 0.20592451095581055,
+          "max_velocity_rad_s": 1.4947243928909302,
+          "samples": 47
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.15008270740509033,
+          "max_velocity_rad_s": 1.3824807405471802,
+          "samples": 30
+        },
+        "start_ns": 2529252199367249,
+        "topic_counts": {
+          "/joint_states": 47,
+          "/servo_node/pose_target_cmds": 40,
+          "/ur5_arm_controller/joint_trajectory": 39
+        }
+      },
+      "paused_input_continues": {
+        "end_ns": 2529251581585028,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529250073439239,
+          "name": "paused_input_continues",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 0.047397613525390625,
+          "max_velocity_rad_s": 0.3845720589160919,
+          "samples": 89
+        },
+        "last_half_second": {
+          "max_excursion_rad": 7.152557373046875e-05,
+          "max_velocity_rad_s": 0.0010399982566013932,
+          "samples": 29
+        },
+        "start_ns": 2529250073439239,
+        "topic_counts": {
+          "/joint_states": 89,
+          "/servo_node/pose_target_cmds": 76
+        }
+      },
+      "recovered_release": {
+        "end_ns": 2529252185724220,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529251581851419,
+          "name": "recovered_release",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.35,
+          "z": 0.15
+        },
+        "joints": {
+          "max_excursion_rad": 0.0,
+          "max_velocity_rad_s": 0.0002293743018526584,
+          "samples": 36
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.0,
+          "max_velocity_rad_s": 0.00022937428730074316,
+          "samples": 30
+        },
+        "start_ns": 2529251581851419,
+        "topic_counts": {
+          "/joint_states": 36
+        }
+      },
+      "reference": {
+        "end_ns": 2529248982296561,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529248179235780,
+          "name": "reference",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.6833392381668091,
+          "max_velocity_rad_s": 2.6444084644317627,
+          "samples": 47
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.6077514886856079,
+          "max_velocity_rad_s": 2.6444084644317627,
+          "samples": 30
+        },
+        "start_ns": 2529248179235780,
+        "topic_counts": {
+          "/joint_states": 47,
+          "/servo_node/pose_target_cmds": 40,
+          "/ur5_arm_controller/joint_trajectory": 39
+        }
+      },
+      "resumed": {
+        "end_ns": 2529254005460695,
+        "input": {
+          "generation": 2,
+          "kind": "phase_start",
+          "monotonic_ns": 2529253001979721,
+          "name": "resumed",
+          "teleop": true,
+          "tracked": true,
+          "x": 0.5,
+          "z": 0.25
+        },
+        "joints": {
+          "max_excursion_rad": 0.23834228515625,
+          "max_velocity_rad_s": 1.1720967292785645,
+          "samples": 61
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.12060165405273438,
+          "max_velocity_rad_s": 0.4267560541629791,
+          "samples": 31
+        },
+        "start_ns": 2529253001979721,
+        "topic_counts": {
+          "/joint_states": 61,
+          "/servo_node/pose_target_cmds": 50,
+          "/ur5_arm_controller/joint_trajectory": 50
+        }
+      },
+      "tail": {
+        "end_ns": 2529255009650486,
+        "input": {
+          "generation": 1,
+          "kind": "phase_start",
+          "monotonic_ns": 2529254005800651,
+          "name": "tail",
+          "teleop": false,
+          "tracked": true,
+          "x": 0.2,
+          "z": 0
+        },
+        "joints": {
+          "max_excursion_rad": 0.2373218536376953,
+          "max_velocity_rad_s": 0.4264417886734009,
+          "samples": 63
+        },
+        "last_half_second": {
+          "max_excursion_rad": 0.11630058288574219,
+          "max_velocity_rad_s": 0.402163028717041,
+          "samples": 32
+        },
+        "start_ns": 2529254005800651,
+        "topic_counts": {
+          "/joint_states": 63,
+          "/ur5_arm_controller/joint_trajectory": 50
+        }
+      }
+    },
+    "source_parent_null": 0
+  }
+}

@@ -1,0 +1,13 @@
+# S1 read-only command record
+git status --short --branch
+sed -n '1,260p' semantic_validation/results/{SEMANTIC_VALIDATION_EXECUTION_PLAN_V2.md,SEMANTIC_VALIDATION_STATUS.md,P0_INVENTORY.md,PICKNIK_QUEST_FEASIBILITY_20260917.md,SPES_QUEST_NATIVE_ROS_FEASIBILITY_20260917.md,QUEST2ROS2_QUEST_FEASIBILITY_20260917.md,DOCKER_TELEOP_DOWNSTREAM_RUNTIME.md,OPENVR_UR5E_DOWNSTREAM_RUNTIME.md}
+sed -n '1,260p' semantic_validation/results/runs/docker_teleop_e2e_20260914/JOINT_STATE_EXTRACTION.md
+python3 semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/analysis/audit.py > semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/stdout/audit_final5.stdout 2> semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/stdout/audit_final5.stderr
+python3 semantic_validation/harness/picknik_hw_analyze.py --sideband semantic_validation/results/runs/hw_picknik_native_20260917T074600Z/sideband_final.jsonl --ros semantic_validation/results/runs/hw_picknik_native_20260917T074600Z/ros_observer.jsonl --output semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/analysis/picknik_reference_analyzer.json
+python3 semantic_validation/results/runs/docker_teleop_e2e_20260914/extract_joint_state.py semantic_validation/results/runs/docker_teleop_e2e_20260914/bag/docker_teleop_e2e_bag_0.db3 semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/analysis/docker_reference_extraction.json
+python3 semantic_validation/harness/openvr_ur5e_downstream/analyze_downstream.py semantic_validation/results/runs/openvr_ur5e_downstream_20260914T065659Z > semantic_validation/results/runs/s1_trace_audit_20260922T075316Z/analysis/openvr_reference_summary.json
+sha256sum <all input files listed in input_manifest.sha256>
+
+# The first `audit.py` invocation stopped before raw processing because of a Path/string
+# construction error. Its stdout/stderr are preserved as audit.stdout/audit.stderr. The
+# final result is audit_final5.stdout and analysis/audit.json.

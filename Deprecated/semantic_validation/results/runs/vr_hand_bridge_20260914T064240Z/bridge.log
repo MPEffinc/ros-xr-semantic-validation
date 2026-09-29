@@ -1,0 +1,36 @@
+[INFO] [1789368395.116458673] [hand_ws_publisher]: HandWSPublisher ready — publishing PoseStamped on /left_hand_pose and /right_hand_pose
+[INFO] [1789368395.117625868] [hand_ws_publisher]: 🚀 WebSocket server on ws://0.0.0.0:8765
+[INFO] [1789368401.533512101] [hand_ws_publisher]: ✅ Quest connected
+[INFO] [1789368406.557952643] [hand_ws_publisher]: ✅ Quest connected
+connection handler failed
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/server.py", line 236, in handler
+    await self.ws_handler(self)
+  File "/wk/ws/install/xr_hand_pipeline/lib/python3.10/site-packages/xr_hand_pipeline/hand_ws_publisher.py", line 89, in handle_client
+    self.right_pub.publish(make_pose_stamped(self, data['right_hand']))
+KeyError: 'right_hand'
+[INFO] [1789368406.559495663] [hand_ws_publisher]: ✅ Quest connected
+connection handler failed
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/server.py", line 236, in handler
+    await self.ws_handler(self)
+  File "/wk/ws/install/xr_hand_pipeline/lib/python3.10/site-packages/xr_hand_pipeline/hand_ws_publisher.py", line 87, in handle_client
+    data = json.loads(raw)
+  File "/usr/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.10/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.10/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+[INFO] [1789368406.560539602] [hand_ws_publisher]: ✅ Quest connected
+connection handler failed
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/websockets/legacy/server.py", line 236, in handler
+    await self.ws_handler(self)
+  File "/wk/ws/install/xr_hand_pipeline/lib/python3.10/site-packages/xr_hand_pipeline/hand_ws_publisher.py", line 88, in handle_client
+    self.left_pub.publish(make_pose_stamped(self, data['left_hand']))
+  File "/wk/ws/install/xr_hand_pipeline/lib/python3.10/site-packages/xr_hand_pipeline/hand_ws_publisher.py", line 45, in make_pose_stamped
+    gx, gy, gz = float(hand['pos'][0]), float(hand['pos'][1]), float(hand['pos'][2])
+ValueError: could not convert string to float: 'a'
+[INFO] [1789368406.561460386] [hand_ws_publisher]: ✅ Quest connected

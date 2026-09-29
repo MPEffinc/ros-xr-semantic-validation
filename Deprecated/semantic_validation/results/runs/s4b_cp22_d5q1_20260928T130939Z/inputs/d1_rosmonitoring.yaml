@@ -1,0 +1,17 @@
+monitors:
+  - monitor:
+      id: d3_full_guard
+      log: /results/monitor_full_events.jsonl
+      status: {enabled: true, log: /results/monitor_full_status.jsonl}
+      oracle: {url: 127.0.0.1, port: 18841, timeout: 0.05, action: nothing}
+      topics:
+        - {name: /s4b/d1/envelope, type: std_msgs.msg.String, action: filter, publishers: [source]}
+        - {name: /s4b/d3/tick, type: std_msgs.msg.String, action: filter, publishers: [source]}
+  - monitor:
+      id: d3_native_guard
+      log: /results/monitor_native_events.jsonl
+      status: {enabled: true, log: /results/monitor_native_status.jsonl}
+      oracle: {url: 127.0.0.1, port: 18842, timeout: 0.05, action: nothing}
+      topics:
+        - {name: /s4b/d1/native_input, type: teleop_bridge_msgs.msg.ReceivedPoseStates, action: filter, publishers: [source]}
+        - {name: /s4b/d3/tick, type: std_msgs.msg.String, action: filter, publishers: [source]}

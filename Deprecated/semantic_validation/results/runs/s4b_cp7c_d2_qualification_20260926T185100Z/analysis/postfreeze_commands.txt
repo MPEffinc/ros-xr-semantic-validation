@@ -1,0 +1,5 @@
+# Trial launch arguments and exact execution order: ../commands.jsonl
+# Frozen setup analysis: ../analysis/d2_qualification_audit.py and per-cell stdout/stderr
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/postfreeze_lineage_audit.py > analysis/postfreeze_lineage_audit.json
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/postfreeze_monitor_gap_audit.py > analysis/postfreeze_monitor_gap_audit.json
+# Commands above are relative to this CP7-C result root. Both scripts read only raw/.

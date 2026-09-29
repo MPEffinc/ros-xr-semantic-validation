@@ -1,0 +1,28 @@
+CP2 command/provenance index. `commands.jsonl` records all owned trial `docker run/inspect/exec/stop` argument arrays and wall times; each trial retains those stdout/stderr files. The original interactive compiler invocations that built the local observation libraries were not captured verbatim; build output, source, pinned official revision and final binary hash are retained. Do not represent this file as a complete shell transcript.
+
+Frozen protocol verification:
+  sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+
+Owned trials (same input harness, different MODE/observer; raw directories preserve all attempts):
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py docker b0 --attempt hook01
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py docker shim --attempt payload01
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py openvr shim --attempt payload01
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py openvr shim --attempt overlay01
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py openvr b0 --attempt overlaypair01
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py openvr b0 --attempt overlaypair02
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py openvr b0 --attempt overlaypair03
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/inputs/run_owned.py docker b0 --attempt payloadpair01
+
+Offline analysis (no ROS/Gazebo runtime):
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/analysis/pair_audit.py
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/analysis/callback_audit.py
+  python3 semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/analysis/case_matrix.py
+
+Read-only checks:
+  git rev-parse HEAD
+  git ls-remote origin refs/heads/main
+  git -C semantic_validation/targets/docker_teleop rev-parse HEAD
+  git -C semantic_validation/targets/openvr_ur5e_jazzy rev-parse HEAD
+  sg docker -c 'docker image inspect s4b-rosmonitoring-humble:20260922 s4b-rosmonitoring-jazzy:20260922 --format "{{.RepoTags}} {{.Id}} {{.RepoDigests}}"'
+  stat -c '%s %n' /tmp/s4cp2_servo_ws/install/moveit_servo/lib/libmoveit_servo_lib_ros.so.2.12.4
+  sha256sum /tmp/s4cp2_servo_ws/install/moveit_servo/lib/libmoveit_servo_lib_ros.so.2.12.4

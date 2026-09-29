@@ -1,0 +1,9 @@
+D2 formal runtime and analysis (cwd: this result root unless stated):
+PYTHONDONTWRITEBYTECODE=1 python3 inputs/run_formal.py --start 1 --end 10
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/formal_audit.py --all
+PYTHONDONTWRITEBYTECODE=1 python3 inputs/run_formal.py --start 11 --end 20
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/formal_audit.py --all
+PYTHONDONTWRITEBYTECODE=1 python3 inputs/run_formal.py --start 21 --end 50
+PYTHONDONTWRITEBYTECODE=1 python3 analysis/formal_audit.py --all
+
+The exact Docker argv for each trial are in commands.jsonl; each raw/<trial_id>/ has create, inspect, launch, stop, exit, and ROS/Gazebo evidence. All 50 first-pass launches exited zero. No replacement or selective retry was run.

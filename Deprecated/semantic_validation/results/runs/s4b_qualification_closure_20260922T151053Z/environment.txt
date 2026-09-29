@@ -1,0 +1,10 @@
+Repository baseline: 9829c2a74f7693cee05f5da337ccc6f2fb9a77a4, main.
+Protocol: XRROS-S4-1.0.0, SHA-256 3a40337121f8d687dc68036ff2ffc85a1bc6eda275a700ba7d9e8119cd322969 (verified before work; unchanged).
+Docker_Teleop vendor: Noah727/Docker_Teleop 64cbdde88bc52c6a80d37f994752e50f95ba537e; clean after runs.
+OpenVR vendor: 170dad582d624f536359a3192a7f829669c2b031; clean after runs.
+Humble image: s4b-rosmonitoring-humble:20260922 sha256:a880da84ea9821f0e07adecca52f5882c3f6982509d157a8a73792624f6445f2.
+Jazzy image: s4b-rosmonitoring-jazzy:20260922 sha256:e45048ddcac4d189e9315b870fb471ac925f7c2faa2c8e3c888498be15e6ff26.
+Trial containers: own s4closure_* names, --network none, --cap-drop ALL, no-new-privileges, ROS_DOMAIN_ID=181, ROS_LOCALHOST_ONLY=1. Existing docker_teleop_sim/openvr_sim untouched. Docker runs as noah UID 1000. No physical robot, driver, robot_ip, CAN or actuator.
+Recorder: rclpy same-container monotonic callbacks, QoS sensor_data, JSONL topics; ROS headers retained separately. Barrier waits 0.5 s named-joint stability, increasing header stamps, then production.ready marker; see report for unqualified graph ACK.
+Clock: same host boot ID and time namespace in bracket probe, max uncertainty Humble 0.078887 ms, Jazzy 0.063504 ms; analysis/clock.json.
+Official ROSMonitoring: autonomy-and-verification-uol/ROSMonitoring d03aa5b44e29b76c0e108a098817bdf5aa98e322, package 3.0.0. inputs/official_monitor_generated.py copied byte-for-byte from prior qualification generator output; sha256 c713040d072ece9c498892c1830df764c8618bc7e0327e1dd997e8b26cbfebc4. It is run only in docker_health_01.

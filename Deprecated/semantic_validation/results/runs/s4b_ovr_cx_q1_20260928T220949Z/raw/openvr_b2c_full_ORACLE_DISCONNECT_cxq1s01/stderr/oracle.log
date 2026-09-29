@@ -1,0 +1,35 @@
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 54566)
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/official/oracle/TLOracle/websocket_server.py", line 179, in handle
+    self.handshake()
+  File "/official/oracle/TLOracle/websocket_server.py", line 313, in handshake
+    headers = self.read_http_headers()
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/official/oracle/TLOracle/websocket_server.py", line 302, in read_http_headers
+    assert http_get.upper().startswith('GET')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/official/oracle/TLOracle/websocket_server.py", line 168, in __init__
+    StreamRequestHandler.__init__(self, socket, addr, server)
+  File "/usr/lib/python3.12/socketserver.py", line 763, in __init__
+    self.finish()
+  File "/official/oracle/TLOracle/websocket_server.py", line 350, in finish
+    self.server._client_left_(self)
+  File "/official/oracle/TLOracle/websocket_server.py", line 147, in _client_left_
+    self.client_left(client, self)
+  File "/official/oracle/TLOracle/oracle.py", line 50, in client_left
+    print("ROS monitor (%d) disconnected" % client['id'])
+                                            ~~~~~~^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+----------------------------------------

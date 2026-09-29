@@ -1,0 +1,42 @@
+{
+  "schema": "XRROS-S4B-campaign-ledger-v1",
+  "research_protocol": "XRROS-S4-1.0.0",
+  "research_protocol_sha256": "3a40337121f8d687dc68036ff2ffc85a1bc6eda275a700ba7d9e8119cd322969",
+  "prior_immutable_campaign": {
+    "id": "XRROS-S4B-D2Q-1.0.0",
+    "freeze_commit": "9d2e4f6b1267af29d7d9f3fe611108163bcc25b8",
+    "result_commit": "da5eee6aa1152cbf3bb4fc72de8be041023f777a",
+    "qualification_verdict": "PARTIAL_BLOCKED_INTEGRATION",
+    "executed_first_attempts": 9,
+    "known_observation_failures": ["B3_REJECTED_SOURCE_FALSE_PARENT_14", "B2_PRE_BARRIER_MONITOR_GAPS_1_58_1"],
+    "formal_verdict": "NOT_STARTED"
+  },
+  "campaign": {
+    "id": "XRROS-S4B-D2Q2-1.0.0",
+    "parent_commit": "da5eee6aa1152cbf3bb4fc72de8be041023f777a",
+    "causal_hypotheses": [
+      "B3 selected parent changed before original callback acceptance; timer reused prior mapper cache",
+      "B2 first receiver neutral attempts occurred before confirmed generated-monitor DDS subscription callback readiness; exact old loss boundary unknown"
+    ],
+    "source_diff": "analysis/source_diff_from_cp7.patch",
+    "source_diff_sha256": "0f83608a6b0d9231b4793ffe0d87d3faf9884f1dcdc847c5ef6c9adb82cc44dc",
+    "protocol_file": "semantic_validation/results/S4B_CP8_D2_QUALIFICATION_PROTOCOL.md",
+    "protocol_sha256": "5bc34f2113b2d5bb734ab09d8fb422503067dc714a41e540fc89182e27f25ab6",
+    "implementation_hashes": {
+      "inputs/d1_nodes.py": "96f3474d414b2142e7f585d0b5245610f5d1c0ad069b65e70652bf7432701f2a",
+      "inputs/mapper_lineage_state.py": "16856171d4d3a52cc4998edacd94b94daf11ed251aff217e26d370dbd8aad97a",
+      "analysis/cp8_qualification_audit.py": "f3b4d39b625a1c8d5bf9802a1c2ec5cc86d51fb0a605d8f698798647f6fa7746",
+      "inputs/d1_sender.py": "cd6d5d5b51aef79ed0a2a40d3425c8235579ed72ae24925bbb7dd9480d68a182"
+    },
+    "schedule_sha256": "d002b11d5bb5cb614439054b390dd89ecdd8851ec4d62a0c2549cb48e456c13b",
+    "required_regression_tests": ["A-H mapper lineage state", "CP8 analyzer positive/negative", "CP7 known-failure negative controls", "D2 sender/property socket-pair", "official monitor/oracle neutral before/after barrier both regimes"],
+    "preflight_verdict": "PASS_HOST_AND_COMPONENT_WITH_TWO_PRESERVED_PRE_FREEZE_ENV_FAILURES",
+    "preflight_evidence": ["preflight/test_mapper_lineage.stderr", "preflight/test_cp8_audit.stderr", "preflight/host_preflight.json", "preflight/monitor_native/summary.json", "preflight/monitor_full/summary.json"],
+    "freeze_commit": "PENDING_COMMIT",
+    "trial_ids": ["docker_b0_full_cp8d2setup01", "docker_shim_full_cp8d2setup01", "docker_b1_native_cp8d2setup01", "docker_b1_full_cp8d2setup01", "docker_b2_native_cp8d2setup01", "docker_b2_full_cp8d2setup01", "docker_b2c_native_cp8d2setup01", "docker_b2c_full_cp8d2setup01", "docker_b3_native_cp8d2setup01", "docker_b3_full_cp8d2setup01"],
+    "retry_budget_per_cell": {"initial_attempts": 1, "setup_only_retries": 2},
+    "qualification_verdict": "NOT_STARTED_BEFORE_FREEZE",
+    "formal_verdict": "NOT_STARTED",
+    "next_action": "After freeze SHA alignment, launch docker_b0_full_cp8d2setup01 and docker_shim_full_cp8d2setup01, verify pair equivalence and new observation gates, then follow the frozen ten-cell schedule."
+  }
+}

@@ -1,0 +1,56 @@
+Only in semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis: analyzer_diff_from_q1.patch
+Only in semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/analysis: analyzer_diff_from_q2.patch
+diff -ru '--exclude=__pycache__' semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/d3_qualification_audit.py semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/analysis/d3_qualification_audit.py
+--- semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/d3_qualification_audit.py	2026-09-28 10:11:11.195797099 +0900
++++ semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/analysis/d3_qualification_audit.py	2026-09-28 10:35:42.142035977 +0900
+@@ -18,6 +18,7 @@
+ from q3_measurement_audit import rows, source_origin, callback_latency, resources
+ from lifecycle_resource_audit import trial as lifecycle_trial
+ from d3_monitor_audit import audit as source_monitor_audit
++from post_capture_audit import audit as lifecycle_audit
+ 
+ ARM = ('shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
+        'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint')
+@@ -149,7 +150,7 @@
+ 
+ 
+ def inspect(mode, regime):
+-    name = f'docker_{mode}_{regime}_cp12d3setup01'
++    name = f'docker_{mode}_{regime}_cp13d3setup01'
+     root = RAW / name
+     if not root.exists():
+         return dict(trial=name, status='NOT_RUN')
+@@ -193,6 +194,9 @@
+     source_monitor = source_monitor_audit(root, regime) if mode in ('b2', 'b2c') else None
+     if source_monitor and source_monitor['issues']:
+         issues.append('OFFICIAL_SOURCE_EVENT_ASSOCIATION_INCOMPLETE')
++    post_capture = lifecycle_audit(root, mode)
++    if post_capture['issues']:
++        issues.append('POST_CAPTURE_PRODUCER_OR_MONITOR_DRAIN_INCOMPLETE')
+     if mode in ('b1', 'b3', 'b2c') and not (root / 'stop_adapter.ready').exists():
+         issues.append('ORDINARY_STOP_ADAPTER_NOT_READY')
+     source_events = [x for x in rows(root / 'lineage.jsonl') if x.get('kind') == 'source_received']
+@@ -213,7 +217,8 @@
+                 fault_trigger_note='B0 comparison proxy; B1/B2/B3 local receipt differs and is scored separately',
+                 callback_exact_joins=None if callback is None else callback['exact_joins'],
+                 callback_missing=None if callback is None else callback['missing'],
+-                monitor=monitor, source_monitor=source_monitor, receiver_coverage=coverage, control=control,
++                monitor=monitor, source_monitor=source_monitor, post_capture=post_capture,
++                receiver_coverage=coverage, control=control,
+                 resources=measurements['resources']['status'], lifecycle=measurements['lifecycle']['status'],
+                 policy_verdict='NOT_SCORED_BY_SETUP_AUDIT',
+                 source_to_specific_controller_or_joint_parent='UNKNOWN')
+@@ -252,7 +257,7 @@
+     schedule = list(csv.DictReader((ROOT / 'qualification_schedule.csv').open()))
+     assert [(x['mode'], x['regime']) for x in schedule] == MODES
+     verdicts = [inspect(mode, regime) for mode, regime in MODES]
+-    pair_result = pair('docker_b0_full_cp12d3setup01', 'docker_shim_full_cp12d3setup01')
++    pair_result = pair('docker_b0_full_cp13d3setup01', 'docker_shim_full_cp13d3setup01')
+     qualified = all(x['status'] == 'MEASUREMENT_QUALIFIED' for x in verdicts)
+     result = dict(status='D3_SETUP_COMPLETE' if qualified and pair_result and pair_result['status'] == 'PASS'
+                   else 'D3_FORMAL_BLOCKED', cells=verdicts, b0_shim_equivalence=pair_result,
+Only in semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis: d3_qualification_summary.json
+Only in semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/analysis: post_capture_audit.py
+Only in semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis: source_diff_from_q1.patch
+Only in semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/analysis: source_diff_from_q2.patch
+Only in semantic_validation/results/runs/s4b_cp13_d3q3_20260928T013003Z/analysis: test_q3_post_capture.py

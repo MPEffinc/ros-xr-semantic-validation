@@ -1,0 +1,29 @@
+# S4-B CP12 D3Q2: integrated Docker source-silence setup
+
+**Result: PARTIAL — 9/10 setup cells MEASUREMENT_QUALIFIED, one B2-composed I_NATIVE BLOCKED_MEASUREMENT. D3 formal comparison NOT_STARTED.** The prospective observation repair was frozen/pushed at `f23c6dc175ae93afce1892fd4f8fd5e58ceb45ae` before runtime. All ten preregistered first-attempt cells then ran once in separate trial-owned no-network Gazebo containers. No setup retry or selective replacement was performed. The Q1 invalid pair, original D1 48/50 and D2 47/50 histories, frozen policy and vendor source remain untouched.
+
+The Q1 defect is corrected in this new configuration: the observational shim's original receiver entered and completed storage of all 100 actual source samples. The 20 registered indices 56–75 sent **no bytes**; 300 50 Hz ticks were not counted as source samples. B0 and shim both moved before the silence trigger and met the frozen equivalence bounds: maximum source-index time difference **0.049488 ms** (<=5 ms) and final six-joint difference **0.004315414 rad** (<=0.02 rad), with the same normalized fixture and boot ID. The shim had 324 exact source-parent Servo callback joins. This does not create a per-source parent for Servo output, controller output or an individual joint sample; those remain separate interval observations.
+
+| Setup arm | Frozen setup verdict | Exact Servo callback joins | Receiver real-source coverage | Official source/tick association |
+| --- | --- | ---: | --- | --- |
+| B0 original | MEASUREMENT_QUALIFIED | Not instrumented | Native original process, no observation shim | Not applicable |
+| B0 observational shim | MEASUREMENT_QUALIFIED | 324 | 100 entered / 100 stored | Not applicable |
+| B1 I_NATIVE / I_FULL | Both MEASUREMENT_QUALIFIED | 324 each | 100 / 100 each | Not applicable |
+| B2-native I_NATIVE / I_FULL | Both MEASUREMENT_QUALIFIED | 324 each | 100 / 100 each | 873/873 and 928/928 source property/status/receipt sets; 300/300 tick property/status each |
+| B2-composed I_NATIVE | **BLOCKED_MEASUREMENT** | 324 | 100 / 100 | 880 original publications, property/status 880/880, only 879 guarded receipts; tick path 300/300 |
+| B2-composed I_FULL | MEASUREMENT_QUALIFIED | 324 | 100 / 100 | 903/903 source property/status/receipt; tick path 300/300 |
+| B3 I_NATIVE / I_FULL | Both MEASUREMENT_QUALIFIED | 324 each | 100 / 100 each | Not applicable |
+
+All cells had actual positive pre-fault joint velocity and controller output, full start ACK, complete 100 ms resource capture, source fixture and child lifecycle records. These are setup measurements, not five-repeat defense efficacy. I_NATIVE B2/B3 source receipt age remains UNOBSERVABLE to those defense placements. B2-native's original filter behavior and B2-composed's separate ordinary stop adapter remain distinct. No result here proves actual Quest state or physical robot control.
+
+## Preserved B2-composed I_NATIVE observation gap
+
+The frozen analyzer identified exact original ROS payload SHA-256 `bfd6565b726b03f6d76ef2cb2d08abf7ab29a3a04981176f75d81e72c2608a20`, original `stale_timeout` neutral, `teleop_enable=false`, `tracked=false`, parent class `ORIGINAL_NEUTRAL`. Trial-owned receiver logged publication attempt at monotonic `2996908763848448`; oracle logged safe=true at `2996908764790422`; the **official** generated monitor status recorded `currently_true` / `forwarded`. There is no matching guarded stripper receipt. This original-generated neutral is not a sender source sample and is not removed from the completeness denominator.
+
+The event occurred about **3.265 s after** the controlled recorder `capture_end` (`2996905498367426`) and about **3.022 s after** the trial owner's `docker stop --time 3` invocation (wall time `1790558497237051602`; official status wall time `1790558500.2588584`). The last matching guarded receipt preceded it. This strongly motivates a teardown/lifecycle hypothesis: the original receiver and monitor can continue producing events during Docker's three-second stop grace after the recorder's six-second capture. It does **not** by itself prove whether the official monitor failed to publish, DDS did not deliver, the stripper did not run, or a recorder missed a receipt. The official implementation and predicate are not labelled defective; this is an observation/integration gap, not a demonstrated defense-policy failure. A Q2 unchanged retry to obtain a favorable complete log is not justified.
+
+## Next prospective test
+
+Coordinate shutdown in a separate D3Q3 implementation: keep the observer/recorder alive while the trial-owned original producer is explicitly stopped after the fixed six-second capture; then drain remaining DDS/monitor events before ending the observer, with exact source/property/status/receipt accounting. This changes post-capture control-path lifecycle, so requalify a fresh B0/shim pair and all affected B2 arms. Register, test and freeze before Gazebo. Never suppress neutral events or extend the **scored** D3 outcome window after seeing its result. If a new shutdown implementation still lacks exact association, preserve that failure and analyze its new boundary. D3 formal remains blocked until all required setup arms qualify and a separate five-repeat formal freeze is pushed.
+
+Raw root: `runs/s4b_cp12_d3q2_20260928T010551Z/`. Exact commands/argv in `commands.jsonl`; each `raw/<trial_id>/` includes input, official monitor/oracle where relevant, original receiver/mapper/Servo/controller/Gazebo, clock/resource, stdout/stderr and exit records. Frozen analysis: `analysis/d3_qualification_summary.json`; `runtime_evidence_manifest.sha256` covers the retained ten trials and result. The local official monitor colcon install is the unchanged, hash-checked Q1 build output, excluded from Git as previously documented; no Q2 raw is excluded.

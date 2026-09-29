@@ -1,0 +1,5 @@
+docker run ... bash /code/build_ovr_monitor.sh  # preflight/build_ovr_monitor.*
+docker run ... python3 /analysis/test_ovr_policy.py  # 8/8
+docker run ... bash /analysis/ovr_component.sh (MODE/OVR_CASE)  # preflight/component_*
+diagnostics: analysis/ovr_component{,_diag,_mt2,_st}.sh  # preflight/diag_*
+After freeze push: python3 inputs/run_qualification.py --start 1 --end 13 ; python3 analysis/ovr_setup_audit.py

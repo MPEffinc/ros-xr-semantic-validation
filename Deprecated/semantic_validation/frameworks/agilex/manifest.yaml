@@ -1,0 +1,13 @@
+id: agilex
+display_name: AgileX QuestArmTeleop
+upstream: https://github.com/agilexrobotics/QuestArmTeleop.git
+pinned_revision: 145b80360cf2c5f2e63179086d0aab2cb563826c
+branch_observed: ros2
+architecture_family: Quest reader/ADB plus ROS2
+xr_sdk: bundled APK accessed through ADB logcat; APK source opaque
+ros_integration: rclpy PoseStamped/JointState and Pinocchio IK
+transport: ADB/logcat host extraction
+native_downstream: arm_ik_pose_node emits JointState; actual agx_arm_ctrl driver is external
+lineage: standalone upstream; no independent-stack claim before opaque APK boundary is resolved
+readiness: {R0: READY, R1: SOURCE_PATH_UNCONFIRMED, R2: BLOCKED_ENV, R3: NOT_READY, R4: NOT_READY, R5: BLOCKED_HW}
+inclusion_status: EXCLUDED_UNTIL_RAW_SEMANTIC_SOURCE_AUDITABLE

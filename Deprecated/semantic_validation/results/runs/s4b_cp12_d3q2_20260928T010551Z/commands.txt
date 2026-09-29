@@ -1,0 +1,15 @@
+Commands executed for prospective D3Q2 preflight, cwd /home/cclab/ros_xr:
+sha256sum semantic_validation/results/S4_EXISTING_DEFENSE_PROTOCOL.md
+sha256sum -c semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/freeze_inputs.sha256
+sha256sum -c semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/local_install_artifacts.sha256
+cp -a semantic_validation/results/runs/s4b_cp11_d3q1_20260927T071000Z/inputs semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs
+cp -a the Q1 setup analyzer and D3 pure regression tests into this separate analysis/ root.
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/test_q2_observation_repair.py
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/test_d3_monitor_audit.py
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/test_d3_silence.py
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/test_d3_property.py
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/test_d3_source_gate_tick.py
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/analysis/test_d3_sender.py
+bash -n semantic_validation/results/runs/s4b_cp12_d3q2_20260928T010551Z/inputs/launch.sh
+Python analyzer import with Q2 analysis/ on PYTHONPATH, all ten registered arms checked.
+No D3Q2 Gazebo runtime or formal trial precedes this configuration freeze; exact future trial-owned argv/exit append to commands.jsonl.

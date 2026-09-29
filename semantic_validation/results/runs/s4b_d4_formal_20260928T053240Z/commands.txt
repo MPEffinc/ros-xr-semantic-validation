@@ -1,5 +1,0 @@
-D4 formal pre-outcome (cwd this root; PYTHONDONTWRITEBYTECODE=1):
-python3 inputs/make_schedule.py
-(cd analysis && python3 test_d4_formal_audit.py)   # 11/11 PASS on temporary copies of D4Q1/D4Q2 setup raw
-python3 analysis/d4_formal_audit.py --all           # 630 NOT_RUN -> analysis/preflight_empty_summary.json
-After freeze push + SHA alignment: python3 inputs/run_formal.py --start 1 --end 630 ; python3 analysis/d4_formal_audit.py --all

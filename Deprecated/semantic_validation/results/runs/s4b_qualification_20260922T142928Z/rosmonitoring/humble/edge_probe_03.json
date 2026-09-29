@@ -1,0 +1,48 @@
+{
+  "assertions": {
+    "custom_allow_forwarded": true,
+    "custom_false_blocked": true,
+    "oracle_absent_fail_open": true,
+    "oracle_disconnect_fail_open": true,
+    "oracle_timeout_fail_open": true
+  },
+  "clock": "CLOCK_MONOTONIC via time.monotonic_ns",
+  "received": {
+    "absent": [
+      {
+        "monotonic_ns": 2526998209757405,
+        "value": "fail_open_absent"
+      }
+    ],
+    "custom": [
+      {
+        "monotonic_ns": 2526996998371927,
+        "value": "True"
+      }
+    ],
+    "disconnect": [
+      {
+        "monotonic_ns": 2526998816867280,
+        "value": "disconnect_first"
+      },
+      {
+        "monotonic_ns": 2526999422911362,
+        "value": "disconnect_second"
+      }
+    ],
+    "hang": [
+      {
+        "monotonic_ns": 2527000079613267,
+        "value": "hang_timeout"
+      }
+    ]
+  },
+  "sent_monotonic_ns": {
+    "absent": 2526998208530851,
+    "custom_allow": 2526996996023864,
+    "custom_block": 2526997603595677,
+    "disconnect_first": 2526998815097202,
+    "disconnect_second": 2526999422041804,
+    "hang": 2527000028089656
+  }
+}

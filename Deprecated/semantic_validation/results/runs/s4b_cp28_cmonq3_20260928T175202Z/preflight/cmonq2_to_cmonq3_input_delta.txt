@@ -1,0 +1,44 @@
+Binary files runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/__pycache__/cid_binding.cpython-312.pyc and runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/__pycache__/cid_binding.cpython-312.pyc differ
+Binary files runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/__pycache__/cid_fixture.cpython-312.pyc and runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/__pycache__/cid_fixture.cpython-312.pyc differ
+Only in runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/__pycache__: d1_probe.cpython-312.pyc
+Binary files runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/__pycache__/d4_age.cpython-312.pyc and runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/__pycache__/d4_age.cpython-312.pyc differ
+Binary files runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/__pycache__/d4l_timing.cpython-312.pyc and runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/__pycache__/d4l_timing.cpython-312.pyc differ
+Binary files runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/__pycache__/source_path_readiness.cpython-312.pyc and runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/__pycache__/source_path_readiness.cpython-312.pyc differ
+diff -ru runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/d1_probe.py runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/d1_probe.py
+--- runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/d1_probe.py	2026-09-29 02:44:32.341651875 +0900
++++ runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/d1_probe.py	2026-09-29 02:52:03.010417670 +0900
+@@ -88,7 +88,9 @@
+     required = ['gazebo', 'clock', 'rsp', 'servo', 'sender', 'resources', 'recorder', 'tick']
+     if mode == 'b0': required += ['receiver', 'mapper', 'bridge']
+     else: required += ['observed']
+-    if mode == 'b2': required += ['oracle', 'monitor']
++    if mode == 'b2':
++        # C-MON ORACLE_ABSENT: no oracle process exists, so it has no clock record.
++        required += (['monitor'] if os.environ.get('CMON_FAULT') == 'ORACLE_ABSENT' else ['oracle', 'monitor'])
+     if mode in ('b1', 'b3') or (mode == 'b2' and os.environ.get('COMPOSED') == '1'): required += ['stop_adapter']
+     if mode == 'b1': required += ['source_gate']
+     records = {}
+diff -ru runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/run_owned.py runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/run_owned.py
+--- runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/run_owned.py	2026-09-29 02:44:32.328572523 +0900
++++ runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/run_owned.py	2026-09-29 02:52:02.993025910 +0900
+@@ -29,7 +29,7 @@
+ trial=ROOT/'raw'/f'{args.stack}_{variant}_{args.regime}_{args.fault}_{args.attempt}'
+ trial.mkdir(parents=True, exist_ok=False)
+ trial.chmod(0o777)  # Only the new trial output directory; container UID mapping.
+-name=f's4cp28cmonq2_{args.stack}_{variant}_{args.regime}_{args.fault}_{args.attempt}'
++name=f's4cp28cmonq3_{args.stack}_{variant}_{args.regime}_{args.fault}_{args.attempt}'
+ def run(argv, label, timeout=240):
+     with (ROOT/'commands.jsonl').open('a') as f:
+         f.write(json.dumps({'time_ns':time.time_ns(),'argv':argv,'trial':trial.name})+'\n')
+diff -ru runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/run_qualification.py runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/run_qualification.py
+--- runs/s4b_cp28_cmonq2_20260928T174422Z/inputs/run_qualification.py	2026-09-29 02:44:32.328421391 +0900
++++ runs/s4b_cp28_cmonq3_20260928T175202Z/inputs/run_qualification.py	2026-09-29 02:52:02.992980835 +0900
+@@ -19,7 +19,7 @@
+ schedule = list(csv.DictReader((ROOT / 'qualification_schedule.csv').open()))
+ for row in schedule[args.start - 1:args.end]:
+     for suffix in ('', '_setup02', '_setup03'):
+-        attempt = 'cmonq2s01' + suffix
++        attempt = 'cmonq3s01' + suffix
+         argv = [sys.executable, str(ROOT / 'inputs/run_owned.py'), 'docker', row['mode'],
+                 '--regime', row['regime'], '--attempt', attempt,
+                 '--fault', row['fault']]

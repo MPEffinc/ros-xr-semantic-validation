@@ -1,0 +1,10 @@
+Q3 runtime (all 16 exact Docker argv, wall clock and trial IDs): commands.jsonl; schedule: qualification_schedule.csv. Every trial was run once from /home/cclab/ros_xr with python3 inputs/run_owned.py docker [arm] --regime [native|full] [--composed] [--stop-diagnostic] --attempt [registered ID]. Every trial-owned container invoked bash /code/launch.sh and was stopped after its exit; no pre-existing lab container was stopped.
+For every raw/docker_* trial, run:
+python3 analysis/q3_measurement_audit.py raw/<trial> analysis/<trial>_measurement.json
+For every raw/docker_*stop01 diagnostic, run:
+python3 analysis/q3_stop_audit.py raw/<trial> analysis/<trial>_stop.json
+For hook-equipped normal setup roots only, invoke the frozen analysis/d1_qualification_audit.py audit(root) function and write analysis/q3_normal_setup_metrics.json. Do not invoke it on B0; the attempted invocation and FileNotFoundError were retained in stdout/b0_legacy_audit_attempt.log and stderr/b0_legacy_audit_attempt.log.
+For B0 against each normal setup root, invoke frozen semantic_validation/results/runs/s4b_cp2_qualification_20260923T003626Z/analysis/pair_audit.py summarize(B0-root, setup-root, 120) with its RAW global set to this root/raw; write analysis/q3_all_normal_pair_metrics.json. B0/shim result was separately written to analysis/q3_b0_shim_pair_metrics.json.
+Read-only checks: count 120/120 in each sent.jsonl; inspect exit.json and readiness_ack in events.jsonl; for B2 count safe and forwarded events from property.jsonl and monitor_*_status.jsonl; check source-parent-to-Servo joins, process sample missingness, stop latency and joint settled window from fixed Q3 analyzers. Do not interpret a source/header/sim clock stamp as host CLOCK_MONOTONIC.
+sha256sum -c input_manifest.sha256
+sha256sum -c runtime_evidence_manifest.sha256

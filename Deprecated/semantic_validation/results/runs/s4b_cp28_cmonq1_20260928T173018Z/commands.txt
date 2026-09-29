@@ -1,0 +1,3 @@
+(cd analysis && python3 test_cmon_injector.py)  # 5/5
+docker run ... python3 /code/cmon_monitor_preflight.py --fault {HEALTHY,ORACLE_ABSENT,ORACLE_DISCONNECT,ORACLE_NONRESPONSIVE}  # measured; argv in preflight/official_full_cmon_*/command.json
+After freeze push: python3 inputs/run_qualification.py --start 1 --end 12 ; python3 analysis/cmon_setup_audit.py

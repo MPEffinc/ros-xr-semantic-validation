@@ -1,0 +1,88 @@
+{
+  "cases": [
+    {
+      "trial_id": "A_CURRENT_POSITIVE",
+      "udp_packet": "RIGHT 0.125 -0.250 0.375 0.0 0.0 0.0 1.0 0.25 0.75 0 0 0 0 0.1 1789366749510582464",
+      "input_timestamp_ns": 1789366749510582464,
+      "send_wall_ns": 1789366749510586113,
+      "send_monotonic_ns": 1805158016927309,
+      "ros_header": {
+        "sec": 1789366749,
+        "nanosec": 510582464,
+        "timestamp_ns": 1789366749510582464,
+        "frame_id": "pico_hmd"
+      },
+      "pose": {
+        "position": {
+          "x": 0.125,
+          "y": -0.25,
+          "z": 0.375
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "header_equals_input": true,
+      "header_minus_send_wall_ns": -3649
+    },
+    {
+      "trial_id": "B_DELIBERATELY_OLD",
+      "udp_packet": "RIGHT 0.125 -0.250 0.375 0.0 0.0 0.0 1.0 0.25 0.75 0 0 0 0 0.1 946684800123456789",
+      "input_timestamp_ns": 946684800123456789,
+      "send_wall_ns": 1789366749711432618,
+      "send_monotonic_ns": 1805158217775684,
+      "ros_header": {
+        "sec": 946684800,
+        "nanosec": 123456789,
+        "timestamp_ns": 946684800123456789,
+        "frame_id": "pico_hmd"
+      },
+      "pose": {
+        "position": {
+          "x": 0.125,
+          "y": -0.25,
+          "z": 0.375
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "header_equals_input": true,
+      "header_minus_send_wall_ns": -842681949587975829
+    },
+    {
+      "trial_id": "C_ZERO_FALLBACK",
+      "udp_packet": "RIGHT 0.125 -0.250 0.375 0.0 0.0 0.0 1.0 0.25 0.75 0 0 0 0 0.1 0",
+      "input_timestamp_ns": 0,
+      "send_wall_ns": 1789366749912210847,
+      "send_monotonic_ns": 1805158418554017,
+      "ros_header": {
+        "sec": 1789366749,
+        "nanosec": 912283262,
+        "timestamp_ns": 1789366749912283262,
+        "frame_id": "pico_hmd"
+      },
+      "pose": {
+        "position": {
+          "x": 0.125,
+          "y": -0.25,
+          "z": 0.375
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "header_equals_input": false,
+      "header_minus_send_wall_ns": 72415
+    }
+  ]
+}

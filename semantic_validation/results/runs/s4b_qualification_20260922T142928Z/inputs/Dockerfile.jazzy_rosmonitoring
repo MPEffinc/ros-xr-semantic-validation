@@ -1,9 +1,0 @@
-FROM openvr-jazzy-sim:local
-
-USER root
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3-pip ros-jazzy-example-interfaces \
- && rm -rf /var/lib/apt/lists/* \
- && python3 -m pip install --break-system-packages --no-cache-dir \
-    websocket-client==1.8.0 \
-    websockets==13.1
