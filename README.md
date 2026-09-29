@@ -4,7 +4,7 @@ This repository was reorganized on 2026-09-29.
 
 | Location | What it is |
 |---|---|
-| [`authority_continuity/`](authority_continuity/README.md) | **Active** research workspace: *Security Consistency Across Dynamic XR-ROS Control Authority and Robot Execution* (candidate; novelty undetermined). |
+| [`authority_continuity/`](authority_continuity/README.md) | **Active** research workspace: *Security Consistency Across Dynamic XR-ROS Control Authority and Robot Execution* (closed 2026-09-29: IMPLEMENTATION_GAP_ONLY). |
 | [`Deprecated/`](Deprecated/ARCHIVE_MANIFEST.md) | **Closed** XR-ROS semantic-validation research, preserved unchanged, with old→new path mapping and preservation checks. |
 
 Pre-reorganization snapshot: tag `archive/pre-authority-continuity-20260929` (commit `e7799a7`).

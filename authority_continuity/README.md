@@ -37,7 +37,7 @@ Experiment outcomes: `PASS` / `FAIL` / `UNKNOWN` / `NOT_RUN`.
    check, but they are **not** new results of this workspace and are not re-labeled as such.
 3. Archived data and harnesses may be reused as a testbed. Any reuse is recorded with the
    archived path and hash; archived files are never edited.
-4. **Novelty of this item is undetermined.** A framework is developed only if PHASE 3–5 establish
+4. **Verdict (PHASE 7, 2026-09-29): IMPLEMENTATION_GAP_ONLY** — see `hypotheses/GO_NO_GO.md`. Before PHASE 7 novelty was undetermined. A framework is developed only if PHASE 3–5 establish
    an independent, unresolved gap (see `hypotheses/GO_NO_GO.md`).
 
 ## Layout
