@@ -4,12 +4,12 @@
 |---|---|---|---|---|
 | 0 Workspace init | DONE | `970e9261aebee33259c0b31b11f9c56d508a7aac` | yes | base `a619e23d2` == origin/main, clean |
 | 1 Literature | DONE | `ee281ee3a82a067b7a404a93b78bb770af17aae6` | yes | all 10 listed items resolve; demo-poisoning prior art HIGH (SilentDrift, DropVLA, !Imperio, State Backdoor, 2609.26868); all assume dataset write access; no collection-path attacker in literature |
-| 2 System audit | DONE | (this commit) | — | NVIDIA XR→dataset paths (LeRobot, Isaac Lab) use no ROS; Isaac ROS Teleop has no recorder; only tidybot_ros joins XR(phone)+ROS 2+dataset; XR boundaries: dataset influence = robot influence; other boundaries UNAUTH or FULL_WRITE; one LIMITED ROS candidate (TF granularity, hypothetical SROS2) |
-| 3 Threat model | TODO | | | |
-| 4 Testbed | TODO | | | |
-| 5 Protocol freeze | TODO | | | |
-| 6 Refutation experiments | TODO | | | |
-| 7 Learning impact | TODO | | | conditional on PHASE 6 |
+| 2 System audit | DONE | `679634a335fd31d827bd05f89f455e7e9c6d26fc` | yes | NVIDIA XR→dataset paths (LeRobot, Isaac Lab) use no ROS; Isaac ROS Teleop has no recorder; only tidybot_ros joins XR(phone)+ROS 2+dataset; XR boundaries: dataset influence = robot influence; other boundaries UNAUTH or FULL_WRITE; one LIMITED ROS candidate (TF granularity, hypothetical SROS2) |
+| 3 Threat model | DONE | (this commit) | — | gate NOT met: no real LIMITED boundary changing recorded meaning; XR and ROS not necessary; A-class (data quality) issues only |
+| 4 Testbed | NOT_RUN | — | — | gate not met; Isaac Sim infeasible (GTX 1050 Ti); no SO-101/headset |
+| 5 Protocol freeze | NOT_FROZEN | — | — | no formal campaign justified |
+| 6 Refutation experiments | NOT_RUN | — | — | |
+| 7 Learning impact | NOT_RUN | — | — | precondition cannot arise |
 | 8 Verdict | TODO | | | |
 
 ## Environment observed 2026-09-30
