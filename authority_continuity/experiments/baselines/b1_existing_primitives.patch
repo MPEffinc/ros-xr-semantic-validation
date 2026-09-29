@@ -1,0 +1,163 @@
+diff -ruN a/horus_backend/src/nav2_action_adapter.cpp b/horus_backend/src/nav2_action_adapter.cpp
+--- a/horus_backend/src/nav2_action_adapter.cpp	2026-07-27 00:58:10.000000000 +0900
++++ b/horus_backend/src/nav2_action_adapter.cpp	2026-09-29 21:29:10.054797131 +0900
+@@ -238,7 +238,16 @@
+ 
+   {
+     std::lock_guard<std::mutex> lock(adapter->goal_mutex);
+-    adapter->active_goal_handle.reset();
++    // B1(c): only the active goal's own result clears the active handle.
++    if (adapter->active_goal_handle &&
++      adapter->active_goal_handle->get_goal_id() == result.goal_id)
++    {
++      adapter->active_goal_handle.reset();
++    } else {
++      RCLCPP_INFO(node_->get_logger(),
++        "B1_EXISTING_PRIMITIVES stale_result_ignored robot=%s", adapter->robot_id.c_str());
++      return;
++    }
+   }
+ 
+   publish_status(adapter, status_str);
+diff -ruN a/horus_unity_bridge/include/horus_unity_bridge/control_lease_manager.hpp b/horus_unity_bridge/include/horus_unity_bridge/control_lease_manager.hpp
+--- a/horus_unity_bridge/include/horus_unity_bridge/control_lease_manager.hpp	2026-07-27 00:58:10.000000000 +0900
++++ b/horus_unity_bridge/include/horus_unity_bridge/control_lease_manager.hpp	2026-09-29 21:29:10.054220158 +0900
+@@ -50,6 +50,7 @@
+     std::string * robot_name = nullptr);
+ 
+   void on_client_disconnected(int client_fd);
++  static constexpr const char * kB1Marker = "B1_EXISTING_PRIMITIVES";
+ 
+   static const std::string & lease_request_topic();
+   static const std::string & control_topic_catalog_topic();
+@@ -111,6 +112,13 @@
+   uint64_t lease_ttl_ms_ = 3000;
+   uint64_t denied_event_rate_limit_ms_ = 500;
+ 
++  // B1 baseline (test-only): existing primitives combined.
++  std::unordered_map<std::string, std::string> b1_cancel_topic_by_robot_;
++  std::unordered_map<std::string,
++    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr> b1_cancel_publishers_;
++  int b1_host_client_fd_ = -1;
++  void b1_on_lease_ended_locked(const std::string & robot_name, const std::string & reason);
++
+   bool handle_catalog_message_locked(int client_fd, const std::string & json_payload);
+   bool handle_lease_request_message_locked(int client_fd, const std::string & json_payload);
+ 
+diff -ruN a/horus_unity_bridge/src/control_lease_manager.cpp b/horus_unity_bridge/src/control_lease_manager.cpp
+--- a/horus_unity_bridge/src/control_lease_manager.cpp	2026-07-27 00:58:10.000000000 +0900
++++ b/horus_unity_bridge/src/control_lease_manager.cpp	2026-09-29 21:29:10.054756144 +0900
+@@ -144,7 +144,11 @@
+ 
+   auto lease_it = leases_by_robot_.find(mapped_robot);
+   if (lease_it == leases_by_robot_.end()) {
+-    return true;
++    // B1(a): fail closed -- a protected command topic requires an active lease.
++    if (denied_reason != nullptr) {
++      *denied_reason = "b1_no_active_lease";
++    }
++    return false;
+   }
+ 
+   const RobotControlLease & lease = lease_it->second;
+@@ -172,9 +176,14 @@
+       ++it;
+       continue;
+     }
++    const std::string ended_robot = it->first;
+     it = leases_by_robot_.erase(it);
++    b1_on_lease_ended_locked(ended_robot, "client_disconnected_release");
+     changed = true;
+   }
++  if (b1_host_client_fd_ == client_fd) {
++    b1_host_client_fd_ = -1;
++  }
+ 
+   if (changed) {
+     publish_snapshot_locked("client_disconnected_release");
+@@ -185,7 +194,6 @@
+   int client_fd,
+   const std::string & json_payload)
+ {
+-  (void)client_fd;
+   nlohmann::json root = nlohmann::json::parse(json_payload, nullptr, false);
+   if (root.is_discarded() || !root.is_object()) {
+     return false;
+@@ -195,6 +203,14 @@
+   if (!(role == "host" || role == "single")) {
+     return true; // Ignore non-authoritative catalog publishers.
+   }
++  // B1(d): the first authoritative catalog publisher's connection becomes the host;
++  // catalog changes from any other connection are ignored until it disconnects.
++  if (b1_host_client_fd_ < 0) {
++    b1_host_client_fd_ = client_fd;
++  } else if (b1_host_client_fd_ != client_fd) {
++    publish_denied_locked(std::string(), std::string(), "b1_catalog_not_host", std::string());
++    return true;
++  }
+ 
+   const std::string op = root.value("op", "snapshot");
+   const std::string session_id = root.value("session_id", "");
+@@ -219,6 +235,9 @@
+             protected_topic_to_robot_[topic_value] = robot_name;
+           }
+         };
++      if (robot_obj.contains("go_to_cancel_topic") && robot_obj["go_to_cancel_topic"].is_string()) {
++        b1_cancel_topic_by_robot_[robot_name] = robot_obj["go_to_cancel_topic"].get<std::string>();
++      }
+ 
+       if (robot_obj.contains("protected_topics") && robot_obj["protected_topics"].is_array()) {
+         for (const auto & item : robot_obj["protected_topics"]) {
+@@ -402,6 +421,7 @@
+   }
+ 
+   // The existing holder is inactive (no panel/task/teleop usage), so reassign immediately.
++  b1_on_lease_ended_locked(robot_name, "lease_reassigned_inactive");
+   lease.holder_client_fd = client_fd;
+   lease.holder_app_id = app_id;
+   lease.holder_role = role;
+@@ -490,6 +510,7 @@
+ 
+   const std::string holder_app_id = it->second.holder_app_id;
+   leases_by_robot_.erase(it);
++  b1_on_lease_ended_locked(robot_name, "lease_released");
+   result.granted = true;
+   publish_snapshot_locked("lease_released", request_id, robot_name, std::string(), holder_app_id);
+   return result;
+@@ -573,7 +594,9 @@
+       ++it;
+       continue;
+     }
++    const std::string ended_robot = it->first;
+     it = leases_by_robot_.erase(it);
++    b1_on_lease_ended_locked(ended_robot, "lease_expired");
+     changed = true;
+   }
+ 
+@@ -602,6 +625,26 @@
+   return true;
+ }
+ 
++void ControlLeaseManager::b1_on_lease_ended_locked(
++  const std::string & robot_name,
++  const std::string & reason)
++{
++  // B1(b): lease end triggers HORUS's own cancel path for that robot.
++  auto topic_it = b1_cancel_topic_by_robot_.find(robot_name);
++  if (node_ == nullptr || topic_it == b1_cancel_topic_by_robot_.end() || topic_it->second.empty()) {
++    return;
++  }
++  auto & pub = b1_cancel_publishers_[robot_name];
++  if (!pub) {
++    pub = node_->create_publisher<std_msgs::msg::String>(topic_it->second, 10);
++  }
++  std_msgs::msg::String msg;
++  msg.data = "cancel";
++  pub->publish(msg);
++  RCLCPP_INFO(node_->get_logger(), "%s lease_end_cancel robot=%s reason=%s",
++    kB1Marker, robot_name.c_str(), reason.c_str());
++}
++
+ uint64_t ControlLeaseManager::now_ms()
+ {
+   using Clock = std::chrono::steady_clock;
