@@ -6,8 +6,8 @@
 | 1 Archive into `Deprecated/` | DONE | `5141e70bc3cf0d49b261103b097b77c9f07587c2` | yes | blob listing identical; see `Deprecated/ARCHIVE_MANIFEST.md` |
 | 2 Workspace init | DONE | `127265fb88bafbe077f620467f8792713b7941b1` | yes | |
 | 3 Literature | DONE | `d4cc51f47224290a9198e84de6a81db7020f5ec9` | yes | 9 key sources + supporting; no cross-line citation edges; no author-stated limitation on lease→execution consistency |
-| 4 HORUS code audit | DONE | (this commit; SHA in next update) | — | F1–F9 SOURCE_CONFIRMED / NOT_VERIFIED; Unity client closed-source |
-| 5 Threat model / defenses | NOT_STARTED | | | |
+| 4 HORUS code audit | DONE | `255715ac83cf829754775fa5febb245fe866d5e0` | yes | F1–F9 SOURCE_CONFIRMED / NOT_VERIFIED; Unity client closed-source |
+| 5 Threat model / defenses | DONE | (this commit; SHA in next update) | — | Q-SEC = no gap (no auth, acknowledged); Q-CONS testable; GO for minimal experiments only, NO-GO for framework |
 | 6 Minimal experiments | NOT_RUN | | | gated on 5 |
 | 7 Verdict | NOT_STARTED | | | |
 
