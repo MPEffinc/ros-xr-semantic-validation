@@ -20,3 +20,14 @@ point applies: "이 단계에서 실제 공격 경계가 없으면 NO_REAL_THREA
 - PHASE 7 (learning impact) — NOT_RUN (its own precondition, a residual after B2, cannot arise).
 
 Final verdict: PHASE 8 section below.
+
+---
+
+## PHASE 8 — Final verdict (2026-09-30)
+
+# NO_REAL_THREAT_BOUNDARY
+
+Residual issues are DATA_QUALITY at source level (D1–D7, THREAT_MODEL §3). XR is not necessary, ROS is not
+necessary, and the attack class that does exist (dataset-level demonstration poisoning) is prior art that
+assumes whole-dataset write access. No experiment was run; no framework is developed. Full reasoning:
+`../results/FINAL_REPORT.md` §13.

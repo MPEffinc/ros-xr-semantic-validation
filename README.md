@@ -4,7 +4,7 @@ This repository was reorganized on 2026-09-29.
 
 | Location | What it is |
 |---|---|
-| [`xr_demo_integrity/`](xr_demo_integrity/README.md) | **Active** research workspace (started 2026-09-30): *Integrity of XR-Teleoperation Demonstrations for Robot Learning*. |
+| [`xr_demo_integrity/`](xr_demo_integrity/README.md) | **Closed** research workspace (2026-09-30): *Integrity of XR-Teleoperation Demonstrations for Robot Learning* — NO_REAL_THREAT_BOUNDARY (data-quality issues only; [final report](xr_demo_integrity/results/FINAL_REPORT.md)). |
 | [`authority_continuity/`](authority_continuity/README.md) | **Closed** research workspace: *Security Consistency Across Dynamic XR-ROS Control Authority and Robot Execution* (closed 2026-09-29: IMPLEMENTATION_GAP_ONLY). |
 | [`Deprecated/`](Deprecated/ARCHIVE_MANIFEST.md) | **Closed** XR-ROS semantic-validation research, preserved unchanged, with old→new path mapping and preservation checks. |
 

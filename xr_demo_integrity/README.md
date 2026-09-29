@@ -13,6 +13,9 @@ Candidate question:
 If existing techniques already solve the problem, no new framework is developed. The candidate is
 not assumed to survive.
 
+**Verdict (2026-09-30): NO_REAL_THREAT_BOUNDARY** — residual issues are data-quality only; see
+`results/FINAL_REPORT.md` and `hypotheses/GO_NO_GO.md`. No experiment was run (PHASE 3 gate not met).
+
 Started 2026-09-30 from `main@a619e23d208a55c7c75cbaee66d954b6d123fc34`. Literature cut-off date: 2026-09-30.
 
 ## Evidence labels
