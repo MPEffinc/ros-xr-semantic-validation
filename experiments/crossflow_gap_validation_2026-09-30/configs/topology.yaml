@@ -1,0 +1,23 @@
+# Stage 1 topology model (sources: docs/01_topology_and_threat_model.md)
+systems:
+  S1_isaac_ros_teleop_cloudxr:
+    runnable_here: false          # CloudXR server GPUs: L40/RTX 4090+; host has GTX 1050 Ti; no headset
+    flows:
+      F1_xr_media:    {src: workstation, dst: headset, proto: udp, port: 47998, encrypted: not_verified, rate: "100-200 Mbps"}
+      F2_xr_input:    {src: headset, dst: workstation, proto: udp, port: 47998, encrypted: not_verified, rate: periodic}
+      F3_signalling:  {src: headset, dst: workstation, proto: tcp, port: [49100, 48322], encrypted: "tls on 48322"}
+      F4_ros_command: {src: workstation, dst: robot, proto: dds_rtps_udp, encrypted: "only with SROS2", rate: "60 Hz fixed"}
+      F5_ros_feedback: {src: robot, dst: workstation, proto: dds_rtps_udp, encrypted: "only with SROS2"}
+      F6_robot_camera: {src: robot, dst: workstation, proto: rtp_udp, port: "5000+", encrypted: not_documented}
+    deployments:
+      flat_lan_or_robot_on_wifi: {single_observer_sees_xr_and_ros: true, observers: [O1_if_robot_wifi, O2, O3]}
+      dedicated_robot_link:      {single_observer_sees_xr_and_ros: false}
+      usb_local:                 {single_observer_sees_xr_and_ros: false}
+  S2_lab_spes_webxr_pi:
+    runnable_here: "only with a Quest and an operator"
+    links: {xr: "wifi 192.168.0.0/24", ros: "dedicated ethernet 10.10.10.0/24"}
+    single_observer_sees_xr_and_ros: false
+  S3_quest2ros2:
+    transport: "ros-tcp plaintext tcp/10000"
+    traffic_analysis_relevant: false   # content readable without a tunnel
+gate1: CONDITIONAL_PASS   # only for shared-segment deployments of S1
