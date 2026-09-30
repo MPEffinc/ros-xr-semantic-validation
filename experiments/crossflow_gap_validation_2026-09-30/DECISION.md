@@ -46,3 +46,7 @@ Honest limits:
   joint shapers cannot remove at teleop latency. Neither was shown here or in the literature read.
 - Items not verified: CloudXR stream encryption and CBR options; real XR task leakage; attacker results
   under any defense.
+
+## After KILL — new gap search
+
+See `docs/08_new_gap_search.md`: one candidate (N1, view-to-execution consistency bound) at NEEDS PILOT; none PROMISING.
