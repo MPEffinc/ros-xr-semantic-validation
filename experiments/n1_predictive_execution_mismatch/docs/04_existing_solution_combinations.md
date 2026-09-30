@@ -38,7 +38,7 @@ PD's max excess over its own displayed bound was 0.3–0.6 cm at B0 (1.2 cm for 
 
 With the frozen stale stop (0.2 s), PC and PD are **frozen for 100 % of the trial**: no misleading time, but
 the display never shows a prediction (task-interruption-by-design). PA/PB keep displaying and mislead
-0.2–5.7 s (worst D/E). Without the stale stop (ablation, docs/05), PC misleads 0.5–1.8 s and PD 0.1–3.5 s,
+0.16–5.7 s (worst D/E). Without the stale stop (ablation, docs/05), PC misleads 0.5–1.8 s and PD 0.1–3.5 s,
 worst in E (smoothing) and D/AD (collision scaling).
 
 ## Reading
