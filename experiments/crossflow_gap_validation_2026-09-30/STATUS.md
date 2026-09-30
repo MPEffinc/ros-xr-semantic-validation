@@ -8,4 +8,5 @@
 | 3 Unprotected leakage | NOT_RUN | `3551865e3f75edb696a2459937d2fb024c6c702d` | no real paired data; GATE 2 undecided | Stage 4 |
 | 4 Cross-flow ablation | NOT_RUN | `c039a0cca3ec14d19f29e8a87eb0fc584759f843` | depends on Stage 3 data | Stage 5 |
 | 5 Existing defenses | DONE (analysis + 1 real-stack probe) | `dc2bd93a9341d340ade7d06e4dc40484026b0c1a` | regularising per-flow constant-rate makes the joint trace task-independent by construction; ROS teleop flows measured already constant-size/60 Hz (≈8 % padding cost); media cost is a known bandwidth trade-off; joint shapers exist (NetShaper, Minos) | Stage 6 |
-| 6 Residual leakage | NOT_RUN (no data); analytic table | (this commit) | keep-pattern impossible under regularising defenses; weaker regimes reproduce prior art K4 | Stage 7 |
+| 6 Residual leakage | NOT_RUN (no data); analytic table | `f10ed1c260f3f7b3312643361374eb523bebd75b` | keep-pattern impossible under regularising defenses; weaker regimes reproduce prior art K4 | Stage 7 |
+| 7 Decision | **KILL** | (this commit) | regularising per-flow defenses remove cross-flow channel by construction; joint shapers exist; XR/ROS not essential; remainder is excluded latency-aware padding tuning | new gap search (docs/08) |
