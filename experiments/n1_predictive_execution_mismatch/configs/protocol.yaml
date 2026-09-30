@@ -1,0 +1,24 @@
+# Frozen N1 protocol (docs/02_simulation_setup.md). Do not edit after the first formal trial.
+home: [1.57, -1.2, 1.6, -1.97, -1.57, 0.0]
+phases: [[0, 3, [0.08, 0, 0]], [3, 4, [0, 0, 0]], [4, 9, [-0.08, 0, 0]], [9, 10, [0, 0, 0]]]
+t_run: 10.0
+seeds: [1, 2, 3, 4, 5]
+conditions:
+  N0:   ""
+  A:    "--delay_ms 150"
+  C:    "--filter 1"
+  D:    "--obstacle 1 --box_rel 0.40 0 0"
+  F:    "--sa 1"
+  AC:   "--delay_ms 150 --filter 1"
+  AD:   "--delay_ms 150 --obstacle 1 --box_rel 0.40 0 0"
+  CDF:  "--filter 1 --obstacle 1 --box_rel 0.40 0 0 --sa 1"
+  ACDF: "--delay_ms 150 --filter 1 --obstacle 1 --box_rel 0.40 0 0 --sa 1"
+  E:    ""            # run after servo_swap '{"use_smoothing": true}'
+known_pipeline: {delay_s: {A: 0.15, AC: 0.15, AD: 0.15, ACDF: 0.15}, xmax_rel: 0.15, gamma: 2.0, sa_alpha: 0.4, sa_goal_rel: [-0.03, 0, 0], sa_window: [4.0, 9.0]}
+offline:
+  horizons_s: [0.25, 0.5]
+  stale_levels: {B0: {delay_s: 0.0}, B1: {delay_s: 0.3}, B2: {outage_s: [4.0, 5.0]}}
+  stale_stop_s: 0.2
+  intervention_bound_speed: 0.10
+  eps_task_m: 0.02
+  validity: {reset_residual_rad: 0.01, min_op_ticks: 480, min_servo_out: 300}
