@@ -74,6 +74,16 @@ int main(int argc, char **argv) {
             }
             ev.type = XR_TYPE_EVENT_DATA_BUFFER;
         }
+        XrTime disp_t = 0;
+        if (running) {   // v1.1: frame loop so the headless session can progress to SYNCHRONIZED/VISIBLE/FOCUSED
+            XrFrameState fs = {XR_TYPE_FRAME_STATE}; XrFrameWaitInfo fwi = {XR_TYPE_FRAME_WAIT_INFO};
+            if (XR_SUCCEEDED(xrWaitFrame(s, &fwi, &fs))) {
+                disp_t = fs.predictedDisplayTime;
+                XrFrameBeginInfo fbi = {XR_TYPE_FRAME_BEGIN_INFO}; xrBeginFrame(s, &fbi);
+                XrFrameEndInfo fei = {XR_TYPE_FRAME_END_INFO}; fei.displayTime = fs.predictedDisplayTime;
+                fei.environmentBlendMode = XR_ENVIRONMENT_BLEND_MODE_OPAQUE; fei.layerCount = 0; xrEndFrame(s, &fei);
+            }
+        }
         if (running) {
             XrActiveActionSet aas = {as, XR_NULL_PATH};
             XrActionsSyncInfo si = {XR_TYPE_ACTIONS_SYNC_INFO}; si.countActiveActionSets = 1; si.activeActionSets = &aas;
@@ -83,13 +93,13 @@ int main(int argc, char **argv) {
             gi.action = grip; XrActionStatePose ps = {XR_TYPE_ACTION_STATE_POSE}; xrGetActionStatePose(s, &gi, &ps);
             // time for locate: use lastChangeTime-independent "now" estimate from the previous xrLocate result
             XrSpaceLocation loc = {XR_TYPE_SPACE_LOCATION};
-            XrTime t = last_xr ? last_xr + 10000000 : 1;
+            XrTime t = disp_t ? disp_t : (last_xr ? last_xr + 10000000 : 1);
             XrResult rl = xrLocateSpace(gsp, local, t, &loc);
             if (b.lastChangeTime > last_xr) last_xr = b.lastChangeTime;
             printf("{\"wall\":%.6f,\"state\":%d,\"sync\":%d,\"get\":%d,\"isActive\":%d,\"current\":%d,\"changed\":%d,\"lastChangeTime\":%lld,"
-                   "\"poseActive\":%d,\"loc\":%d,\"flags\":%llu}\n",
+                   "\"poseActive\":%d,\"loc\":%d,\"flags\":%llu,\"dispTime\":%lld}\n",
                    wall(), st, rs, rb, b.isActive, b.currentState, b.changedSinceLastSync, (long long)b.lastChangeTime,
-                   ps.isActive, rl, (unsigned long long)loc.locationFlags);
+                   ps.isActive, rl, (unsigned long long)loc.locationFlags, (long long)disp_t);
         }
         struct timespec sl = {0, 10000000}; nanosleep(&sl, NULL);
     }

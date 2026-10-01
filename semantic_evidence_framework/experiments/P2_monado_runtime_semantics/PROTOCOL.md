@@ -35,3 +35,28 @@ as BLOCKED/NO_EFFECT with its logs. Nothing is inferred from it.
 
 **Runs.** 1 per variant. The runtime is deterministic with respect to this rule, so repetition adds
 little. If the outcome is ambiguous, extend to 3 per variant.
+
+## Amendment v1.1 (2026-10-01, after run A1 and before any further run)
+
+Run A1 (`results/raw/P2/run_A1`) met the exclusion rule. The headless client stayed in READY because
+it ran no frame loop. `monado-ctl -i` got an empty client id because of a parse error, so no toggle was
+applied.
+
+A1 still produced one runtime observation, kept as **NO_EFFECT for the toggle question**:
+
+- In READY, `xrSyncActions` returned `XR_SESSION_NOT_FOCUSED` (8).
+- The boolean action nevertheless reported `isActive=1`, with `currentState` following the remote
+  button (1,287 samples with state 0, 497 with state 1).
+- The source agrees. `oxr_action_sync_data` (`oxr_input.c` L1628–1646 @ e26a272c1) updates every
+  attachment and only the result code reflects focus. A search for "focus" in `oxr_input.c` and
+  `oxr_api_action.c` at e26a272c1 and at main `045931d` returned no matches.
+- This contradicts `input.adoc` L839–841 / L1344–1346.
+
+Changes:
+
+1. The client runs `xrWaitFrame/xrBeginFrame/xrEndFrame` (0 layers) each iteration, and locates at
+   `predictedDisplayTime`.
+2. The client id is parsed from the `p2_probe` line, and `monado-ctl` listings are recorded before and
+   during the removal.
+
+Variants, oracle and runs are unchanged.
