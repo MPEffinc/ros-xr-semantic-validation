@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **CP7 P1 freeze** = `d254e4230b66a2133582307523101bf8d0740446` (local == origin).
+Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c5ccf7567827` (local == origin).
 
 ## Checkpoints
 
@@ -13,9 +13,9 @@ Last verified pushed checkpoint: **CP7 P1 freeze** = `d254e4230b66a2133582307523
 | CP4 | Code audit: Quest2ROS2 | DONE (pushed `f40cf6f`) | `audit/A2_QUEST2ROS2.md` |
 | CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX, plus PickNik real-Quest reanalysis | DONE (pushed `1f9574b`) | `audit/A3`–`A6`, `results/R0_PICKNIK_HW_REANALYSIS.md` |
 | CP6 | Taxonomy + defense matrix draft | DONE v0 (pushed `1ddf5ec`) | `docs/03_TAXONOMY_AND_MATRIX.md`, `literature/COMPARATORS.md`, `literature/OPENXR_ITEMS.md` |
-| CP7 | Minimal reproduction + normal controls | P1 DONE (freeze pushed `d254e42`; results this commit) | `results/P1_RESULTS.md` |
-| CP8 | Existing-defense comparison | P1 DONE for the OpenVR path (same commit); P1b planned for the controller-level stop | `results/P1_RESULTS.md` §3–4 |
-| CP9 | Minimal framework + evaluation | CONDITIONAL (brief §8 criteria) | — |
+| CP7 | Minimal reproduction + normal controls | P1 DONE (`533cf59`); P1b DONE (freeze `358dd89`, results this commit) | `results/P1_RESULTS.md` |
+| CP8 | Existing-defense comparison | DONE for the OpenVR path (P1 `533cf59` + P1b this commit) | `results/P1_RESULTS.md` §3–4 |
+| CP9 | Minimal framework + evaluation | **NOT BUILT**: §8 conditions 1–2 met at source level, 3 not shown; go/kill criteria defined | `docs/05_FRAMEWORK_DECISION.md` |
 
 ## Completed scope and grounds
 
@@ -76,6 +76,13 @@ Last verified pushed checkpoint: **CP7 P1 freeze** = `d254e4230b66a2133582307523
     - The 15-line app retrofit keeps continuity.
   - **Confounds.** The orientation had not settled, so the angle criterion is invalid. A Servo
     singularity e-stop masked C2 physically.
+
+- **P1b** (18 trials):
+  - A controller-level hold stops the release motion: 1 mm vs 33–35 mm for B0 and Servo pause.
+  - The stale-permission commands reached Servo again (225/trial). The physical move was refused by
+    the Servo singularity hard stop, which is configuration-dependent and not credited.
+- **Framework decision:** not built. A ROS-side model cannot remove the source-side evidence-delivery
+  edits. The next gate is an independent runtime-side evidence path (P2).
 
 ## Not verified / limits
 
