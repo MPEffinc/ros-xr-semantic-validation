@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **CP6 matrix v0** = `1ddf5ec95b96e6cebb90c1983c2a0cd672ee97de` (local == origin).
+Last verified pushed checkpoint: **CP7 P1 freeze** = `d254e4230b66a2133582307523101bf8d0740446` (local == origin).
 
 ## Checkpoints
 
@@ -13,8 +13,8 @@ Last verified pushed checkpoint: **CP6 matrix v0** = `1ddf5ec95b96e6cebb90c1983c
 | CP4 | Code audit: Quest2ROS2 | DONE (pushed `f40cf6f`) | `audit/A2_QUEST2ROS2.md` |
 | CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX, plus PickNik real-Quest reanalysis | DONE (pushed `1f9574b`) | `audit/A3`–`A6`, `results/R0_PICKNIK_HW_REANALYSIS.md` |
 | CP6 | Taxonomy + defense matrix draft | DONE v0 (pushed `1ddf5ec`) | `docs/03_TAXONOMY_AND_MATRIX.md`, `literature/COMPARATORS.md`, `literature/OPENXR_ITEMS.md` |
-| CP7 | Minimal reproduction + normal controls | P1 protocol FROZEN (this commit); runs pending | `experiments/P1_openvr_evidence/PROTOCOL.md` |
-| CP8 | Existing-defense comparison | TODO | — |
+| CP7 | Minimal reproduction + normal controls | P1 DONE (freeze pushed `d254e42`; results this commit) | `results/P1_RESULTS.md` |
+| CP8 | Existing-defense comparison | P1 DONE for the OpenVR path (same commit); P1b planned for the controller-level stop | `results/P1_RESULTS.md` §3–4 |
 | CP9 | Minimal framework + evaluation | CONDITIONAL (brief §8 criteria) | — |
 
 ## Completed scope and grounds
@@ -64,6 +64,18 @@ Last verified pushed checkpoint: **CP6 matrix v0** = `1ddf5ec95b96e6cebb90c1983c
     24 / 29,672 times.
   - During 5 Unity-reported focus-loss intervals (`is_tracked=false`), ROS still received a 60 Hz,
     fresh-stamped, frozen pose. Nothing on the wire marks it.
+
+- **P1 pilot**: 54 Gazebo trials, synthetic OpenVR source, ROS-side consumption only.
+  - **Release.** 35–45 mm of residual motion in every arm. Servo pause or timeout does not reduce it:
+    it is downstream (controller and plant).
+  - **Cached deadman.** The app emits a 10 cm target jump under the stale grip.
+    - Re-arm on `bPoseIsValid` blocks it, but false-blocks 3/3 tracking glitches.
+    - Re-arm on action activity passes both cases → METADATA.
+  - **Recenter.** B0 moves 180/15 mm. The Spes jump guard misses the 3 cm change.
+    - The epoch gate stops the arm, and the operator must re-press.
+    - The 15-line app retrofit keeps continuity.
+  - **Confounds.** The orientation had not settled, so the angle criterion is invalid. A Servo
+    singularity e-stop masked C2 physically.
 
 ## Not verified / limits
 
