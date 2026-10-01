@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **CP2 workspace** = `5bb076dd5e58ed0a3b99accd6ee1767aab02ab22` (local == origin).
+Last verified pushed checkpoint: **CP3 OpenVR audit** = `5d4eb59438d1eedb374c0244d7d4651832a60e87` (local == origin).
 
 ## Checkpoints
 
@@ -9,8 +9,8 @@ Last verified pushed checkpoint: **CP2 workspace** = `5bb076dd5e58ed0a3b99accd6e
 |---|---|---|---|
 | CP1 | Archive the closed workspaces + preservation verification | DONE (pushed `f7c01df`) | `../archive/2026-10-01_closed_research/ARCHIVE_MANIFEST.md` |
 | CP2 | Workspace, research context, status | DONE (pushed `5bb076d`) | `docs/`, `hypotheses/CANDIDATES.md`, `audit/AUDIT_METHOD.md` |
-| CP3 | Code audit: OpenVR UR5e | DONE (this commit) | `audit/A1_OPENVR_UR5E.md` |
-| CP4 | Code audit: Quest2ROS2 | TODO | — |
+| CP3 | Code audit: OpenVR UR5e | DONE (pushed `5d4eb59`) | `audit/A1_OPENVR_UR5E.md` |
+| CP4 | Code audit: Quest2ROS2 | DONE (this commit) | `audit/A2_QUEST2ROS2.md` |
 | CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX | TODO | — |
 | CP6 | Taxonomy + defense matrix draft | TODO | — |
 | CP7 | Minimal reproduction + normal controls | TODO (design only after the audits) | — |
@@ -40,6 +40,13 @@ Last verified pushed checkpoint: **CP2 workspace** = `5bb076dd5e58ed0a3b99accd6e
     pre-change offset → H-B1 (recenter jump): HYPOTHESIS.
   - The S5 #10 absolute re-reference is not re-proposed.
 
+- **Quest2ROS2 audit** (ROS side SOURCE_CONFIRMED; the Quest app `com.Tiguin.Q2R` is closed, so NOT_VERIFIED):
+  - The messages carry no focus, tracking, origin or sequence evidence.
+  - Permission is a latched toggle, enabled at start.
+  - There is no silence timeout. The anchor and filter survive gaps (PRIOR_INTERNAL runtime).
+  - The input stamp and frame are replaced.
+  - The final controller is not in the repo.
+
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
@@ -47,8 +54,8 @@ Last verified pushed checkpoint: **CP2 workspace** = `5bb076dd5e58ed0a3b99accd6e
 
 ## Next
 
-1. Quest2ROS2 audit (`07aaf65`), path from Unity/OVR to the ROS consumer.
-2. Secondary audits: PickNik, Spes, Docker_Teleop, OpenArmX.
+1. Integrate the secondary audits (PickNik, Spes, Docker_Teleop, OpenArmX), which are running in parallel and are verified before commit.
+2. Draft the taxonomy and defense matrix.
 
 ## Blockers
 
