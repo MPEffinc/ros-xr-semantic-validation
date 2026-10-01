@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **CP3 OpenVR audit** = `5d4eb59438d1eedb374c0244d7d4651832a60e87` (local == origin).
+Last verified pushed checkpoint: **CP4 Quest2ROS2 audit** = `f40cf6ff062bc92c7458679296bdbc44dd3db1ae` (local == origin).
 
 ## Checkpoints
 
@@ -10,8 +10,8 @@ Last verified pushed checkpoint: **CP3 OpenVR audit** = `5d4eb59438d1eedb374c024
 | CP1 | Archive the closed workspaces + preservation verification | DONE (pushed `f7c01df`) | `../archive/2026-10-01_closed_research/ARCHIVE_MANIFEST.md` |
 | CP2 | Workspace, research context, status | DONE (pushed `5bb076d`) | `docs/`, `hypotheses/CANDIDATES.md`, `audit/AUDIT_METHOD.md` |
 | CP3 | Code audit: OpenVR UR5e | DONE (pushed `5d4eb59`) | `audit/A1_OPENVR_UR5E.md` |
-| CP4 | Code audit: Quest2ROS2 | DONE (this commit) | `audit/A2_QUEST2ROS2.md` |
-| CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX | TODO | — |
+| CP4 | Code audit: Quest2ROS2 | DONE (pushed `f40cf6f`) | `audit/A2_QUEST2ROS2.md` |
+| CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX, plus PickNik real-Quest reanalysis | DONE (this commit) | `audit/A3`–`A6`, `results/R0_PICKNIK_HW_REANALYSIS.md` |
 | CP6 | Taxonomy + defense matrix draft | TODO | — |
 | CP7 | Minimal reproduction + normal controls | TODO (design only after the audits) | — |
 | CP8 | Existing-defense comparison | TODO | — |
@@ -47,6 +47,24 @@ Last verified pushed checkpoint: **CP3 OpenVR audit** = `5d4eb59438d1eedb374c024
   - The input stamp and frame are replaced.
   - The final controller is not in the repo.
 
+- **Secondary audits** (delegated, lead spot-checked; SOURCE_CONFIRMED at cited lines):
+  - **PickNik.** No valid/tracked/focus field reaches ROS. `runInBackground` is on. One mutable message
+    object is reused for both controllers while ROS-TCP-Connector 0.7.0 serializes asynchronously. The
+    host side (MoveIt Pro) is NOT_VERIFIED.
+  - **Spes (WebXR).** `emulatedPosition` is never read. A null controller pose silently falls back to the
+    head pose. There is a 5 cm/35° one-sample jump guard. The clutch re-anchors on the last command.
+  - **Docker_Teleop.** `isTracked` = controller *connected*. Every hop has 0.25 s receive-time freshness.
+    The bridge streams fresh zero twists, so Servo's own timeout never trips. Re-anchoring on engage,
+    regain and reset exists.
+  - **OpenArmX.** The binding is the ASCII L/R label only. The `rate` value is fanned out to both hands.
+    A TRANSIENT_LOCAL IK override bypasses the grip deadman. A cached grip resumes after the stream
+    returns (with re-anchor).
+- **R0 reanalysis** of the PRIOR_INTERNAL real-Quest PickNik capture (new analysis, prior data):
+  - 54 % of `/left_controller_odom` messages carry `right_controller_odom`; `/tf` carries the left frame
+    24 / 29,672 times.
+  - During 5 Unity-reported focus-loss intervals (`is_tracked=false`), ROS still received a 60 Hz,
+    fresh-stamped, frozen pose. Nothing on the wire marks it.
+
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
@@ -54,8 +72,8 @@ Last verified pushed checkpoint: **CP3 OpenVR audit** = `5d4eb59438d1eedb374c024
 
 ## Next
 
-1. Integrate the secondary audits (PickNik, Spes, Docker_Teleop, OpenArmX), which are running in parallel and are verified before commit.
-2. Draft the taxonomy and defense matrix.
+1. Taxonomy and defense matrix draft (CP6).
+2. Pilot P1 on the OpenVR path: release, cached deadman vs tracking glitch, recenter. ROS-side consumption only, with equal-evidence defense comparison.
 
 ## Blockers
 
