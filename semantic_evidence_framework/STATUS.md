@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **CP4 Quest2ROS2 audit** = `f40cf6ff062bc92c7458679296bdbc44dd3db1ae` (local == origin).
+Last verified pushed checkpoint: **CP5 secondary audits** = `1f9574be6cfd3b48d46ed909dceb299450ce818e` (local == origin).
 
 ## Checkpoints
 
@@ -11,8 +11,8 @@ Last verified pushed checkpoint: **CP4 Quest2ROS2 audit** = `f40cf6ff062bc92c745
 | CP2 | Workspace, research context, status | DONE (pushed `5bb076d`) | `docs/`, `hypotheses/CANDIDATES.md`, `audit/AUDIT_METHOD.md` |
 | CP3 | Code audit: OpenVR UR5e | DONE (pushed `5d4eb59`) | `audit/A1_OPENVR_UR5E.md` |
 | CP4 | Code audit: Quest2ROS2 | DONE (pushed `f40cf6f`) | `audit/A2_QUEST2ROS2.md` |
-| CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX, plus PickNik real-Quest reanalysis | DONE (this commit) | `audit/A3`–`A6`, `results/R0_PICKNIK_HW_REANALYSIS.md` |
-| CP6 | Taxonomy + defense matrix draft | TODO | — |
+| CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX, plus PickNik real-Quest reanalysis | DONE (pushed `1f9574b`) | `audit/A3`–`A6`, `results/R0_PICKNIK_HW_REANALYSIS.md` |
+| CP6 | Taxonomy + defense matrix draft | DONE v0 (this commit) | `docs/03_TAXONOMY_AND_MATRIX.md`, `literature/COMPARATORS.md`, `literature/OPENXR_ITEMS.md` |
 | CP7 | Minimal reproduction + normal controls | TODO (design only after the audits) | — |
 | CP8 | Existing-defense comparison | TODO | — |
 | CP9 | Minimal framework + evaluation | CONDITIONAL (brief §8 criteria) | — |
@@ -72,8 +72,7 @@ Last verified pushed checkpoint: **CP4 Quest2ROS2 audit** = `f40cf6ff062bc92c745
 
 ## Next
 
-1. Taxonomy and defense matrix draft (CP6).
-2. Pilot P1 on the OpenVR path: release, cached deadman vs tracking glitch, recenter. ROS-side consumption only, with equal-evidence defense comparison.
+1. Pilot P1 on the OpenVR path: release, cached deadman vs tracking glitch, recenter. ROS-side consumption only, with equal-evidence defense comparison.
 
 ## Blockers
 
