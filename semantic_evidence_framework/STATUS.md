@@ -91,8 +91,14 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
 
 ## Next
 
-1. Pilot P1 on the OpenVR path: release, cached deadman vs tracking glitch, recenter. ROS-side consumption only, with equal-evidence defense comparison.
+1. **P2:** check, on a real OpenXR runtime (Monado 21, headless, simulated input), whether an inactive
+   action reports `changedSinceLastSync=false` across focus or input loss. This is the premise of H-A1.
+   P2 is also the first test of a runtime-side evidence path (`experiments/P2_monado_runtime_semantics/DESIGN_DRAFT.md`).
+2. If P2 succeeds, evaluate runtime-side evidence plus command linkage for ≥ 2 unmodified apps, against the go/kill criteria in `docs/05`.
+3. Optional: rerun C2M from a start pose away from the singularity region, for a physical-level stale-deadman consequence.
 
 ## Blockers
 
-None for the code audits. Experiments are limited to synthetic inputs and simulation.
+- No headset and no SteamVR. Real Quest/ALVR/SteamVR hops stay NOT_VERIFIED.
+- Closed frontends (Quest2ROS2 APK, OpenArmX APK) and a closed host (PickNik / MoveIt Pro) bound the audit scope.
+- Host load from other work's containers (about 1.5) is recorded, not removed.
