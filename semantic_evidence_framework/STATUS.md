@@ -1,15 +1,15 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **CP1 archive** = `f7c01df084d41a9ce7923f4c26dac4675586b3b0` (local == origin).
+Last verified pushed checkpoint: **CP2 workspace** = `5bb076dd5e58ed0a3b99accd6ee1767aab02ab22` (local == origin).
 
 ## Checkpoints
 
 | CP | Scope | State | Evidence |
 |---|---|---|---|
 | CP1 | Archive the closed workspaces + preservation verification | DONE (pushed `f7c01df`) | `../archive/2026-10-01_closed_research/ARCHIVE_MANIFEST.md` |
-| CP2 | Workspace, research context, status | DONE (this commit) | `docs/`, `hypotheses/CANDIDATES.md`, `audit/AUDIT_METHOD.md` |
-| CP3 | Code audit: OpenVR UR5e | TODO | — |
+| CP2 | Workspace, research context, status | DONE (pushed `5bb076d`) | `docs/`, `hypotheses/CANDIDATES.md`, `audit/AUDIT_METHOD.md` |
+| CP3 | Code audit: OpenVR UR5e | DONE (this commit) | `audit/A1_OPENVR_UR5E.md` |
 | CP4 | Code audit: Quest2ROS2 | TODO | — |
 | CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX | TODO | — |
 | CP6 | Taxonomy + defense matrix draft | TODO | — |
@@ -30,6 +30,16 @@ Last verified pushed checkpoint: **CP1 archive** = `f7c01df084d41a9ce7923f4c26da
   - The host has Monado 21 and the OpenXR loader 1.0.20, but no headset and no robot.
   - Three containers from other work are running and add concurrent load (`docs/00_ENVIRONMENT.md`).
 
+- **OpenVR UR5e audit** (SOURCE_CONFIRMED unless noted):
+  - Grip release publishes nothing, so Servo tracks the last target for up to `incoming_command_timeout` = 0.5 s.
+  - ALVR forwards button *edges* only. Under the OpenXR inactive-action rule (`changedSinceLastSync=false`),
+    a release during focus loss can never be forwarded. The driver also ignores buttons while the pose is
+    invalid. → H-A1 (cached deadman): HYPOTHESIS, since the SteamVR and Quest runtime hops are NOT_VERIFIED.
+  - Tracked vs. valid is lost in ALVR (`Running_OK` constant).
+  - An ALVR recenter applies a new transform at receipt and ignores `changeTime`. The app subtracts the
+    pre-change offset → H-B1 (recenter jump): HYPOTHESIS.
+  - The S5 #10 absolute re-reference is not re-proposed.
+
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
@@ -37,8 +47,8 @@ Last verified pushed checkpoint: **CP1 archive** = `f7c01df084d41a9ce7923f4c26da
 
 ## Next
 
-1. OpenVR UR5e audit (`openvr_ur5e_jazzy@170dad5`), path from OpenVR API to Servo.
-2. Quest2ROS2 audit (`07aaf65`), path from Unity/OVR to the ROS consumer.
+1. Quest2ROS2 audit (`07aaf65`), path from Unity/OVR to the ROS consumer.
+2. Secondary audits: PickNik, Spes, Docker_Teleop, OpenArmX.
 
 ## Blockers
 
