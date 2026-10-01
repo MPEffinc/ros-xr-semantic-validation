@@ -5,6 +5,7 @@ This repository was reorganized on 2026-09-29 and again on 2026-10-01
 
 | Location | What it is |
 |---|---|
+| [`semantic_evidence_framework/`](semantic_evidence_framework/README.md) | **Active** (2026-10-01–): acquiring/linking applicability evidence for XR→ROS commands and enforcing it at the executing consumer across transitions. Current state: [`STATUS.md`](semantic_evidence_framework/STATUS.md). |
 | [`archive/2026-10-01_closed_research/`](archive/2026-10-01_closed_research/ARCHIVE_MANIFEST.md) | Closed workspaces moved on 2026-10-01 (old→new map, preservation checks): |
 | ↳ [`authority_continuity/`](archive/2026-10-01_closed_research/authority_continuity/README.md) | **Closed** 2026-09-29: *Security Consistency Across Dynamic XR-ROS Control Authority and Robot Execution* — IMPLEMENTATION_GAP_ONLY. |
 | ↳ [`xr_demo_integrity/`](archive/2026-10-01_closed_research/xr_demo_integrity/README.md) | **Closed** 2026-09-30: *Integrity of XR-Teleoperation Demonstrations for Robot Learning* — NO_REAL_THREAT_BOUNDARY ([final report](archive/2026-10-01_closed_research/xr_demo_integrity/results/FINAL_REPORT.md)). |
