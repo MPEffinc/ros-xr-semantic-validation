@@ -84,6 +84,12 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
 - **Framework decision:** not built. A ROS-side model cannot remove the source-side evidence-delivery
   edits. The next gate is an independent runtime-side evidence path (P2).
 
+- **P2 (Monado)**: BLOCKED_ENV for the main question, because the headless session never reaches
+  FOCUSED.
+  - Observed on this runtime build: while not focused, `xrSyncActions` returns `NOT_FOCUSED`, yet
+    actions report `isActive=1` with live state. Source: action update ignores focus.
+  - Consequence: the conformance of the evidence source itself is a trust condition.
+
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
@@ -91,11 +97,9 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
 
 ## Next
 
-1. **P2:** check, on a real OpenXR runtime (Monado 21, headless, simulated input), whether an inactive
-   action reports `changedSinceLastSync=false` across focus or input loss. This is the premise of H-A1.
-   P2 is also the first test of a runtime-side evidence path (`experiments/P2_monado_runtime_semantics/DESIGN_DRAFT.md`).
-2. If P2 succeeds, evaluate runtime-side evidence plus command linkage for ≥ 2 unmodified apps, against the go/kill criteria in `docs/05`.
-3. Optional: rerun C2M from a start pose away from the singularity region, for a physical-level stale-deadman consequence.
+1. P2 continuation: a Vulkan-bound (non-headless) OpenXR client on the null compositor, to reach FOCUSED and test the inactive-action edge rule across real focus or input transitions.
+2. If that works, evaluate a runtime-side evidence path plus command linkage for ≥ 2 unmodified apps, against the go/kill criteria in `docs/05`.
+3. Optional: C2M from a start pose outside the singularity region (physical-level stale-deadman consequence).
 
 ## Blockers
 
