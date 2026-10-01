@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **CP5 secondary audits** = `1f9574be6cfd3b48d46ed909dceb299450ce818e` (local == origin).
+Last verified pushed checkpoint: **CP6 matrix v0** = `1ddf5ec95b96e6cebb90c1983c2a0cd672ee97de` (local == origin).
 
 ## Checkpoints
 
@@ -12,8 +12,8 @@ Last verified pushed checkpoint: **CP5 secondary audits** = `1f9574be6cfd3b48d46
 | CP3 | Code audit: OpenVR UR5e | DONE (pushed `5d4eb59`) | `audit/A1_OPENVR_UR5E.md` |
 | CP4 | Code audit: Quest2ROS2 | DONE (pushed `f40cf6f`) | `audit/A2_QUEST2ROS2.md` |
 | CP5 | Code audit: PickNik, Spes, Docker_Teleop, OpenArmX, plus PickNik real-Quest reanalysis | DONE (pushed `1f9574b`) | `audit/A3`–`A6`, `results/R0_PICKNIK_HW_REANALYSIS.md` |
-| CP6 | Taxonomy + defense matrix draft | DONE v0 (this commit) | `docs/03_TAXONOMY_AND_MATRIX.md`, `literature/COMPARATORS.md`, `literature/OPENXR_ITEMS.md` |
-| CP7 | Minimal reproduction + normal controls | TODO (design only after the audits) | — |
+| CP6 | Taxonomy + defense matrix draft | DONE v0 (pushed `1ddf5ec`) | `docs/03_TAXONOMY_AND_MATRIX.md`, `literature/COMPARATORS.md`, `literature/OPENXR_ITEMS.md` |
+| CP7 | Minimal reproduction + normal controls | P1 protocol FROZEN (this commit); runs pending | `experiments/P1_openvr_evidence/PROTOCOL.md` |
 | CP8 | Existing-defense comparison | TODO | — |
 | CP9 | Minimal framework + evaluation | CONDITIONAL (brief §8 criteria) | — |
 
