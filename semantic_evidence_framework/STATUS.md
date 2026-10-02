@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-02 (KST). **Claim scope was corrected on 2026-10-02; see `docs/06_CLAIM_SCOPE_CORRECTION.md`.** Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **F1 linkage freeze** = `d25c64ebc64c3ec605a0ce9144da04bc3ab38afe` (local == origin).
+Last verified pushed checkpoint: **F1 results** = `4359e8bb26b8bcd8fcda4a7f9ce297382d99e7cf` (local == origin).
 
 ## Checkpoints
 
@@ -105,6 +105,14 @@ Last verified pushed checkpoint: **F1 linkage freeze** = `d25c64ebc64c3ec605a0ce
   - **H-A1 premise confirmed on Monado:** a release inside the inactive window is never forwarded
     under the edge-only rule.
   - **Expansion on hold** (`docs/05` update).
+
+- **F1 claim cleanup (post-hoc, `results/F2_CLAIM_CLEANUP.md`):**
+  - Runtime-state collection without app changes is shown. Checking the generation interval without
+    app changes is **not** shown.
+  - Freshness alone explains the K2/K3b-replay/K3c blocks.
+  - With equal freshness, arrival state matches the interval check except 6 K3a commands.
+  - Boundary-inclusive totals: C_INTERVAL passed 11 should-block commands, all within 20 ms of a
+    transition.
 
 ## Not verified / limits
 
