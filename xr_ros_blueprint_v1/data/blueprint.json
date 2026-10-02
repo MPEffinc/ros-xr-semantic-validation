@@ -14,7 +14,7 @@
       "matrix": 99,
       "limitations": 48,
       "prior_experiments": 7,
-      "research_plan": 7,
+      "research_plan": 8,
       "search_log": 15,
       "seed_inventory": 94
     },
@@ -4587,6 +4587,15 @@
         "entry_gate": "2개 이상 이질적 실제 경로; strongest per-app fixes; baseline frameworks",
         "output": "prototype+heldout case의 수정량·policy reuse·latency·false block·safety trace",
         "decision_rule": "method gap 없어도 integration 이득 입증되면 시스템 기여 후보; 이득 없으면 matrix 결과로 보존"
+      },
+      {
+        "id": "W08",
+        "track": "R01 scoped M39 pilot (draft)",
+        "horizon": "after pre-flight qualification",
+        "work": "B0 vs strongest per-app fixes (app re-anchor to measured EE + fresh press + controller hold) vs ROS-side transition component (hold + suppression + re-basing, no app change) on the real UR5e path; 5 conditions x 3 reps",
+        "entry_gate": "pre-flight: start pose/axis with no singularity status and settled orientation; B1 diff and C1 component unit-tested on recorded F3 streams",
+        "output": "confound-free physical stop/resume outcomes; information boundary for fresh-press; integration cost",
+        "decision_rule": "reports/R01 §10; a system claim additionally needs a second real path (BLOCKED_ENV)"
       }
     ],
     "search_log": [
