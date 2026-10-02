@@ -6,7 +6,7 @@
     "pinned_commit": "eff464c9b1011a7646ec80e18f4e771028b89cc5",
     "source_inventory": "XR_ROS_Literature_Inventory_Final_2026-10-01(1).xlsx",
     "counts": {
-      "sources": 47,
+      "sources": 49,
       "taxonomy": 15,
       "flows": 11,
       "defenses": 14,
@@ -635,6 +635,32 @@
         "taxonomy_ids": "T3,T5",
         "checked_on": "2026-10-03",
         "limitations_review": "NOT_EXTRACTED"
+      },
+      {
+        "id": "L42",
+        "title": "ROS 2 documentation: About Quality of Service settings (Lifespan/Deadline)",
+        "kind": "OFFICIAL_DOC",
+        "edition": "ros2_documentation branch jazzy; blob a3bef6c9",
+        "read_level": "SECTION_READ",
+        "url": "https://github.com/ros2/ros2_documentation/blob/jazzy/source/Concepts/Intermediate/About-Quality-of-Service-Settings.rst",
+        "locator": "QoS policies list: Deadline, Lifespan",
+        "claim": "Lifespan bounds publish-to-reception time; it cannot detect stale content republished with a new publish time",
+        "taxonomy_ids": "T4",
+        "checked_on": "2026-10-03",
+        "limitations_review": "EXTRACTED"
+      },
+      {
+        "id": "L43",
+        "title": "Robotic teleoperation in hazardous environments: review of feedback architectures, stability and learning-based adaptation",
+        "kind": "PAPER",
+        "edition": "OAE Complex Engineering Systems 2026 (ces.2026.07)",
+        "read_level": "SEARCH_EXCERPT",
+        "url": "https://www.oaepublish.com/articles/ces.2026.07",
+        "locator": "search excerpt only",
+        "claim": "in delay-tolerant local rendering, model mismatch and update transients dominate over raw delay (excerpt)",
+        "taxonomy_ids": "T9,T14",
+        "checked_on": "2026-10-03",
+        "limitations_review": "NOT_EXTRACTED"
       }
     ],
     "taxonomy": [
@@ -1033,14 +1059,15 @@
         "limitation_ids": "U26",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02",
+        "checked_on": "2026-10-03",
         "audit_protection": "PARTIAL",
         "audit_attacker_split": "YES",
         "audit_basis": "PRIOR_TRACE(R0)+CODE(A3)+REAL_APP(F3)",
         "audit_verified": "R0: 5 unfocused intervals with fresh-stamped frozen 60 Hz stream (prior data, new analysis); F3: real UR5e app stops itself",
         "audit_pending": "a runnable app that keeps streaming while unfocused",
         "audit_issues": "instance of M12 (fresh stamp on stale content) for the focus cause; keep as linked, not independent count",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C01"
       },
       {
         "id": "M3",
@@ -1068,7 +1095,8 @@
         "audit_verified": "P1/P1b: 27.9-42.4 mm residual (medians 32.8-40.4) with Servo-level stop; controller hold 1.0 mm (3/3)",
         "audit_pending": "pose/speed/load dependence; deceleration-to-hold option; real robot",
         "audit_issues": "findings text \"33-45 mm\" does not match P1/P1b data (27.9-42.4 mm); S3 role unclear (who induces release)",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C01"
       },
       {
         "id": "M4",
@@ -1096,7 +1124,8 @@
         "audit_verified": "command level: stale-grip resume reproduced; cause-aware re-arm passes C2+C3 (P1); edge rule confirmed on Monado (K6)",
         "audit_pending": "physical consequence (masked by Servo singularity stop in P1 C2 and P1b C2M); ALVR/Quest/SteamVR real chain",
         "audit_issues": "\"solved\" holds at command level only; physical not interpretable; Quest premise NOT_VERIFIED",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C01"
       },
       {
         "id": "M5",
@@ -1111,20 +1140,21 @@
         "judgment": "KNOWN_METHOD",
         "evidence_level": "PRIOR_INTERNAL_AND_F3",
         "findings": "기존 S5 재기준화와 같은 클래스; F3 target 35 mm 점프",
-        "next_step": "기존 re-anchor+fresh press를 강한 baseline으로 두고 종단간 확인",
+        "next_step": "execute re-anchor-to-measured-EE + fresh press as a per-app baseline on the real UR5e path (R01 draft), confound-free pose",
         "priority": "P1",
         "source_ids": "L30,I01,I04,L40,L41",
         "limitation_ids": "U26,U46",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02",
+        "checked_on": "2026-10-03",
         "audit_protection": "PARTIAL",
         "audit_attacker_split": "PARTIAL",
         "audit_basis": "PRIOR_INTERNAL(S5 #10)+REAL_APP(F3)+CODE",
         "audit_verified": "F3: 35 mm command-target jump at resume in 6/6 trials; S5 classified APPLICATION",
         "audit_pending": "strongest fix (re-anchor to current EE + fresh press) never executed on a real app; physical effect masked (F3 singularity)",
         "audit_issues": "\"KNOWN_METHOD\" is by design argument; execution of the fix absent",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C01"
       },
       {
         "id": "M6",
@@ -1152,7 +1182,8 @@
         "audit_verified": "P1: B0 180/15 mm; epoch gate 0 mm (1 leaked command in 1/3); app retrofit 0 mm; jump guard misses 3 cm",
         "audit_pending": "real headset recenter; orientation outcomes (P1 angle criterion confounded by unsettled orientation)",
         "audit_issues": "findings omit the P1 angle-criterion confound; position results only",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C01"
       },
       {
         "id": "M7",
@@ -1307,20 +1338,21 @@
         "judgment": "CANDIDATE",
         "evidence_level": "CODE_AUDIT_AND_SURROGATE",
         "findings": "7개 감사 경로에서 generation-interval 전제 무수정 미성립",
-        "next_step": "실제 한 앱의 sample·command 연결 측정; 수정 수용 조건 구분",
+        "next_step": "second candidate (C02): modified-app sample-time stamping + age check on the F3 stack; record inferred-pose and button residuals",
         "priority": "P1",
-        "source_ids": "L19,I03,I06,L38",
+        "source_ids": "L19,I03,I06,L38,L42",
         "limitation_ids": "U28,U48",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02",
+        "checked_on": "2026-10-03",
         "audit_protection": "PARTIAL",
         "audit_attacker_split": "PARTIAL",
         "audit_basis": "CODE_AUDIT(I06)+SURROGATE(F1/F2)",
         "audit_verified": "7 audited apps: none stamps sample time unmodified (SOURCE)",
         "audit_pending": "one real app with sample-time stamping change; clock-domain conversion",
         "audit_issues": "parent of M2; F1 freshness confound documented",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C02"
       },
       {
         "id": "M13",
@@ -1587,20 +1619,21 @@
         "judgment": "CANDIDATE",
         "evidence_level": "RESEARCH_INFERENCE",
         "findings": "정직 앱은 optimistic version check 가능; 실제 표시/거짓 보고는 별도",
-        "next_step": "목표 지정형 앱에서 scene version baseline 먼저 적용",
+        "next_step": "BLOCKED_ENV until a target-selection XR->ROS app or instrumentable renderer exists (C02)",
         "priority": "P1",
-        "source_ids": "L06,L27,L28",
+        "source_ids": "L06,L27,L28,L43",
         "limitation_ids": "U02",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02",
+        "checked_on": "2026-10-03",
         "audit_protection": "GENERIC",
         "audit_attacker_split": "PARTIAL",
         "audit_basis": "RESEARCH_INFERENCE(L06,L27,L28)",
         "audit_verified": "none executed",
         "audit_pending": "a target-selection XR->ROS app; scene-version baseline",
         "audit_issues": "no audited implementation is target-selection based",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C02"
       },
       {
         "id": "M23",
@@ -2063,20 +2096,21 @@
         "judgment": "CANDIDATE",
         "evidence_level": "CROSS_CASE_HYPOTHESIS",
         "findings": "개별 해결 있음; 공통 manager의 이득 아직 미입증",
-        "next_step": "2개 실제 경로의 완전한 per-app fix vs 공통 manager 동일 조건 비교",
+        "next_step": "R01 draft: per-app strongest fixes vs ROS-side transition component on the UR5e path, pre-qualified pose; freeze after pre-flight",
         "priority": "P1",
         "source_ids": "L18,L20,L21,L30,I04,L37,L40,L41",
         "limitation_ids": "U15,U16,U17,U18,U20,U26,U31,U32,U33,U34,U44,U45,U46",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02",
+        "checked_on": "2026-10-03",
         "audit_protection": "PARTIAL",
         "audit_attacker_split": "PARTIAL",
         "audit_basis": "CROSS_CASE(P1/P1b/F3)+CODE",
         "audit_verified": "components executed separately (M3 hold, M4 re-arm, M6 epoch); combination never executed; F3 resume jump unmitigated",
         "audit_pending": "combined contract on a real path without singularity confound",
         "audit_issues": "umbrella of M3-M6; must not count as an independent finding; S5 attacker listed without scenario",
-        "audit_checked_on": "2026-10-03"
+        "audit_checked_on": "2026-10-03",
+        "review_doc": "cases/C01; reports/R01 (draft protocol)"
       },
       {
         "id": "M40",

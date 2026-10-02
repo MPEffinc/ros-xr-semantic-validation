@@ -74,6 +74,20 @@ DB의 검증과 CSV 재생성 도구는 scripts/refresh_views.py다. 실제 새 
 - clutch/indexing 재기준화는 원격조작의 확립된 관행이다(L41, 검색 발췌 수준).
 - 보호 조건이 수치 정책으로 정해진 사례는 40개 중 4개다.
 
+## 5b. 2026-10-03 상세 검토의 사실과 미해결 질문
+
+- 재개 정책은 구현마다 다르다.
+  - 자동 재개: OpenArmX, Docker reset 경로, OpenVR의 pose 무효 경로
+  - edge 조건 재개: OpenVR release 경로, Quest2ROS2, Spes
+  - 재기준점: 현재 tf EE(Quest2ROS2), 마지막 명령(Spes), 새 raw pose(OpenArmX), 절대 상수(OpenVR)
+- ROS 2 Lifespan QoS는 발행→수신 시간을 잰다. 다시 발행된 묵은 값을 판정하지 못한다(L42).
+- 미해결 질문:
+  - 개별 수정들(hold, unpause, 앱 재기준화) 사이의 순서
+  - 앱 밖에서 '새 누름'을 관측할 수 있는가(버튼이 wire에 실리는 구현에 한정)
+  - hold 뒤 정착 오차
+  - 작업별 재개 정책 선언
+  - 공통 전환 구성요소의 통합 비용 이득(재기준화에는 앱별 명령 의미 adapter가 필요)
+
 ## 6. 근거 해석의 공통 기준
 
 - SDK 제공 가능성, 앱의 실제 읽기, wire 전달, ROS 소비는 각각 다른 확인 단계다. 검색에서 못 찾은 경우는 부재 증명과 구분된다.
