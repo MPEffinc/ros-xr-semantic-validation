@@ -6,6 +6,9 @@ repeated edits".
 
 ## Recurring requirements (each seen in at least 3 structurally different implementations)
 
+In the column "Implementations where it is unmet", *unmet* refers to the ROS-facing interface (wire
+and consumer). It does not mean the app failed to read an available field. See `06_CLAIM_SCOPE_CORRECTION.md`.
+
 | R | Requirement | Implementations where it is unmet |
 |---|---|---|
 | R1 | Deliver the tracked state (not just valid or connected) per sample | all 6 |
@@ -29,7 +32,8 @@ repeated edits".
 ## Observations
 
 1. **Six implementations give five different transport formats and five different ROS-side code
-   sites.** Each edit to deliver R1–R3 lands in different code. The S5 conclusion (PRIOR_INTERNAL) was
+   sites.** Delivery would also require the frontend to *read* the field first, which is confirmed
+   absent or not found in most open frontends. Each edit to deliver R1–R3 lands in different code. The S5 conclusion (PRIOR_INTERNAL) was
    that once the evidence is delivered, the ROS-side check is a few lines. So the repeated cost is in
    *delivery and linking*, not in the check.
 2. **Two of the six frontends are closed binaries** (Quest2ROS2, OpenArmX), and PickNik's host is

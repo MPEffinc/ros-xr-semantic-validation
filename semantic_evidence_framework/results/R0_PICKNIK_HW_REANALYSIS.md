@@ -75,8 +75,8 @@ Q1 contamination.
 - This is the real-device counterpart of the evidence-delivery loss recorded in audits A1 (ALVR), A2
   (Quest2ROS2: fields absent) and A3 (PickNik: fields absent, `runInBackground: 1`).
 
-**Classification.** METADATA. The evidence exists at the source and is dropped at the app→wire
-boundary.
+**Classification.** METADATA. The runtime/engine provides the evidence and our sideband instrumentation could read it. The app's
+own code does not read it (not found in search), and the wire does not carry it. (Wording corrected 2026-10-02; see `docs/06`.)
 
 - The conventional remedy has S5 precedent and is PRIOR_INTERNAL, NO_METHOD_GAP: transport
   `is_tracked`/`focused`, then gate on them.

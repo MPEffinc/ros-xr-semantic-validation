@@ -1,13 +1,13 @@
 # 05 — Framework expansion decision (brief §8), 2026-10-01
 
-**Decision: do not build a general framework yet.** The next step is limited to an **independent
+**Decision: do not build a general framework yet.** (Scope of "solved": `06_CLAIM_SCOPE_CORRECTION.md`.) The next step is limited to an **independent
 evidence-path feasibility study** (P2, Monado). It is a precondition for any framework claim.
 
 ## Evidence for each §8 condition
 
 | Condition | Status | Evidence |
 |---|---|---|
-| 1. The same evidence/transition/enforcement requirement recurs across structurally different implementations | **Met at source level.** R1–R5 (tracked, activity/cause, recenter epoch, device identity, sample time) are lost in all 6 audited implementations, across 5 transport formats. | `04_RETROFIT_SITES.md`; audits A1–A6; R0 (real-device data for R2 and R4) |
+| 1. The same evidence/transition/enforcement requirement recurs across structurally different implementations | **Met for the ROS-facing interface.** R1–R5 (tracked, activity/cause, recenter epoch, device identity, sample time) are absent from the wire/consumer in all 6 audited implementations, across 5 transport formats. API provision is known for 4/6; app reading is confirmed only in a few cases (`06`). | `04_RETROFIT_SITES.md`; audits A1–A6; R0 (real-device data for R2 and R4) |
 | 2. Manual retrofits need implementation-specific, repeated edits | **Met at source level.** Each fix lands at a different site: ALVR client, Unity script, browser JS, UDP bridge, ROS node. 2 of 6 frontends are closed binaries. OpenVR legacy has no slot for R2/R3. The app-side recenter fix (EPOCH_A, 15 lines) needs app-specific offset semantics. | `04`; P1 §3 |
 | 3. A common model gives the same guarantee with fewer edits, lower latency or fewer false blocks | **Not shown.** | see below |
 
@@ -52,20 +52,24 @@ each app**, through a path the app cannot rewrite:
 3. It achieves the P1 REARM_C / EPOCH_G guarantees **with fewer per-implementation edits** than
    delivering the fields app by app.
 
-**Kill criteria:**
+**Kill criteria** (revised 2026-10-02):
 
-- The runtime cannot expose the facts headless or independently.
+- A single environment failure, such as one headless Monado build, does **not** kill the path.
+  The path is killed only if the evidence cannot be collected independently in any feasible runtime
+  configuration that the target apps actually run on.
+- Collecting state alone is not success: it must be linked to commands at a stated guarantee level.
 - The linkage requires per-app edits equal to direct delivery.
 
-## Kept as matrix results (solved cases)
+## Kept as matrix results
 
-| Case | Solution |
-|---|---|
-| M1 / M2 | transport + check (S5) |
-| M3 | controller-level hold (P1b) |
-| M4 | cause-aware re-arm *given* activity evidence (P1) |
-| M6 | epoch gate or app retrofit *given* an epoch (P1) |
-| M7 | stamped tf lookup |
-| M8 | per-publish allocation (R0, code) |
-| M11 | QoS/permission/timeout |
-| M15 | standard authentication |
+| Case | Solution | Executed? |
+|---|---|---|
+| M1 | transport + check | PRIOR_INTERNAL (S5) |
+| M2 (frozen stream) | transport of activity + check | **not executed** |
+| M3 | controller-level hold | P1b |
+| M4 | cause-aware re-arm *given* activity evidence | P1 (command level) |
+| M6 | epoch gate or app retrofit *given* an epoch | P1 |
+| M7 | stamped tf lookup | not executed |
+| M8 | per-publish allocation | not executed (R0 shows the defect; the fix is untested) |
+| M11 | QoS/permission/timeout | not executed |
+| M15 | standard authentication | not executed |

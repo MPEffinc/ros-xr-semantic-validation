@@ -110,7 +110,7 @@ From `p1_posthoc.json`, r1; r2 and r3 are similar:
 | M4 cached deadman | Command-level reproduction. Solved by a conventional re-arm **if** action activity is delivered; with ALVR-level evidence: false blocks or residual permission. | **METADATA** |
 | M6 recenter | B0 moves 180 / 15 mm. The jump guard misses small changes and false-blocks fast motion. An epoch makes both a gate and an app retrofit work. | **METADATA** (+ app retrofit is implementation-specific) |
 
-**No method gap was found.** Every failure is closed by an existing mechanism once the relevant evidence
+**No method gap was found** *in the executed cases* (M3, M4 and M6 on this path; scope in `docs/06`). Every executed failure is closed by an existing mechanism once the relevant evidence
 is delivered. The recurring cost is delivering the evidence, which `docs/04_RETROFIT_SITES.md` places
 at a different code site in every implementation.
 

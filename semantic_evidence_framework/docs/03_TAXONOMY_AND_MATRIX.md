@@ -7,7 +7,7 @@
 - the R0 reanalysis of prior real-Quest data;
 - S5 results (PRIOR_INTERNAL).
 
-**Status of cells.** Cells are draft. "?" means NOT_VERIFIED and is never gap evidence. No pilot
+**Status of cells.** Cells are draft. The "Expressible" column is a design statement. Only M3, M4 and M6 (P1/P1b) and the S5 rows were executed; see `06_CLAIM_SCOPE_CORRECTION.md`. "?" means NOT_VERIFIED and is never gap evidence. No pilot
 result of this study is included yet. P1 will fill rows T2, T3 and T5.
 
 ## 1. Taxonomy (meaning and transition conditions)
@@ -64,7 +64,7 @@ Columns follow brief §5:
 | # | Item | Need | Avail | Src / trust | Expressible (existing) | Handled | Det / Block | Where / bypass | Cost | Level |
 |---|---|---|---|---|---|---|---|---|---|---|
 | M1 | Tracking-invalid pose drives the robot (T1) | tracked flag per sample | lost in 5/6 implementations (only Docker sends a bool, meaning *connected*) | runtime → app; app-reported | **yes**: field transport plus a direct check or monitor (S5 #2/#3, NO_METHOD_GAP) | no (all six) | block if gated before the consumer | gate before the consumer; bypass = any app that drops or forges the field (A3 out of scope) | 0.1–0.6 ms decision (S5) | SOURCE_CONFIRMED (delivery); PRIOR_INTERNAL (defense) |
-| M2 | Focus loss leaves a fresh-looking frozen stream (T2) | focus / action-active | exists at the source; **not on the wire** in any of the six | runtime → app; **trust condition: runtime conformance** (Monado e26a272c1 reports `isActive=1` while not focused; only the `xrSyncActions` result says NOT_FOCUSED, P2) | **yes** if delivered (same as M1). Without it, a frozen-pose heuristic false-blocks a stationary hand. | no | — | gate | ? | SOURCE_CONFIRMED; **R0** (real-device data shows a 60 Hz frozen stream with fresh stamps) |
+| M2 | Focus loss leaves a fresh-looking frozen stream (T2) | focus / action-active | provided by the API where known (`06`); **not on the wire** in any of the six | runtime → app; **trust condition: runtime conformance** (Monado e26a272c1 reports `isActive=1` while not focused; only the `xrSyncActions` result says NOT_FOCUSED, P2) | **yes** if delivered (same as M1). Without it, a frozen-pose heuristic false-blocks a stationary hand. | no | — | gate | ? | SOURCE_CONFIRMED; **R0** (real-device data shows a 60 Hz frozen stream with fresh stamps) |
 | M3 | Release leaves motion until the consumer timeout (T3) | deadman level at the consumer | level delivered (OpenVR) | app | yes: hold/pause on release, or a shorter timeout | partial (Servo 0.5 s timeout) | block of *new* commands; the executing target persists ≤ timeout | Servo; none | Servo-level pause/timeout do **not** reduce 35–45 mm of residual motion: it is downstream (JTC + plant lag). **Controller-level hold (JTC one-point at measured state): 1 mm, 3/3 (P1b).** | EXPERIMENT_CONFIRMED (P1, synthetic source) |
 | M4 | Cached deadman across deactivation (T3 × T2) | deadman level **and** whether an inactive interval intervened | ALVR forwards edges only; the spec forbids an edge across inactivity → the level is stale | ALVR client | **yes**: (a) release-on-inactive at the source (1 site); (b) re-arm after an interruption at the ROS side (S5 R_EXPLICIT) | no | block (re-arm) | ALVR client or ROS gate | (b) without the cause evidence: false block 3/3 on a 100 ms glitch; with action activity: 0 forwarded on C2 and full progress on C3 | EXPERIMENT_CONFIRMED at command level (P1); premise (SteamVR/Quest stale grip) NOT_VERIFIED; physical C2/C2M masked by a Servo singularity stop (P1, P1b) |
 | M5 | Resume with an old anchor (T5 × T3) | re-anchor on resume | — | app | yes: re-anchor on engage (S5 #10) | Quest2ROS2 on toggle only; Docker/OpenArmX/Spes yes; OpenVR no | — | app | — | PRIOR_INTERNAL (APPLICATION); **not re-proposed** |
@@ -81,8 +81,10 @@ Columns follow brief §5:
 
 ## 4. Patterns the draft already shows (to be tested, not assumed)
 
-1. **The evidence exists at the source but is dropped at the app→wire or middleware boundary.** This
-   holds for T1, T2, T5-epoch and T4-stamp in essentially every implementation audited. Where it is
+1. **The ROS-facing interface lacks the evidence** (T1, T2, T5-epoch, T4-stamp) in all 6 implementations.
+   This is SOURCE_CONFIRMED from the message definitions. That the frontend API *provides* the evidence is
+   documented for the 4 open frontends. That the app *reads* it is confirmed only in a few cases
+   (`06_CLAIM_SCOPE_CORRECTION.md`). Where it is
    delivered, S5 shows that ordinary checks suffice (PRIOR_INTERNAL).
 2. **The cause is lost along with the field.** Several distinct causes (deactivation, tracking loss,
    disconnect) collapse onto one signal (`bPoseIsValid`, silence, or a frozen stream). A ROS-side

@@ -1,6 +1,6 @@
 # STATUS — semantic_evidence_framework
 
-Last update: 2026-10-01 (KST). Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
+Last update: 2026-10-02 (KST). **Claim scope was corrected on 2026-10-02; see `docs/06_CLAIM_SCOPE_CORRECTION.md`.** Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
 Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c5ccf7567827` (local == origin).
 
 ## Checkpoints
@@ -81,7 +81,7 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
   - A controller-level hold stops the release motion: 1 mm vs 33–35 mm for B0 and Servo pause.
   - The stale-permission commands reached Servo again (225/trial). The physical move was refused by
     the Servo singularity hard stop, which is configuration-dependent and not credited.
-- **Framework decision:** not built. A ROS-side model cannot remove the source-side evidence-delivery
+- **Framework decision:** not built (decision as of 2026-10-01; the 2026-10-02 feasibility study is in progress). A ROS-side model cannot remove the source-side evidence-delivery
   edits. The next gate is an independent runtime-side evidence path (P2).
 
 - **P2 (Monado)**: BLOCKED_ENV for the main question, because the headless session never reaches
@@ -93,7 +93,7 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
-- Whether Monado can run headless with a simulated device on this host is NOT_VERIFIED.
+- Monado 21 starts headless with the `remote` driver on this host. Why the headless session stays in READY is under investigation; the `XR_MND_headless` text says it should progress without a frame loop.
 
 ## Next
 
