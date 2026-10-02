@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-02 (KST). **Claim scope was corrected on 2026-10-02; see `docs/06_CLAIM_SCOPE_CORRECTION.md`.** Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **F1 results** = `4359e8bb26b8bcd8fcda4a7f9ce297382d99e7cf` (local == origin).
+Last verified pushed checkpoint: **F2 protocol freeze** = `f3292ee54d94e901f46f2cc27e33657ba79789a2` (local == origin).
 
 ## Checkpoints
 
@@ -113,6 +113,15 @@ Last verified pushed checkpoint: **F1 results** = `4359e8bb26b8bcd8fcda4a7f9ce29
   - With equal freshness, arrival state matches the interval check except 6 K3a commands.
   - Boundary-inclusive totals: C_INTERVAL passed 11 should-block commands, all within 20 ms of a
     transition.
+
+- **F2 matched comparison** (27 runs, stand-in app, equal freshness for all arms):
+  - N1: 0 false blocks for every arm.
+  - The interval check adds protection only for mid-only interruptions (M1 S_life: GEN_ARR 39/75 →
+    INTERVAL 0/75) and for 5 ms windows.
+  - Generation + arrival state handles the "generated while inactive" case.
+  - Duplicates and reverse arrivals are caught only by the stamp-order check.
+  - With 30 ms evidence delay, every state arm lets 6 commands through. With evidence older than
+    E, every arm fails closed.
 
 ## Not verified / limits
 
