@@ -1,7 +1,3 @@
-> **2026-10-02 correction pointer.** The F1 comparison applied the 200 ms command-freshness limit unequally across arms. Most of the
-> late/replay blocking is explained by freshness. Boundary-inclusive totals and the decomposition are in `F2_CLAIM_CLEANUP.md`.
-> The table below is the original frozen-analysis output.
-
 # F1 linkage results — runtime-side input-activity evidence linked to ROS commands (2026-10-02)
 
 - **Protocol:** `experiments/F1_independent_evidence/PROTOCOL_LINKAGE.md`, frozen at commit `d25c64e`.
