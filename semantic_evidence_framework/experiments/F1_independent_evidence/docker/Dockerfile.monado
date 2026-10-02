@@ -1,0 +1,19 @@
+# F1: unmodified Monado main (pinned) + lavapipe Vulkan, on the same ROS 2 Jazzy base as the P1 testbed.
+FROM openvr-jazzy-sim:local
+ARG MONADO_COMMIT=045931d12f1cc9afde942f7905db08e6f51b9d8e
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential cmake ninja-build git pkg-config ca-certificates glslang-tools \
+      libeigen3-dev libvulkan-dev mesa-vulkan-drivers vulkan-tools \
+      libx11-dev libxxf86vm-dev libxrandr-dev libxcb-randr0-dev libx11-xcb-dev \
+      libwayland-dev wayland-protocols libgl-dev libegl-dev libudev-dev libusb-1.0-0-dev \
+      libhidapi-dev libcjson-dev libbsd-dev libopenxr-loader1 libopenxr-dev python3-pip \
+ && rm -rf /var/lib/apt/lists/*
+RUN git clone https://gitlab.freedesktop.org/monado/monado.git /src/monado \
+ && cd /src/monado && git checkout ${MONADO_COMMIT} \
+ && cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/opt/monado \
+      -DXRT_FEATURE_SERVICE=ON -DXRT_HAVE_SDL2=OFF -DBUILD_TESTING=OFF \
+ && cmake --build build -j 16 && cmake --install build \
+ && git -C /src/monado rev-parse HEAD > /opt/monado/MONADO_COMMIT
+ENV XR_RUNTIME_JSON=/opt/monado/share/openxr/1/openxr_monado.json \
+    LD_LIBRARY_PATH=/opt/monado/lib:${LD_LIBRARY_PATH}

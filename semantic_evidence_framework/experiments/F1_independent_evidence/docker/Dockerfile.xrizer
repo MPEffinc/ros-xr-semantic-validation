@@ -1,0 +1,9 @@
+# F1: xrizer (OpenVR on OpenXR), pinned, built with rustup; pyopenvr from PyPI for the unmodified app.
+FROM f1-monado-main:045931d
+ARG XRIZER_COMMIT=0989a7fac2d1efb7ea82f5fe1a8ed30c3eeb9596
+RUN apt-get update && apt-get install -y --no-install-recommends curl libclang-dev clang libssl-dev && rm -rf /var/lib/apt/lists/*
+RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+ENV PATH=/root/.cargo/bin:${PATH}
+RUN git clone https://github.com/Supreeeme/xrizer.git /src/xrizer && cd /src/xrizer && git checkout ${XRIZER_COMMIT} \
+ && cargo build --release 2>&1 | tail -5 && ls target/release
+RUN pip3 install --break-system-packages openvr==2.12.1401 2>&1 | tail -2 || pip3 install --break-system-packages openvr 2>&1 | tail -2
