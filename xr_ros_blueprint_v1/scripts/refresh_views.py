@@ -21,7 +21,7 @@ view.mkdir(exist_ok=True)
 for name, rows in tables.items():
     fields = list(dict.fromkeys(k for row in rows for k in row))
     with (view / (name + ".csv")).open("w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 print("ID links valid; CSV views regenerated", {k: len(v) for k, v in tables.items()})

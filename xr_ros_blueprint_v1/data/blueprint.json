@@ -6,13 +6,13 @@
     "pinned_commit": "eff464c9b1011a7646ec80e18f4e771028b89cc5",
     "source_inventory": "XR_ROS_Literature_Inventory_Final_2026-10-01(1).xlsx",
     "counts": {
-      "sources": 42,
+      "sources": 47,
       "taxonomy": 15,
       "flows": 11,
       "defenses": 14,
       "cases": 40,
       "matrix": 99,
-      "limitations": 43,
+      "limitations": 48,
       "prior_experiments": 7,
       "research_plan": 7,
       "search_log": 15,
@@ -20,7 +20,8 @@
     },
     "gap_policy": "UNKNOWN and author limitations do not constitute confirmed gaps",
     "operational_authority": "Git repository; edit this JSON and regenerate CSV views",
-    "sheet_access_policy": "Only on explicit user request for that operation"
+    "sheet_access_policy": "Only on explicit user request for that operation",
+    "last_audit": "2026-10-03"
   },
   "tables": {
     "sources": [
@@ -569,6 +570,71 @@
         "taxonomy_ids": "T4,T15",
         "checked_on": "2026-10-02",
         "limitations_review": "EXTRACTED"
+      },
+      {
+        "id": "L37",
+        "title": "ros2_controllers joint_trajectory_controller source",
+        "kind": "CODE",
+        "edition": "tag 4.42.1 @ aacd8426 (Jazzy package 4.42.1 in openvr-jazzy-sim)",
+        "read_level": "CODE_READ",
+        "url": "https://github.com/ros-controls/ros2_controllers/tree/4.42.1/joint_trajectory_controller",
+        "locator": "parameters.yaml L134-141 cmd_timeout; joint_trajectory_controller.cpp L349-368 timeout->hold, L1695-1698 empty trajectory rejected, L1840-1849 set_hold_position=state_current_",
+        "claim": "cmd_timeout acts only after the last trajectory point; explicit hold uses measured state; empty trajectories are rejected",
+        "taxonomy_ids": "T3,T11",
+        "checked_on": "2026-10-03",
+        "limitations_review": "EXTRACTED"
+      },
+      {
+        "id": "L38",
+        "title": "navigation2 issue #6320: Explicit detection of stale transformations",
+        "kind": "ISSUE",
+        "edition": "opened 2026-08-06; open at 2026-10-03",
+        "read_level": "SECTION_READ",
+        "url": "https://github.com/ros-navigation/navigation2/issues/6320",
+        "locator": "issue body",
+        "claim": "Nav2 lacks a mechanism to detect and react to stale transforms (maintainer-discussed feature request)",
+        "taxonomy_ids": "T4,T5",
+        "checked_on": "2026-10-03",
+        "limitations_review": "EXTRACTED"
+      },
+      {
+        "id": "L39",
+        "title": "Towards Secure User Interaction in WebXR",
+        "kind": "PAPER",
+        "edition": "HumanSys 2025 workshop; DOI 10.1145/3722570.3726880 (Crossref metadata only)",
+        "read_level": "METADATA_ONLY",
+        "url": "https://doi.org/10.1145/3722570.3726880",
+        "locator": "Crossref record; publisher page 403",
+        "claim": "follow-up by the Shadowed Realities authors; content not read",
+        "taxonomy_ids": "T14",
+        "checked_on": "2026-10-03",
+        "limitations_review": "NOT_EXTRACTED"
+      },
+      {
+        "id": "L40",
+        "title": "MoveIt Servo source (servo_node / servo)",
+        "kind": "CODE",
+        "edition": "moveit2 tag 2.12.4 @ 1ade0e9d",
+        "read_level": "CODE_READ",
+        "url": "https://github.com/moveit/moveit2/tree/2.12.4/moveit_ros/moveit_servo",
+        "locator": "servo_node.cpp L147-180 pause, L289-318 stale pose -> smoothHalt, L360-430 loop; servo.cpp L551-570 Time(0) tf",
+        "claim": "Servo halts only after incoming_command_timeout; pause stops Servo output, not the downstream controller",
+        "taxonomy_ids": "T3,T4,T11",
+        "checked_on": "2026-10-03",
+        "limitations_review": "EXTRACTED"
+      },
+      {
+        "id": "L41",
+        "title": "Teleoperation clutching / alignment-difference safety (prior art lead)",
+        "kind": "PATENT_AND_TEXTBOOK_LEAD",
+        "edition": "USPTO 10159536 et al.; surgical robotics texts (search excerpts)",
+        "read_level": "SEARCH_EXCERPT",
+        "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/10159536",
+        "locator": "search excerpt only",
+        "claim": "clutch/indexing re-anchoring and alignment-gated resumption are established teleoperation practice",
+        "taxonomy_ids": "T3,T5",
+        "checked_on": "2026-10-03",
+        "limitations_review": "NOT_EXTRACTED"
       }
     ],
     "taxonomy": [
@@ -939,7 +1005,14 @@
         "limitation_ids": "U24",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PRIOR_INTERNAL(S5)+CODE(A1-A6)",
+        "audit_verified": "S5 synthetic: tracked gate works when field delivered; 6 wires lack tracked (SOURCE)",
+        "audit_pending": "real runtime occlusion; S2 entry is moot for app-reported flags",
+        "audit_issues": "S2 listed but a compromised app can forge the tracked field itself; tracking check is an S0/S3 defense only",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M2",
@@ -960,7 +1033,14 @@
         "limitation_ids": "U26",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "PRIOR_TRACE(R0)+CODE(A3)+REAL_APP(F3)",
+        "audit_verified": "R0: 5 unfocused intervals with fresh-stamped frozen 60 Hz stream (prior data, new analysis); F3: real UR5e app stops itself",
+        "audit_pending": "a runnable app that keeps streaming while unfocused",
+        "audit_issues": "instance of M12 (fresh stamp on stale content) for the focus cause; keep as linked, not independent count",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M3",
@@ -974,14 +1054,21 @@
         "baselines": "D05,D06",
         "judgment": "KNOWN_METHOD",
         "evidence_level": "SYNTHETIC_GAZEBO",
-        "findings": "P1/P1b 33–45 mm 잔여; measured-state JTC hold 약 1 mm",
+        "findings": "P1/P1b: 27.9–42.4 mm residual (medians 32.8–40.4 mm) after Servo-level stop/timeout; controller hold at measured state 1.0 mm (3/3); JTC cmd_timeout does not cover catch-up (L37)",
         "next_step": "singularity 없는 자세·하중별 범위로 controller baseline 재검증",
         "priority": "P1",
-        "source_ids": "L31,L21,I01,I02",
-        "limitation_ids": "U18,U19,U26",
+        "source_ids": "L31,L21,I01,I02,L37,L40",
+        "limitation_ids": "U18,U19,U26,U44,U45,U46",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-03",
+        "audit_protection": "SPECIFIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "SYNTHETIC_GAZEBO(P1/P1b)+CODE(Servo 2.12.4, JTC 4.42.1)",
+        "audit_verified": "P1/P1b: 27.9-42.4 mm residual (medians 32.8-40.4) with Servo-level stop; controller hold 1.0 mm (3/3)",
+        "audit_pending": "pose/speed/load dependence; deceleration-to-hold option; real robot",
+        "audit_issues": "findings text \"33-45 mm\" does not match P1/P1b data (27.9-42.4 mm); S3 role unclear (who induces release)",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M4",
@@ -995,14 +1082,21 @@
         "baselines": "D02,D05,D08",
         "judgment": "KNOWN_METHOD",
         "evidence_level": "SYNTHETIC_AND_RUNTIME",
-        "findings": "P1 command jump; Monado edge 전제 확인; action 원인 전달 시 기존 수정으로 해결",
+        "findings": "P1 command-level: stale-grip resume reproduced; cause-aware re-arm passes C2 and C3 when action activity is delivered; Monado edge rule confirmed (F1 K6); physical consequence masked by Servo singularity stop (P1 C2, P1b C2M)",
         "next_step": "실제 ALVR/Quest 전제와 원인별 re-arm 오차단 확인",
         "priority": "P1",
-        "source_ids": "L01,I01,I02",
-        "limitation_ids": "U33",
+        "source_ids": "L01,I01,I02,L40",
+        "limitation_ids": "U33,U46",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-03",
+        "audit_protection": "SPECIFIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "SYNTHETIC(P1)+RUNTIME(F1 K6 Monado)+CODE(ALVR)",
+        "audit_verified": "command level: stale-grip resume reproduced; cause-aware re-arm passes C2+C3 (P1); edge rule confirmed on Monado (K6)",
+        "audit_pending": "physical consequence (masked by Servo singularity stop in P1 C2 and P1b C2M); ALVR/Quest/SteamVR real chain",
+        "audit_issues": "\"solved\" holds at command level only; physical not interpretable; Quest premise NOT_VERIFIED",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M5",
@@ -1019,11 +1113,18 @@
         "findings": "기존 S5 재기준화와 같은 클래스; F3 target 35 mm 점프",
         "next_step": "기존 re-anchor+fresh press를 강한 baseline으로 두고 종단간 확인",
         "priority": "P1",
-        "source_ids": "L30,I01,I04",
-        "limitation_ids": "U26",
+        "source_ids": "L30,I01,I04,L40,L41",
+        "limitation_ids": "U26,U46",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PRIOR_INTERNAL(S5 #10)+REAL_APP(F3)+CODE",
+        "audit_verified": "F3: 35 mm command-target jump at resume in 6/6 trials; S5 classified APPLICATION",
+        "audit_pending": "strongest fix (re-anchor to current EE + fresh press) never executed on a real app; physical effect masked (F3 singularity)",
+        "audit_issues": "\"KNOWN_METHOD\" is by design argument; execution of the fix absent",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M6",
@@ -1037,14 +1138,21 @@
         "baselines": "D02,D05",
         "judgment": "KNOWN_METHOD",
         "evidence_level": "SYNTHETIC_GAZEBO",
-        "findings": "P1 app 15줄 retrofit과 epoch gate 효과; gate 경계 1 leaked command 기록",
+        "findings": "P1 position-level: B0 180/15 mm, epoch gate 0 mm with 1 leaked command in 1/3 trials, 15-line app retrofit 0 mm, jump guard misses 3 cm; P1 rotation criterion confounded (orientation unsettled)",
         "next_step": "경계 포함 채점; 실제 원점 이벤트·정상 빠른 움직임 대조",
         "priority": "P1",
         "source_ids": "L03,I01,I02",
-        "limitation_ids": "U29,U33",
+        "limitation_ids": "U29,U33,U46",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-03",
+        "audit_protection": "SPECIFIC",
+        "audit_attacker_split": "YES",
+        "audit_basis": "SYNTHETIC_GAZEBO(P1)+CODE(ALVR)",
+        "audit_verified": "P1: B0 180/15 mm; epoch gate 0 mm (1 leaked command in 1/3); app retrofit 0 mm; jump guard misses 3 cm",
+        "audit_pending": "real headset recenter; orientation outcomes (P1 angle criterion confounded by unsettled orientation)",
+        "audit_issues": "findings omit the P1 angle-criterion confound; position results only",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M7",
@@ -1061,11 +1169,18 @@
         "findings": "tf2 stamped query 가능; 해당 경로 효과 미측정",
         "next_step": "버전 pin 후 동적 tf 전환과 Time(0)/stamp 비교",
         "priority": "P2",
-        "source_ids": "L32,I01",
-        "limitation_ids": "U36",
+        "source_ids": "L32,I01,L38,L40",
+        "limitation_ids": "U36,U48",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CODE(Servo servo.cpp L565 Time(0))",
+        "audit_verified": "tf2 stamped lookup exists; Servo uses latest",
+        "audit_pending": "effect size on any path; nav2 #6320 open (stale tf detection not standard)",
+        "audit_issues": "S1 (network) listed without mechanism",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M8",
@@ -1086,7 +1201,14 @@
         "limitation_ids": "U37",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PRIOR_TRACE(R0)+CODE(A3)",
+        "audit_verified": "54% left msgs with right frame (real Quest data, prior)",
+        "audit_pending": "root fix untested; frame-consistent swap undetectable",
+        "audit_issues": "none beyond U37",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M9",
@@ -1107,7 +1229,14 @@
         "limitation_ids": "U38",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CODE(A4 Spes)",
+        "audit_verified": "source-confirmed fallback",
+        "audit_pending": "runtime/physical effect",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M10",
@@ -1128,7 +1257,14 @@
         "limitation_ids": "U38",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CODE(A6 OpenArmX)",
+        "audit_verified": "source-confirmed fan-out",
+        "audit_pending": "runtime effect",
+        "audit_issues": "S4/S5 listed without scenario",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M11",
@@ -1149,7 +1285,14 @@
         "limitation_ids": "U33",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CODE(A6)",
+        "audit_verified": "TRANSIENT_LOCAL override source-confirmed",
+        "audit_pending": "policy for scripted motion not declared; no run",
+        "audit_issues": "KNOWN_METHOD by expressibility only",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M12",
@@ -1166,11 +1309,18 @@
         "findings": "7개 감사 경로에서 generation-interval 전제 무수정 미성립",
         "next_step": "실제 한 앱의 sample·command 연결 측정; 수정 수용 조건 구분",
         "priority": "P1",
-        "source_ids": "L19,I03,I06",
-        "limitation_ids": "U28",
+        "source_ids": "L19,I03,I06,L38",
+        "limitation_ids": "U28,U48",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CODE_AUDIT(I06)+SURROGATE(F1/F2)",
+        "audit_verified": "7 audited apps: none stamps sample time unmodified (SOURCE)",
+        "audit_pending": "one real app with sample-time stamping change; clock-domain conversion",
+        "audit_issues": "parent of M2; F1 freshness confound documented",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M13",
@@ -1191,7 +1341,14 @@
         "limitation_ids": "U15,U19,U20",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PRIOR_INTERNAL(S5 C-MON)",
+        "audit_verified": "fail-closed watchdog in pinned S5 setup",
+        "audit_pending": "direct consumer bypass, restart, physical hold",
+        "audit_issues": "ROSMonitoring result scoped to 2026-09-22 image",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M14",
@@ -1212,7 +1369,14 @@
         "limitation_ids": "U39",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "PRIOR_INTERNAL(authority_continuity)",
+        "audit_verified": "IMPLEMENTATION_GAP_ONLY (HORUS)",
+        "audit_pending": "new multi-user XR path",
+        "audit_issues": "closed class; do not re-raise",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M15",
@@ -1233,7 +1397,14 @@
         "limitation_ids": "U40",
         "origin": "INHERITED_M1_M15",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "CODE",
+        "audit_verified": "unauthenticated bridges source-confirmed (Spes bundled key, OpenArmX UDP)",
+        "audit_pending": "active security config per hop",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M16",
@@ -1254,7 +1425,14 @@
         "limitation_ids": "U01,U12,U13",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "PAPER_SCOPE(L16,L17)",
+        "audit_verified": "reported patched/mitigated (L17)",
+        "audit_pending": "installed DDS version check",
+        "audit_issues": "none (UNKNOWN kept)",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M17",
@@ -1275,7 +1453,14 @@
         "limitation_ids": "U17,U27,U28,U32,U34,U35",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "DESIGN(I05)",
+        "audit_verified": "not defended",
+        "audit_pending": "minimal trusted mapper baseline",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M18",
@@ -1296,7 +1481,14 @@
         "limitation_ids": "U14,U27,U34",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "CODE(libmonado API)+DESIGN",
+        "audit_verified": "unauthenticated setters on app socket (F1 probe)",
+        "audit_pending": "authenticated control variant",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M19",
@@ -1317,7 +1509,14 @@
         "limitation_ids": "U01,U12,U14,U16,U27,U35",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "DESIGN",
+        "audit_verified": "SROS2/OS mediation is a known method; not deployed here",
+        "audit_pending": "negative bypass test with permissions",
+        "audit_issues": "KNOWN_METHOD here = expressible/deployable, not deployment-verified",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M20",
@@ -1338,7 +1537,14 @@
         "limitation_ids": "U11,U13,U15,U18,U19,U25",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PAPER+SURROGATE(F2)",
+        "audit_verified": "F2 +30 ms: 6 leaks; +80 ms: 1770/1770 fail-closed",
+        "audit_pending": "flood/load scenarios; queue isolation baseline",
+        "audit_issues": "shares F2 evidence with M40; avoid double counting",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M21",
@@ -1359,7 +1565,14 @@
         "limitation_ids": "U04",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "PAPER+PRIOR_SCOPE",
+        "audit_verified": "goal ownership known method",
+        "audit_pending": "XR multi-user path",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M22",
@@ -1380,7 +1593,14 @@
         "limitation_ids": "U02",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "RESEARCH_INFERENCE(L06,L27,L28)",
+        "audit_verified": "none executed",
+        "audit_pending": "a target-selection XR->ROS app; scene-version baseline",
+        "audit_issues": "no audited implementation is target-selection based",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M23",
@@ -1397,11 +1617,18 @@
         "findings": "Shadowed Realities WebXR 실증; robot 실행 피해 미검증",
         "next_step": "비인간 테스트 UI→goal linkage; input-validation baseline 재현",
         "priority": "P1",
-        "source_ids": "L06,L10",
-        "limitation_ids": "U02,U04",
+        "source_ids": "L06,L10,L39",
+        "limitation_ids": "U02,U04,U47",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "PAPER(L10)+INFERENCE",
+        "audit_verified": "WebXR UI attacks shown by authors (browser/ad setting); follow-up workshop paper exists (L39, content unread)",
+        "audit_pending": "robot-command consequence; current browser mitigations",
+        "audit_issues": "robot harm is our inference",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M24",
@@ -1422,7 +1649,14 @@
         "limitation_ids": "U02",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "ABSTRACT(L09)",
+        "audit_verified": "none",
+        "audit_pending": "attack surface in a robot task",
+        "audit_issues": "none (UNKNOWN kept)",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M25",
@@ -1443,7 +1677,14 @@
         "limitation_ids": "U21,U22,U30",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "YES",
+        "audit_basis": "PAPER(L24-L26)",
+        "audit_verified": "attacks and a 2025 defense exist (abstract)",
+        "audit_pending": "full-text comparison",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M26",
@@ -1464,7 +1705,14 @@
         "limitation_ids": "U03,U23",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "AUTHOR_LIMITATION(L28)",
+        "audit_verified": "none",
+        "audit_pending": "task definition",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M27",
@@ -1485,7 +1733,14 @@
         "limitation_ids": "U11,U24",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "AUTHOR_LIMITATION(L29)",
+        "audit_verified": "none",
+        "audit_pending": "hardware path",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M28",
@@ -1506,7 +1761,14 @@
         "limitation_ids": "U24",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "UNTESTED",
+        "audit_verified": "none",
+        "audit_pending": "spec event + 2 implementations",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M29",
@@ -1527,7 +1789,14 @@
         "limitation_ids": "U36",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "UNTESTED",
+        "audit_verified": "none",
+        "audit_pending": "versioned repro",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M30",
@@ -1548,7 +1817,14 @@
         "limitation_ids": "U03,U07,U08,U09,U35",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PAPER(L07,L12,L13)",
+        "audit_verified": "controls exist in other XR settings",
+        "audit_pending": "XR->ROS flow inventory",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M31",
@@ -1569,7 +1845,14 @@
         "limitation_ids": "U03,U10",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PAPER(L14)",
+        "audit_verified": "VR identification shown (Beat Saber)",
+        "audit_pending": "teleop data",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M32",
@@ -1590,7 +1873,14 @@
         "limitation_ids": "U41",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "YES",
+        "audit_basis": "SEED_LEAD",
+        "audit_verified": "none",
+        "audit_pending": "full text",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M33",
@@ -1611,7 +1901,14 @@
         "limitation_ids": "U07,U08,U09,U28",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CODE_SCOPE(I06)",
+        "audit_verified": "2 closed APKs; PickNik host closed",
+        "audit_pending": "capability manifests",
+        "audit_issues": "overlaps M12 (evidence availability); keep linked",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M34",
@@ -1632,7 +1929,14 @@
         "limitation_ids": "U05,U06",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "PAPER(L11,L12)",
+        "audit_verified": "none",
+        "audit_pending": "trace + provenance audit",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M35",
@@ -1653,7 +1957,14 @@
         "limitation_ids": "U27",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "INTERNAL_OBSERVATION(F1 bring-up, isolated repro)",
+        "audit_verified": "service terminated on one libmonado query for a sessionless client (045931d)",
+        "audit_pending": "upstream issue search; recovery behaviour",
+        "audit_issues": "not a CVE claim; upstream status unknown",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M36",
@@ -1674,7 +1985,14 @@
         "limitation_ids": "U43",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CODE+DESIGN",
+        "audit_verified": "known freshness/epoch/QoS methods",
+        "audit_pending": "reconnect chain run",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M37",
@@ -1695,7 +2013,14 @@
         "limitation_ids": "U14,U17,U31,U35",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "RESEARCH_INFERENCE",
+        "audit_verified": "none",
+        "audit_pending": "policy definition",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M38",
@@ -1716,7 +2041,14 @@
         "limitation_ids": "U42",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "GENERIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "UNTESTED",
+        "audit_verified": "none",
+        "audit_pending": "calibration/SLAM literature",
+        "audit_issues": "none",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M39",
@@ -1733,11 +2065,18 @@
         "findings": "개별 해결 있음; 공통 manager의 이득 아직 미입증",
         "next_step": "2개 실제 경로의 완전한 per-app fix vs 공통 manager 동일 조건 비교",
         "priority": "P1",
-        "source_ids": "L18,L20,L21,L30,I04",
-        "limitation_ids": "U15,U16,U17,U18,U20,U26,U31,U32,U33,U34",
+        "source_ids": "L18,L20,L21,L30,I04,L37,L40,L41",
+        "limitation_ids": "U15,U16,U17,U18,U20,U26,U31,U32,U33,U34,U44,U45,U46",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "baseline의 신뢰 경계·hop별 공격권한을 명시; 물리 고장과 공격 구분",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "PARTIAL",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "CROSS_CASE(P1/P1b/F3)+CODE",
+        "audit_verified": "components executed separately (M3 hold, M4 re-arm, M6 epoch); combination never executed; F3 resume jump unmitigated",
+        "audit_pending": "combined contract on a real path without singularity confound",
+        "audit_issues": "umbrella of M3-M6; must not count as an independent finding; S5 attacker listed without scenario",
+        "audit_checked_on": "2026-10-03"
       },
       {
         "id": "M40",
@@ -1758,7 +2097,14 @@
         "limitation_ids": "U18,U20,U25,U29",
         "origin": "BLUEPRINT_EXPANSION",
         "trust_assumptions": "runtime/collector/gate/consumer 신뢰를 각각 검증; S2에서 app evidence 자기보고는 신뢰하지 않음",
-        "checked_on": "2026-10-02"
+        "checked_on": "2026-10-02",
+        "audit_protection": "SPECIFIC",
+        "audit_attacker_split": "PARTIAL",
+        "audit_basis": "SURROGATE(F2)",
+        "audit_verified": "5 ms window: interval 1/18 leak; +30 ms: 6 leaks per state arm",
+        "audit_pending": "event-delivery or bounded-wait baseline",
+        "audit_issues": "shares F2 data with M20",
+        "audit_checked_on": "2026-10-03"
       }
     ],
     "matrix": [
@@ -4003,6 +4349,71 @@
         "implication": "queue drop과 executing-goal 취소·hold를 별도 관측",
         "case_ids": "M36",
         "checked_on": "2026-10-02",
+        "followup_source_ids": "",
+        "is_gap_evidence": "NO_AUTOMATIC_INFERENCE"
+      },
+      {
+        "id": "U44",
+        "source_id": "L21",
+        "attribution": "AUTHOR_IMPLEMENTATION_DESCRIPTION",
+        "locator": "Section 5 implementation (cmd_vel_interceptor), PDF p.63",
+        "limitation": "stop is a zero-velocity override at a topic interceptor; forwarding resumes automatically when no new stop signals arrive (no re-arm step described)",
+        "followup_status": "UNKNOWN",
+        "implication": "message-level stop + automatic resume is the reference behaviour of a recent safety architecture; for position-controlled arms P1b shows message-level stop leaves residual motion",
+        "case_ids": "M3,M39",
+        "checked_on": "2026-10-03",
+        "followup_source_ids": "",
+        "is_gap_evidence": "NO_AUTOMATIC_INFERENCE"
+      },
+      {
+        "id": "U45",
+        "source_id": "L37",
+        "attribution": "REVIEWER_FROM_SOURCE",
+        "locator": "parameters.yaml L134-141; .cpp L349-368",
+        "limitation": "JTC cmd_timeout is counted from the end of the last trajectory point, so it does not stop catch-up toward the last commanded point",
+        "followup_status": "NOT_APPLICABLE",
+        "implication": "the strongest controller-side fix for M3 is an explicit hold/cancel, not cmd_timeout",
+        "case_ids": "M3,M39",
+        "checked_on": "2026-10-03",
+        "followup_source_ids": "",
+        "is_gap_evidence": "NO_AUTOMATIC_INFERENCE"
+      },
+      {
+        "id": "U46",
+        "source_id": "I04",
+        "attribution": "INTERNAL_LIMITATION",
+        "locator": "P1_RESULTS §2, P1b_RESULTS, F3_REAL_APP_RESULTS §4",
+        "limitation": "physical outcomes after resume jumps were masked by MoveIt Servo HALT_FOR_SINGULARITY in P1 C2, P1b C2M and F3 (same start pose and +x direction); P1 angle criterion confounded by unsettled orientation",
+        "followup_status": "OPEN_IN_TESTED_SCOPE",
+        "implication": "any new stop/resume experiment must pre-qualify a start pose and motion path with Servo status NO_WARNING and settled orientation, and invalidate trials with halt statuses",
+        "case_ids": "M3,M4,M5,M6,M39",
+        "checked_on": "2026-10-03",
+        "followup_source_ids": "",
+        "is_gap_evidence": "NO_AUTOMATIC_INFERENCE"
+      },
+      {
+        "id": "U47",
+        "source_id": "L10",
+        "attribution": "REVIEWER_FOLLOWUP_LEAD",
+        "locator": "Crossref record of L39",
+        "limitation": "a 2025 follow-up by the same authors exists; whether it mitigates the UI attacks or reports browser patches was not read",
+        "followup_status": "PARTIAL_FOLLOWUP_LEAD",
+        "implication": "do not state the WebXR UI attacks as unmitigated without reading L39",
+        "case_ids": "M23",
+        "checked_on": "2026-10-03",
+        "followup_source_ids": "L39",
+        "is_gap_evidence": "NO_AUTOMATIC_INFERENCE"
+      },
+      {
+        "id": "U48",
+        "source_id": "L38",
+        "attribution": "MAINTAINER_ISSUE",
+        "locator": "issue #6320 body",
+        "limitation": "stale-transform detection is an open feature request in Nav2 (not a manipulation/teleop stack)",
+        "followup_status": "OPEN_UPSTREAM_AT_CHECK",
+        "implication": "supports that stale tf handling is configured per stack; not evidence about MoveIt Servo or XR mappers",
+        "case_ids": "M7,M12",
+        "checked_on": "2026-10-03",
         "followup_source_ids": "",
         "is_gap_evidence": "NO_AUTOMATIC_INFERENCE"
       }
