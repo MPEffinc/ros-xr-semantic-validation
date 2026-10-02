@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-02 (KST). **Claim scope was corrected on 2026-10-02; see `docs/06_CLAIM_SCOPE_CORRECTION.md`.** Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c5ccf7567827` (local == origin).
+Last verified pushed checkpoint: **F1 linkage freeze** = `d25c64ebc64c3ec605a0ce9144da04bc3ab38afe` (local == origin).
 
 ## Checkpoints
 
@@ -90,6 +90,22 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
     actions report `isActive=1` with live state. Source: action update ignores focus.
   - Consequence: the conformance of the evidence source itself is a trust condition.
 
+- **2026-10-02 feasibility study F1** (independent evidence path, no app modification):
+  - **Claim scope corrected** (`docs/06`).
+  - **P2 cause:** the old Monado build. Current main works headless.
+  - **Real apps: 0 of 2 functional on this host.**
+    - OpenVR UR5e + xrizer runs, but the session never focuses, so it emits 0 commands.
+    - IsaacTeleop needs NVX1 extensions.
+  - **Stand-in mechanism (27 runs).** The runtime-side libmonado IO evidence plus the consumer
+    interval gate blocked every late, replayed, reordered and cross-client command (0 dangerous passes
+    outside a ±20 ms band), with 0 false blocks outside the evidence outage. An app-published state
+    stream gives the same result, so for an honest app the guarantee is not a differentiator; the
+    difference is 0 app edits.
+  - **No S2 defense:** libmonado control is unauthenticated.
+  - **H-A1 premise confirmed on Monado:** a release inside the inactive window is never forwarded
+    under the edge-only rule.
+  - **Expansion on hold** (`docs/05` update).
+
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
@@ -97,12 +113,17 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
 
 ## Next
 
-1. P2 continuation: a Vulkan-bound (non-headless) OpenXR client on the null compositor, to reach FOCUSED and test the inactive-action edge rule across real focus or input transitions.
-2. If that works, evaluate a runtime-side evidence path plus command linkage for ≥ 2 unmodified apps, against the go/kill criteria in `docs/05`.
-3. Optional: C2M from a start pose outside the singularity region (physical-level stale-deadman consequence).
+1. Get one real XR→ROS app running functionally on Monado. Options:
+   - an immersive OpenXR app with a frame loop;
+   - the OpenVR UR5e app on a frame-pumping xrizer (a component change, reported separately).
+
+   Then repeat F1 with no app change.
+2. Use a GPU path for compositor-backed clients, to observe focus/tracking evidence at the service. This needs nvidia-container-toolkit (a host change that requires approval) or a native host setup.
+3. Runtime variant with authenticated libmonado control calls, reported separately, before any S2 claim.
 
 ## Blockers
 
 - No headset and no SteamVR. Real Quest/ALVR/SteamVR hops stay NOT_VERIFIED.
 - Closed frontends (Quest2ROS2 APK, OpenArmX APK) and a closed host (PickNik / MoveIt Pro) bound the audit scope.
 - Host load from other work's containers (about 1.5) is recorded, not removed.
+- No NVIDIA container runtime: the host GPU cannot be used in containers (F1 bring-up). lavapipe lacks the fd-sync extensions that xrizer requests.
