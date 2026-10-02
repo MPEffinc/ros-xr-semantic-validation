@@ -1,5 +1,7 @@
 # XR→ROS 보안 연구 blueprint v1.0
 
+이 문서의 단계별 계획은 중장기 탐색 방향이다. 실제 수행 범위는 회차별 별도 프롬프트에서 정해진다.
+
 작성일: 2026-10-02. 기존 연구 기준점: `eff464c9b1011a7646ec80e18f4e771028b89cc5`.
 
 ## 1. 이번에 정한 전체 방향
@@ -256,7 +258,7 @@ README → STATUS → CONTEXT → 이 문서 순서로 읽고, 상세 근거는 
 
 기존 semantic_evidence_framework와 archive의 protocol/raw/result는 보존한다. 이 디렉터리는 eff464c 위에 추가한 조사·handoff 자료이며 새로운 runtime/headset/robot 실험은 하지 않았다. 기존 결과를 재해석하면 별도 문서에 출처 commit과 주장 변경을 기록한다.
 
-Checkpoint는 지도/schema → 조사 묶음 → protocol freeze → 실행/raw → analysis/decision → 조건부 prototype이다. 단계마다 commit·push 후 branch/HEAD/원격 SHA/clean 상태를 기록한다. STATUS에는 완료한 일, 불확실한 일, 바로 다음 작업을 사람이 이해하기 쉬운 말로 남긴다. 세부 실행은 CONTEXT.md를 따른다.
+Checkpoint는 지도/schema → 조사 묶음 → protocol freeze → 실행/raw → analysis/decision → 조건부 prototype이다. 단계마다 commit·push 후 branch/HEAD/원격 SHA/clean 상태를 기록한다. STATUS에는 완료한 일, 불확실한 일, 바로 다음 작업을 사람이 이해하기 쉬운 말로 남긴다. CONTEXT.md는 연구 배경 참고 자료이며, 이번 회차의 실행 범위·순서·완료 조건은 별도 사용자 프롬프트에서 정한다.
 
 ## 12. 조사 방법과 제한
 
