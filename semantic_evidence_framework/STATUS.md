@@ -93,7 +93,7 @@ Last verified pushed checkpoint: **P1b freeze** = `358dd89e697770f4c6893f383908c
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
-- Monado 21 starts headless with the `remote` driver on this host. Why the headless session stays in READY is under investigation; the `XR_MND_headless` text says it should progress without a frame loop.
+- P2 READY state: **cause = the installed Monado build** (e26a272c, 2023-03), which predates upstream `d7514687` (headless → FOCUSED on begin, 2023-12). The client and the configuration are not the cause. The `isActive=1` observation is specific to that build (`results/P2_CAUSE_ANALYSIS.md`).
 
 ## Next
 

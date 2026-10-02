@@ -1,3 +1,7 @@
+> **2026-10-02 correction.** The cause and meaning below are superseded by `P2_CAUSE_ANALYSIS.md`.
+> The READY state comes from a 2023-03 Monado build defect, fixed upstream on 2023-12-11. The `isActive=1` observation is
+> specific to that build, not a general Monado or spec-conformance property. The text below is kept as the original record.
+
 # P2 results — Monado runtime check (2026-10-01): BLOCKED_ENV for the main question, one runtime observation
 
 - **Protocol:** `experiments/P2_monado_runtime_semantics/PROTOCOL.md`. v1.0 was frozen at `4e1a994`
