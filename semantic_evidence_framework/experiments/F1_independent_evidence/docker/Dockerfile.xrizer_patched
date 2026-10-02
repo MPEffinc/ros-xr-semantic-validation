@@ -1,0 +1,4 @@
+# F1 variant: xrizer 0989a7f + xrizer_extfilter.patch (deployment component modified; app unmodified).
+FROM f1-xrizer:0989a7f
+COPY xrizer_extfilter.patch /src/
+RUN cd /src/xrizer && git apply /src/xrizer_extfilter.patch && git diff --stat && cargo build --release 2>&1 | tail -3

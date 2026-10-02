@@ -49,3 +49,30 @@ the host:
 - running the stack on the host with ROS installed natively.
 
 This result does not show that candidate 1 is incompatible with Monado.
+
+## Addendum (same day): run with the deployment component patched; the app is still unmodified
+
+- **Decision, recorded before trying.** One minimal patch to **xrizer**, a deployment component and
+  not the app: request only the Vulkan device extensions the physical device supports
+  (`docker/xrizer_extfilter.patch`, 10 added lines; image `f1-xrizer-patched:0989a7f`). Results with
+  this patch are labelled *xrizer-patched* and are kept apart from the unpatched results above.
+- **Result** (`results/raw/F1/smoke_03_patched`):
+  - xrizer created the Vulkan device and the OpenXR session.
+  - The session reached READY and was begun.
+  - The unmodified `quest_teleop.py` printed `ONLINE`.
+- xrizer warned `RawAndUncalibrated tracking space unimplemented` (`openxr_data.rs:640`).
+  The app asks for exactly that universe.
+- The session **never left READY** while the app ran, for about 20 s. It reached SYNCHRONIZED only
+  during shutdown. The runtime-side collector shows the app's client (`python3.12`) with
+  visible = focused = active = 0 in all 984 samples.
+- **The app produced 0 commands**, although the remote controller's grip was held from 4 to 12 s.
+  This matches the predicted risk:
+  - xrizer drives OpenXR frames only from `WaitGetPoses`/`Submit`;
+  - a Background OpenVR app never calls them;
+  - the session therefore never becomes FOCUSED;
+  - current Monado deactivates every action while not focused (`P2_CAUSE_ANALYSIS.md` §3);
+  - so the legacy grip reads as released.
+- **Verdict:** candidate 1 **runs but is not functional** on this stack.
+  - Making it functional would take a second deployment-component change: an xrizer frame pump for
+    Background apps. Changing the app's API usage would be another option.
+  - Neither was done. **No real app reached a functional state on Monado on this host.**

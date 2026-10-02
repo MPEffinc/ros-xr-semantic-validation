@@ -1,0 +1,19 @@
+--- a/src/graphics_backends/vulkan.rs
++++ b/src/graphics_backends/vulkan.rs
+@@ -552,6 +552,16 @@
+         let dev_exts: Vec<CString> = dev_exts
+             .split_ascii_whitespace()
+             .map(|ext| CString::new(ext).unwrap())
++            // F1 patch (deployment component, not the app): keep only extensions the physical
++            // device supports; Monado lists optional fd-sync extensions that lavapipe lacks.
++            .filter(|ext| {
++                unsafe { instance.enumerate_device_extension_properties(physical_device) }
++                    .map(|props| props.iter().any(|p| {
++                        let name = unsafe { std::ffi::CStr::from_ptr(p.extension_name.as_ptr()) };
++                        name == ext.as_c_str()
++                    }))
++                    .unwrap_or(true)
++            })
+             .collect();
+         let dev_exts: Vec<*const c_char> = dev_exts.iter().map(|ext| ext.as_ptr()).collect();
+ 
