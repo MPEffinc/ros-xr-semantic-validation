@@ -1,0 +1,15 @@
+﻿id,title,protects,needs,source_ids,residual
+D01,Hop authentication / SROS2 / TLS / least privilege,인증·주체·topic 권한,키·identity·hop별 ACL,"L05,L16",정상 권한 앱의 거짓 내용은 검증하지 않음
+D02,Direct field / epoch / freshness / sequence checks,메시지의 선언한 조건 검사,뜻이 보존된 필드·시각·순서,"I01,I03,I06",거짓 stamp·누락된 epoch·runtime 지연은 별도
+D03,Runtime verification / ROSMonitoring 2.0,topic·service·발행/수신 순서 property,검사할 trace·spec·oracle,L19,표현 가능과 실제 관측·차단·deadlock은 다름
+D04,Contracts / RCL-Vanda / FRET-Ogma,요구 명세·monitor 생성·조합,올바른 assume–guarantee·변수 mapping,"L20,L22",일반 계약 모델은 선행; 생성 monitor와 actuator 집행 분리
+D05,Application stop / re-arm / re-anchor retrofit,중단·재개·좌표 연속성,중단 원인·button level/edge·현재 EE,"L30,I01,I04",앱·mapper 수정 비용; 이미 있는 reset 기능 고려
+D06,Controller hold / cancel / timeout,실행 중 목표·잔여 이동,controller 상태·goal id·hold interface,"L31,I02",수치 보장은 해당 controller·plant·환경에 한정
+D07,tf2 / message_filters / immutable messages,좌표 시각·stream 동기화·객체 재사용,stamp·frame·장치 식별,"L32,I01",동기화는 의미·보정 정확성·실제 출처 증명과 다름
+D08,Independent runtime evidence + gate,앱 밖 현재 상태 검사,외부 상태·client binding·신선도,"I03,I04,I05",실제 경로의 sample provenance·edge·비우회는 미확보
+D09,RTron / RIPS interaction and policy control,graph interaction·mode·응답 정책,신뢰 graph·policy·집행 위치,"L18,L33",RTron OS/ROS 신뢰 가정; RIPS 전문 대조 대기
+D10,Independent safety system / filter,관측된 물리 제약과 안전 반응,센서·제약 모델·controller 권한,"L21,L31",허용 의도·보인 장면을 물리 제약만으로 판정할 수 있다고 가정하지 않음
+D11,Provenance audit / REALITYCHECK / OVRseen,원인 재구성·실제 흐름 측정,계층 로그·instrumentation·트래픽,"L11,L12",사후 감사는 실시간 차단 보장과 별개
+D12,Data minimization / Erebus / Privaros / privacy mechanisms,sensor 접근·공개 최소화,데이터 정책·trusted SDK·OS mediation·utility metric,"L07,L13,L36",robot 조작 정확도·privacy·latency의 결합은 후속 검증
+D13,Authenticated feedback / independent cross-check / FDI defense,피드백 authenticity·공동 위조 탐지,독립 관측·암호 범위·detector model,"L24,L25,L26",동형암호 결과를 TLS/AEAD로 일반화 금지; 후속 방어 상세 확인
+D14,Queue limits / QoS / watchdog / resource isolation,묵은 목표·과부하·증거 단절 반응,bounded queue·deadline·health·privilege,"L04,L17,L31,I03,I05",fail-closed DoS·중단 중 물리 상태는 별도

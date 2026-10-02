@@ -1,0 +1,8 @@
+﻿id,study,level,scope,premises,outcome,limitations,source_ids
+E01,S1–S5,PRIOR_INTERNAL,사용자 보고·기존 문서,원래 protocol / raw 미재검증,정보를 전달한 기존 방어가 해결한 사례는 유지,명칭별 raw 대응·전 범위 일반화 미확인,"I01,I02"
+E02,R0,PRIOR_TRACE_REANALYSIS,실제 Quest 기존 trace 재분석,새 headset 실행 아님,left/right 오염·focus 상실 중 fresh frozen 60 Hz,closed MoveIt Pro / robot 소비 미관측,I02
+E03,P1 / P1b,SYNTHETIC_OPENVR_GAZEBO,54 / 18 trials,runtime/headset transition 아님,잔여 이동 hold 개선·action cause·epoch/app retrofit 효과,물리 stale-grip 효과 singularity·회전 미수렴; epoch 경계 leak,"I01,I02"
+E04,P2 cause analysis,RUNTIME_BUILD_DIAGNOSIS,old Ubuntu Monado vs main,old READY 고착은 알려진 upstream 수정,main headless FOCUSED 정상; old isActive 일반 취약성 아님,headless focus service 관측 제한,I02
+E05,F1,SURROGATE_RUNTIME,27 runs,generation stamp 가정·비교 freshness 교란,독립 runtime state 경로 feasibility·edge-only 전제,원본 결과 유지; F2 cleanup 별도 사후 해석,"I02,I03,I06"
+E06,F2,MATCHED_SURROGATE,27 runs / 동일 F=200 ms E=50 ms,S_end vs S_life 정책 구분,mid-only interval 효과·ORD 중복/역순 차단,5 ms 1/18 leak·+30 ms 6 leak·+80 ms 정상 전부 차단,I03
+E07,F3,REAL_APP_REMOTE_INPUT,6 trials / real UR5e app + patched xrizer,실제 앱; synthetic remote driver; xrizer 3 patches,수신 gate 추가 차단 0; resume target 35 mm jump,1 app·20 Hz patch 영향·물리 singularity masking,I04

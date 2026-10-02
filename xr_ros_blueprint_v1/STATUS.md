@@ -1,0 +1,29 @@
+# STATUS — XR→ROS Blueprint 연구
+
+기준일: 2026-10-02. 브랜치: research/xr-ros-evidence-framework.
+이 디렉터리의 출발 commit: eff464c9b1011a7646ec80e18f4e771028b89cc5.
+
+## 현재 완료한 일
+
+- 기존 실험의 주장 범위를 읽고 조사 지도와 Claude 실행 context를 저장소에 추가했다.
+- 사례 40개, 방어 14유형, 관련 비교 99개, 한계 43건, 출처 42건, 계승 문헌 seed 94건을 DB로 옮겼다.
+- 시트 자동 접근을 중단하고 GitHub 문서/DB를 기준으로 운영하도록 CLAUDE.md에 기록했다.
+- 기존 protocol/raw/result와 기존 디렉터리는 변경하지 않았다. 신규 실험은 아직 실행하지 않았다.
+
+## 현재 판단
+
+독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
+
+## Claude가 바로 수행할 다음 작업
+
+1. local HEAD·branch·미커밋 변경·AGENTS.md·환경을 확인하고 이번 원격 변경을 안전하게 가져온다.
+2. README/CONTEXT/BLUEPRINT/DB와 기존 결과를 읽고 A/B/C 조사 묶음의 근거와 실행 가능성을 감사한다.
+3. 기본 첫 pilot인 M39(stop/resume 결합)의 기존 개별 수정을 비교군으로 설계한다. M3/M5/M6을 연결하고 singularity 없는 정상 control을 먼저 확보한다.
+4. protocol·예산·포함/제외 범위를 commit·push로 고정한 뒤 실행한다. 환경이 막히면 이유를 기록하고 B/C 조사로 진행한다.
+5. case 기록/DB/STATUS/CONTEXT를 갱신하고 checkpoint를 commit·push한다.
+
+## 알려진 제약
+
+실제 headset/물리 로봇/두 번째 실제 앱 경로는 확보되지 않았다. 이전 F3의 35 mm는 목표 점프이며 물리 피해가 실증된 수치가 아니다. F1의 비교 교란은 F2 해석과 함께 읽어야 한다. 저자 limitation의 후속 해결 확인이 끝나지 않은 항목은 UNKNOWN으로 유지한다.
+
+원격 checkpoint는 이 파일의 자기 commit SHA를 본문에 쓰는 대신 Git commit 이력으로 확인한다. Claude 실행 이후에는 검증한 이전 checkpoint와 local/remote 상태를 기록한다.

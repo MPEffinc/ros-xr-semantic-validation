@@ -1,0 +1,12 @@
+﻿id,edge,plane,data,trust_boundary,required_invariant,taxonomy_ids,source_ids
+F01,Physical world → XR runtime,물리 관측,head/hand pose·tracking·공간 원점,센서·runtime,실제 상태와 추정/예측 구분,"T1,T5,T13","L01,L02,L03,L29"
+F02,XR runtime → app input,입력,actions·focus·device profile·pose,runtime/app API,활성·장치·sample time 보존,"T1,T2,T3,T6,T15","L01,L02,I02"
+F03,App → bridge / transport,명령,pose·grip·goal·stamp,헤드셋/host·websocket/UDP/TCP,필드 의미·인증 hop·샘플 관계,"T3,T4,T5,T6,T12,T15","I01,I06,L30"
+F04,Bridge → ROS graph,명령,TF·PoseStamped·Twist·action,protocol conversion/DDS,restamp·arm binding·권한·QoS,"T4,T6,T7,T10,T13","L04,L05,I01"
+F05,ROS mapper / planner → controller,집행,retarget·anchor·IK·Servo·JTC goal,앱 논리/실행 소비 지점,mode·epoch·대기 목표·gate 우회,"T3,T5,T8,T11,T15","L18,L31,I02"
+F06,Controller → plant → independent sensor,물리 집행,joint motion·EE·force,driver/actuator/환경,메시지 차단→실제 정지의 시간·거리,"T3,T5,T11","L21,L31,I04"
+F07,Robot sensor → feedback transport,피드백,camera·joint state·tf·force,robot/ROS/network,feedback authenticity·시각·상태 버전,"T4,T9,T12","L15,L24,L25,L28"
+F08,Feedback → renderer → display → user,관측·판단,stereo video·overlay·UI·haptic,앱/compositor/display/인간,render submit·실제 표시·이해 구분,"T9,T14,T15","L06,L09,L10,L28"
+F09,User approval → target / task command,승인,selected object·scene version·goal UUID,UI/command creation,선택한 장면·목표와 실행 의미 연결,"T6,T7,T9,T14","L06,L10,L15"
+F10,State/control/evidence side path,상태·증거,focus·epoch·lease·mode·health,runtime/admin/collector/gate,출처 인증·효력 구간·신선도·실패 시 행동,"T2,T3,T4,T7,T8,T11,T15","L20,L22,I03,I05"
+F11,Telemetry / logs → third party / investigator,정보 공유,motion·mesh·video·network log,앱/SDK/cloud/log store,수집 목적·권한·인과 로그·최소 공개,"T12,T14,T15","L07,L11,L12,L13,L14"
