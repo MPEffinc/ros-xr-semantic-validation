@@ -1,0 +1,4 @@
+# F3 variant: xrizer 0989a7f + extfilter patch + background frame pump (deployment component; app unmodified).
+FROM f1-xrizer-patched:0989a7f
+COPY xrizer_bg_pump.py /src/
+RUN cd /src/xrizer && python3 /src/xrizer_bg_pump.py /src/xrizer && git diff --stat && cargo build --release 2>&1 | grep -E '^(error|warning: unused)|Finished' | head -20
