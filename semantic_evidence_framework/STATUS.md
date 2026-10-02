@@ -1,7 +1,7 @@
 # STATUS — semantic_evidence_framework
 
 Last update: 2026-10-02 (KST). **Claim scope was corrected on 2026-10-02; see `docs/06_CLAIM_SCOPE_CORRECTION.md`.** Branch `research/xr-ros-evidence-framework`. Worktree `/home/cclab/ros_xr_evidence`.
-Last verified pushed checkpoint: **F2 protocol freeze** = `f3292ee54d94e901f46f2cc27e33657ba79789a2` (local == origin).
+Last verified pushed checkpoint: **F3 protocol freeze** = `9e9e303031a3106b77c02acad6085e289e59b10a` (local == origin).
 
 ## Checkpoints
 
@@ -131,6 +131,16 @@ Last verified pushed checkpoint: **F2 protocol freeze** = `f3292ee54d94e901f46f2
   - Without app changes only **receive-time state** is available.
 - **S2 design** (`docs/07`): five requirements (R1–R5); not implemented.
 
+- **F3: one real app, end to end** (`results/F3_REAL_APP_RESULTS.md`):
+  - Stack: the unmodified OpenVR UR5e app on xrizer with three recorded deployment-component changes
+    (frame pump etc.; no GPU change), Monado main, and Servo/Gazebo.
+  - Receive-time gate: 0 false blocks, and 0 commands reach Servo during a runtime deactivation.
+  - But the app itself sends 0 commands in the window, so the gate's added protection here is zero.
+  - On resume the target jumps 35 mm without a fresh press (the gate admits it). Its physical
+    effect is masked by a Servo singularity stop.
+  - The app rate dropped to 20 Hz because of the pump.
+  - No second app is available.
+
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
@@ -138,13 +148,11 @@ Last verified pushed checkpoint: **F2 protocol freeze** = `f3292ee54d94e901f46f2
 
 ## Next
 
-1. Get one real XR→ROS app running functionally on Monado. Options:
-   - an immersive OpenXR app with a frame loop;
-   - the OpenVR UR5e app on a frame-pumping xrizer (a component change, reported separately).
-
-   Then repeat F1 with no app change.
-2. Use a GPU path for compositor-backed clients, to observe focus/tracking evidence at the service. This needs nvidia-container-toolkit (a host change that requires approval) or a native host setup.
-3. Runtime variant with authenticated libmonado control calls, reported separately, before any S2 claim.
+1. **Decision point (user).** Without app changes, the independent path gives only receive-time state. On the one real app that runs, that adds nothing measurable. Its potential value is in paths where commands keep flowing during interruptions (frozen streams, cached deadman), and none of those is runnable here. The options are:
+   - (a) obtain such an app on a runtime that exposes the evidence;
+   - (b) accept per-app stamp changes (`results/F2_TIMESTAMP_REVIEW.md` §3) and evaluate generation-interval checks on a real app;
+   - (c) stop the framework line and keep the matrix and findings.
+2. Resume semantics (fresh press after an interruption) needs button-edge evidence that libmonado does not expose. This is a runtime-side evidence gap to scope.
 
 ## Blockers
 
