@@ -46,6 +46,7 @@ DB의 검증과 CSV 재생성 도구는 scripts/refresh_views.py다. 실제 새 
 - F1: 대역 앱 27회. 독립 runtime 상태 경로 feasibility는 보였지만 timestamp 전제와 비교군 freshness 교란이 있었다. 고정 protocol/raw/result는 그대로 보존하고 사후 해석은 별도 문서에 둔다.
 - F2: 대역 앱 27회, 동일 freshness로 비교. interval 검사의 필요성은 중간 중단도 금지하는 정책을 선택할 때에만 추가된다. 상태 검사와 중복·역순 검사 효과는 구분한다. 5 ms 전환과 증거 지연에서 누출이 있었으므로 경계를 제외해 성공을 주장하지 않는다.
 - F3: 원본 OpenVR UR5e 앱 1개 + 수정 xrizer + Monado/Servo/Gazebo, 6회. runtime 비활성 구간에 앱이 스스로 명령을 멈춰 수신 gate의 추가 차단 0건. 재개 시 목표가 35 mm 점프했으나 물리적 결과는 특이점 정지에 가렸다. 앱은 무수정이어도 배포 구성요소는 3가지 수정됐고 주기도 50→20 Hz로 변했다.
+- M39 pilot(R04): 같은 실제 앱 경로, 45회, masked 0. 원본 재개 점프가 물리 실행됨(I1 47.9 mm/11.5°, 300 ms에 EE 20–23 mm; N1 절대 재기준 40 mm; 움직이는 중 정지 잔여 10–14 mm). 가장 강한 개별 수정 B1이 전체 계약 충족. 앱 무수정 ROS-side C1은 부분 계약 충족, 새 누름 재허가 0/9.
 - 실제 앱에서 `명령 stamp = 입력 sample 시각`은 무수정 상태로 확인되지 않았다. 수신 시점 상태 보호와 sample-to-command 출처 보장은 다르다. runtime token만으로 앱의 명령 계산이 올바르다고 증명되지 않는다.
 - 손상 앱 방어는 미완성이다. IPC 제어 권한, 비위조 client 연결, 증거 신뢰, 모든 실행 경로의 매개, 명령 유래를 함께 확인해야 하며 인증 패치 하나로 완료되지 않는다.
 - 실제 headset·Quest runtime·물리 로봇, 닫힌 frontend의 내부 읽기는 확인 범위 밖이다. 실제 앱, 대역 앱, 합성 입력, 시뮬레이션, 물리 로봇을 별도 표시한다.
@@ -100,6 +101,26 @@ DB의 검증과 CSV 재생성 도구는 scripts/refresh_views.py다. 실제 새 
 ## 5d. R01 방법 검토에서 남은 조건
 
 R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 아니다. B1에 올바른 hold/re-anchor/unpause 순서와 필요한 runtime 관측을 제공한 가장 강한 기존 수정이 비교 기준이다. C1에는 정책 충족 범위와 입력 정보 차이가 명시된다. 조건 또는 arm이 유발한 특이점·충돌 개입과 증거 공백은 실행 결과에 남는다. 정상 재허가 후 움직임 회복 조건이 없으면 영구 차단이 성공처럼 보일 수 있다. 중립적 pre-flight, SE(3) re-basing 의미와 clock 대응은 아직 확인할 사항이다.
+
+## 5e. 2026-10-03 M39 pilot의 사실과 판단
+
+- 경로 사실(code·관측):
+  - Servo는 sim time을 쓰고 앱은 wall stamp를 써서, 이 경로에서는 incoming_command_timeout이 동작하지 않는다. Servo는 마지막 목표를 계속 추종한다.
+  - xrizer raw pose는 Monado grip pose에서 offset된 값이라, 손을 회전하면 앱의 위치 목표도 움직인다.
+  - 앱의 고정 engage 자세에 대한 모든 IK branch에서 forearm–wrist_2가 근접해 Servo 충돌 감속(status 4)이 나타난다. 선정된 자세에서 그 영향은 0.33 mm 이하였다.
+- B1 감지 관측(probe):
+  - IO 비활성화가 한 tick 이상이면 그다음 tick부터 pose-invalid와 grip false로 보인다.
+  - 30 ms 비활성화는 앱이 보지 못한다.
+  - 비활성 중의 해제와 누름도 앱에 보이지 않는다.
+  - 따라서 무효 tick의 grip을 읽는 단순 edge 검출은 새 누름을 잘못 인정한다.
+- 판단:
+  - 이 실제 경로의 stop/resume 결합(M39)은 기존 개별 수정(valid-tick fresh press, 측정 EE 재기준화, controller hold, 순서 있는 unpause와 runtime 증거)을 올바르게 결합하면 해결된다(B1).
+  - 공통 ROS-side 구성요소는 앱을 수정하지 않고 정지·재기준화·정상 회복을 달성했다. 새 누름 재허가는 버튼이 wire에 없어서 불가능했다. 이는 정보 한계이며 전체 계약 기준으로는 불충족이다.
+  - 재기준화에는 앱별 명령 의미 adapter가 필요했다. 위치는 base_link 가산, 회전은 R_anchor·R_rel이다. 잘못된 합성 순서는 host 검사에서 7.99 mm 또는 2.28°의 오차를 냈다.
+- 미해결 질문:
+  - 버튼이 wire에 실리는 두 번째 실제 경로에서도 같은 구성요소가 전체 계약을 충족하는가? adapter 비용은 per-app 수정보다 작은가?
+  - 실제 headset 전환(focus·menu·tracking loss)도 한 tick 안에 pose-invalid로 전달되는가?
+  - 다른 자세·속도·하중과 드문 race에서는 어떤가? 3회 반복으로는 알 수 없다.
 
 ## 6. 근거 해석의 공통 기준
 
