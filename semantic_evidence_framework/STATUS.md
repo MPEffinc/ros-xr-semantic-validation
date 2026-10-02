@@ -123,6 +123,14 @@ Last verified pushed checkpoint: **F2 protocol freeze** = `f3292ee54d94e901f46f2
   - With 30 ms evidence delay, every state arm lets 6 commands through. With evidence older than
     E, every arm fails closed.
 
+- **Timestamp review** (`results/F2_TIMESTAMP_REVIEW.md`): no audited real app meets the
+  generation-interval premise unmodified.
+  - The stamps are receive or publish times, come from a different clock domain, or are fresh stamps
+    on cached data.
+  - On xrizer, a Background OpenVR app's poses are located at the init-time XrTime.
+  - Without app changes only **receive-time state** is available.
+- **S2 design** (`docs/07`): five requirements (R1–R5); not implemented.
+
 ## Not verified / limits
 
 - Real runtime or headset transitions are NOT_VERIFIED: no Quest, no SteamVR.
