@@ -11,7 +11,7 @@ IMAGE = 'f3-xrizer-bgpump:0989a7f-v3'
 
 
 def run(out, tid, arm, cond, scen_dir, q):
-    d = Path(out) / tid; d.mkdir(parents=True, exist_ok=False); d.chmod(0o777)
+    d = Path(out).resolve() / tid; d.mkdir(parents=True, exist_ok=False); d.chmod(0o777)
     sc = json.loads((Path(scen_dir) / f"{cond}.json").read_text())
     rel = Path(scen_dir).resolve().relative_to(HERE)
     env = {'ARM': arm, 'COND': cond, 'TRIAL': tid, 'QSTART': q, 'SCEN': f'/m39/{rel}/{cond}.json', 'SCHED': sc['sched'], 'END': str(sc['end'])}

@@ -182,9 +182,9 @@ contract + P_rearm. Both are reported.
 |---|---|---|
 | **P_stop** | N1, I1, I2, I3 | S1: `max |p_EE(t) − p_EE(t_on+0.1)|` over `[t_on+0.1, t_end]` ≤ 5 mm; **and** S2: max arm joint speed over `[t_on+0.3, t_end]` ≤ 0.01 rad/s |
 | **P_resume** | every resume event inside `[t_on, END]`. Resume events: B0 = the first Servo input after `t_end` (and after `t_fp` if a release intervened); B1/C1 = each `first_target_published` after an interruption | R1: the first Servo-input target after the resume is within 5 mm and 2° of the measured EE at that time; **and** R2: EE travel in the first 300 ms ≤ 0.5 × hand travel over `[t_r − 0.05, t_r + 0.3]` + 5 mm. A trial passes if all its resume events pass. **Not evaluable (NE)** if no resume event occurs (e.g. B1 in I1/I3). |
-| **Normal** | N0 (all arms); for B1/C1 also no arm interrupt between engage + 0.5 s and `t_on` in every condition | No arm interrupt/hold after engage + 0.5 s (N0); settled tracking at 5.9 s within 5 mm / 2° of the engage-referenced mapping; mapping increments (below) pass |
-| **Mapping increments** | N0, N1, I2 (all arms); I1/I3 descriptive | Between checkpoints 9.4 → 10.9 (translation), 10.9 → 12.4 (rotation) and 12.4 → 14.9 (combined): position increment vs `0.5·Δh` ≤ 5 mm; body-frame rotation increment `R_EE(a)⁻¹R_EE(b)` vs `Q(a)⁻¹Q(b)` ≤ 2° |
-| **Live** (no permanent block after a valid re-press) | N1, I2 | L1: re-admitted ≤ 1.0 s after `t_fp` (B1/C1 `active`; B0 first Servo input); L2: mapping increments pass; L3: EE moves ≥ 2 mm along u within 0.5 s of 9.5 s. A hold that persists after a valid re-press is a **normal-operation failure**, not a success. |
+| **Normal** | N0 (all arms); for B1/C1 also no arm interrupt between engage + 0.5 s and `t_on` in every condition | No arm interrupt/hold after engage + 0.5 s (N0); settled tracking at **5.7 s** (quiet in every script) within 5 mm / 2° of the latest Servo-input target; mapping increments (below) pass |
+| **Mapping increments** | N0, N1, I2 (all arms); I1/I3 descriptive | Between checkpoints 9.4 → 10.9 (translation), 10.9 → 12.4 (rotation) and 12.4 → 14.9 (combined): measured EE increment vs the **unmodified app's own command increment** for the same hand motion (frozen `preflight/ref_increments.json`, from the qualified B0 N0 run): position ≤ 5 mm; body-frame rotation `R(a)⁻¹R(b)` ≤ 2°. (xrizer's raw pose is offset from Monado's grip pose, so a hand rotation also moves the app's position target; the script's feeder pose is therefore not the app-visible hand pose.) |
+| **Live** (no permanent block after a valid re-press) | N1, I2 | L1: re-admitted ≤ 1.0 s after `t_fp` (B1/C1 `active`; B0 first Servo input); L2: mapping increments pass; L3: EE moves ≥ 2 mm along u within **1.0 s** of 9.5 s (normal plant latency in the B0 qualification runs: 0.38–0.43 s). A hold that persists after a valid re-press is a **normal-operation failure**, not a success. |
 | **P_rearm** (full contract only) | I1, I2, I3 | Permission level: no re-admission before `t_fp` (I1/I3: before END). For B1/C1, re-admission = an `active` event; for B0, any Servo input after `t_on`. Physical (reported): EE displacement from `p_EE(t_end)` over `[t_end, min(t_fp, END)]` ≤ 5 mm and 2°. |
 
 **Further rules.**
@@ -204,7 +204,7 @@ contract + P_rearm. Both are reported.
 
 The code, time and arm are recorded. Each policy measure whose window contains the status is
 marked `masked`. Its pass/fail value is still reported, and it is counted separately. Status 4
-(DECEL_FOR_COLLISION) is recorded.
+(DECEL_FOR_COLLISION) is recorded, with its count in every measure window (descriptive).
 
 **Outcomes, never removed** (with the cause attributed: arm, condition or evidence path):
 
@@ -350,9 +350,64 @@ different arm model would need a separate protocol.
 **Smoke (excluded from results).** One N1 run each for B1 and C1 on the chosen candidate, as a
 full-stack plumbing check. Any fix is recorded, and the smoke is repeated.
 
-### 10.4 Result
+### 10.4 Execution and result (2026-10-03, before freeze)
 
-Recorded in `experiments/M39_pilot/FREEZE.md`.
+**Runs.** 3 qualification runs plus 1 aborted launch, about 12 min of Gazebo. Results are in
+`experiments/M39_pilot/preflight/qual_*.json`; raw data is in `raw/preflight/qual*` (ignored).
+
+| Candidate | Run | Outcome |
+|---|---|---|
+| 1 (sol2, −z) | N0 | **fail**. Status 4 from engage at rest (2.017 s) to the end, then HALT_FOR_COLLISION at 14.66 s. The EE barely followed (tracking lag 14 → 78 mm). |
+| 2–4 (sol2, +z/+y/−x) | not run | They share candidate 1's start configuration, and status 4 already appears at rest before any motion, so they fail the same rule. |
+| 5 (sol4, −x) | N0 | strict rule: fail (status 4 at 2.013–6.533 s) |
+| 5 (sol4, −x) | QF | strict rule: fail (status 4 at 2.024–6.063 s) |
+
+**Cause of status 4 (offline, `preflight/self_clearance.py`).** It is the forearm_link–wrist_2_link
+pair, which is enabled in the ACM. The minimum vertex distance is 14.8–16.9 mm in all 5
+configurations checked, including Gazebo's default pose. The threshold is 10 mm, unpadded mesh
+distance. So this is a configuration-wide wrist proximity of this robot model, not a property of one
+IK branch.
+
+**Revisions before freeze**, made before candidate 5 was judged against them and before any
+interruption condition was run:
+
+- **(a) Status 4.** Status 4 is allowed in qualification only if:
+  - its tracking effect is ≤ 1.0 mm (lag in segment A, which has status 4, minus lag in segment C,
+    which has none);
+  - segment C is free of it.
+
+  Statuses {1, 2, 3, 5, 6} remain disqualifying.
+- **(b) Settled time.** The settled check moves from 5.9 s to 5.7 s, because QF/I3 start moving at
+  5.75 s. The 5.9 s check had measured a moving arm, which is a checker error.
+- **(c) Mapping reference.** Mapping increments are compared with the unmodified app's own command
+  increments (§6), because of the xrizer raw-pose offset.
+- **(d) L3 threshold.** L3 changes from 0.5 s to 1.0 s, from the normal plant latency.
+
+**Candidate 5 under the revised rule.**
+
+| Run | Status 4 lag effect | Settled at 5.7 s | Rotation rate | Max increment error |
+|---|---|---|---|---|
+| N0 | +0.27 mm | 0.07 mm | 0.0002°/s | 0.87 mm, 0.46° |
+| QF | +0.33 mm | 0.04 mm | 0.0001°/s | 0.59 mm, 0.26° |
+
+Both runs had 0 statuses in {1, 2, 3, 5, 6}, and the app ran at 20.0 Hz. **Candidate 5 passes and
+is used.**
+
+- Start configuration: q = (−2.865212, −0.026290, −1.853711, −1.261592, −2.865212, −1.571593).
+- Setup EE error: 0.006 mm / 0.0004°.
+- Axis: u = −x (tracking space → base_link −x).
+
+**Consequence that stays in the results.** Status 4 is present from engage until about 6.0–6.5 s in
+normal runs, so it overlaps `t_on` = 6.0. It is recorded per measure as descriptive.
+
+**Smoke** (excluded, `raw/preflight/smoke`, same candidate, N1):
+
+| Arm | Stop | Resume | Live | Increment errors |
+|---|---|---|---|---|
+| B1 | release → interrupt +5.9 ms; travel after +100 ms 0.44 mm | at 7.512, target vs EE 0.00 mm | re-admitted after 0.207 s | ≤ 0.8 mm / 0.32° |
+| C1 | silence interrupt +57.6 ms; travel after +100 ms 0.00 mm | at 7.613, target vs EE 0.00 mm | re-admitted after 0.151 s | ≤ 0.69 mm / 0.38° |
+
+No fix was needed. **The pre-flight did not use any interruption-condition outcome of B0.**
 
 ## 11. Decision rules
 
