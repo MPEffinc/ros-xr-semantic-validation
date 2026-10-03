@@ -157,7 +157,7 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
 - **충돌 감속.** 이 경로의 status 4 감속은 작다. 적용 scale은 최소 0.8945였다. 노출은 arm마다 다르다(B0가 절대 재기준으로 시작 자세에 돌아올 때 가장 크다). 로그만 추가한 Servo build로 직접 기록한 값이며, 이동·지연에 대한 인과 효과는 추정하지 않았다. pause 중에는 collision monitor가 멈추고 이전 scale이 유지된다.
 - **정지.**
   - 시계를 맞춰도 Servo timeout만으로는 이미 발행된 목표를 따라잡는 이동이 남는다(10–12 mm, 절반 속도에서 5–6 mm).
-  - 기존 측정 상태 hold와 측정 속도 기반 감속 정지(JTC 수식, a=3.0)는 두 속도에서 R03 정지 기준을 충족했다. 전제는 중단 증거, Servo pause의 선행, 측정 velocity(감속)다.
+  - 기존 측정 상태 hold와 측정 속도 기반 감속 정지(JTC 수식, a=3.0)는 두 속도에서 R03 정지 기준을 충족했다. 중단 증거와 측정 상태가 필요했다. 실제 구현은 pause 요청 뒤 확인 응답 전에 첫 hold를 보내고, 응답 시와 +0.1 s에 재전송했다. 따라서 첫 hold 이전에 pause가 완료되었다는 순서 보장은 아니다.
   - JTC 고유 감속은 action 경로 전용이다. topic 명령은 정지를 덮어쓴다.
 - **M12.**
   - 이 경로에서 발행·수신 stamp가 새롭다는 사실은 입력이 새롭다는 근거가 되지 않는다.
@@ -172,6 +172,17 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
   - 실제 재발행자(예: Docker_Teleop receiver 재stamp)를 거쳐도 provenance 필드가 보존되는가?
   - 다른 자세·가속 한계·실제 로봇에서도 정지 결과가 유지되는가?
   - 장치·source 식별을 provenance에 포함하면 M8/M9를 함께 막을 수 있는가?
+
+## 5i. 2026-10-03 R12/R13 검토 후 판단
+
+검토 문서는 `reports/R14_REVIEW_R12_R13.md`다. 새로운 실행 결과가 아니다.
+
+- M3는 해당 경로·두 속도에서 기존 controller 정지 방법으로 해결됐다. native action 감속과 외부 topic 수식 구현은 구분한다.
+- M12의 해결 판정은 전송 지연·bridge 캐시·비활성 재사용과 정상 앱 가정에 한정한다. 앱 read 시각·read sequence는 실제 source sample 시각·update sequence가 아니다. 원천 정지와 손상 앱의 자기보고는 해결되지 않았다.
+- 정보가 gate에 없다는 결과는 정보 확보 연구를 배제하지 않는다. remote driver 수신 시각 watchdog이라는 기존 root fix를 먼저 비교해야 한다. 이는 패킷 수신 신선도이며 물리 sensing 신선도를 보장하지 않는다.
+- B1 I3 재실행에서 실제 정지 속도 기준 실패가 1건 있었다. 이전 성공 데이터는 보존하되 failure-free 보장으로 확대하지 않는다.
+- pause 확인 전에 hold가 발행됐고 뒤늦은 trajectory가 이를 덮을 수 있다. 현재 통과 결과에는 writer·queue 전제가 남는다.
+- 다음 검증 축은 source 증거 확보, 실제 재발행 코드의 provenance 보존, M7의 동적 frame 시간 정합성이다. 구체적인 실행 범위는 별도 프롬프트에서 정한다.
 
 ## 6. 근거 해석의 공통 기준
 
