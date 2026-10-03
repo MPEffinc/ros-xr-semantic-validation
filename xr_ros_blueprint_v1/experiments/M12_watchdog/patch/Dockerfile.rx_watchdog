@@ -1,0 +1,6 @@
+# M12_watchdog runtime variant: f3 image + Monado 045931d remote driver receive-time patch (rebuilt monado-service).
+FROM f3-xrizer-bgpump:0989a7f-v3
+COPY apply_rx_watchdog.py /src/
+RUN cd /src/monado && python3 /src/apply_rx_watchdog.py /src/monado && git diff --stat && \
+    ninja -C build monado-service 2>&1 | tail -3 && cp build/src/xrt/targets/service/monado-service /opt/monado/bin/monado-service && \
+    git diff > /src/m12_rx_watchdog.diff && sha256sum /opt/monado/bin/monado-service
