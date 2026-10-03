@@ -1,0 +1,617 @@
+[
+ {
+  "trial": "C01_D_RESTRICT_APPROVED_r1",
+  "deploy": "D_RESTRICT",
+  "check": "APPROVED",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/m19/app_cmd"
+   },
+   {
+    "k": "published",
+    "topic": "/m19/app_cmd",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": true,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C02_D_RESTRICT_MUX_DIRECT_r1",
+  "deploy": "D_RESTRICT",
+  "check": "MUX_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C03_D_RESTRICT_APP_DIRECT_r1",
+  "deploy": "D_RESTRICT",
+  "check": "APP_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_failed",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "err": "RCLError('Failed to create publisher: create_publisher() could not create data writer, at ./src/publisher.cpp:275, at ./src/rcl/publisher.c:117')"
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": false,
+  "ctl_reference": false,
+  "joints_moved": false,
+  "reached_controller": false,
+  "pan_before": -2.8652,
+  "pan_final": -2.8652
+ },
+ {
+  "trial": "C04_D_OPEN_APPROVED_r1",
+  "deploy": "D_OPEN",
+  "check": "APPROVED",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/m19/app_cmd"
+   },
+   {
+    "k": "published",
+    "topic": "/m19/app_cmd",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": true,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C05_D_OPEN_MUX_DIRECT_r1",
+  "deploy": "D_OPEN",
+  "check": "MUX_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C06_D_OPEN_APP_DIRECT_r1",
+  "deploy": "D_OPEN",
+  "check": "APP_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C07_D_OPEN_APP_DIRECT_r2",
+  "deploy": "D_OPEN",
+  "check": "APP_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 1,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": false,
+  "joints_moved": false,
+  "reached_controller": false,
+  "pan_before": -2.8652,
+  "pan_final": -2.8652
+ },
+ {
+  "trial": "C08_D_OPEN_APPROVED_r2",
+  "deploy": "D_OPEN",
+  "check": "APPROVED",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/m19/app_cmd"
+   },
+   {
+    "k": "published",
+    "topic": "/m19/app_cmd",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": true,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C09_D_RESTRICT_MUX_DIRECT_r2",
+  "deploy": "D_RESTRICT",
+  "check": "MUX_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C10_D_RESTRICT_APP_DIRECT_r2",
+  "deploy": "D_RESTRICT",
+  "check": "APP_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_failed",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "err": "RCLError('Failed to create publisher: create_publisher() could not create data writer, at ./src/publisher.cpp:275, at ./src/rcl/publisher.c:117')"
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": false,
+  "ctl_reference": false,
+  "joints_moved": false,
+  "reached_controller": false,
+  "pan_before": -2.8652,
+  "pan_final": -2.8652
+ },
+ {
+  "trial": "C11_D_OPEN_MUX_DIRECT_r2",
+  "deploy": "D_OPEN",
+  "check": "MUX_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C12_D_RESTRICT_APPROVED_r2",
+  "deploy": "D_RESTRICT",
+  "check": "APPROVED",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/m19/app_cmd"
+   },
+   {
+    "k": "published",
+    "topic": "/m19/app_cmd",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": true,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C13_D_RESTRICT_MUX_DIRECT_r3",
+  "deploy": "D_RESTRICT",
+  "check": "MUX_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C14_D_OPEN_APP_DIRECT_r3",
+  "deploy": "D_OPEN",
+  "check": "APP_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C15_D_RESTRICT_APP_DIRECT_r3",
+  "deploy": "D_RESTRICT",
+  "check": "APP_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_failed",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "err": "RCLError('Failed to create publisher: create_publisher() could not create data writer, at ./src/publisher.cpp:275, at ./src/rcl/publisher.c:117')"
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": false,
+  "ctl_reference": false,
+  "joints_moved": false,
+  "reached_controller": false,
+  "pan_before": -2.8652,
+  "pan_final": -2.8652
+ },
+ {
+  "trial": "C16_D_OPEN_APPROVED_r3",
+  "deploy": "D_OPEN",
+  "check": "APPROVED",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/m19/app_cmd"
+   },
+   {
+    "k": "published",
+    "topic": "/m19/app_cmd",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": true,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C17_D_OPEN_MUX_DIRECT_r3",
+  "deploy": "D_OPEN",
+  "check": "MUX_DIRECT",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "adbfbacccfa6d3bd",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/ur5_arm_controller/joint_trajectory"
+   },
+   {
+    "k": "published",
+    "topic": "/ur5_arm_controller/joint_trajectory",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": false,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ },
+ {
+  "trial": "C18_D_RESTRICT_APPROVED_r3",
+  "deploy": "D_RESTRICT",
+  "check": "APPROVED",
+  "invalid": [],
+  "enforced": true,
+  "probe_rc": 1,
+  "key_access": {
+   "enclaves/m19/mux/key.pem": "denied",
+   "enclaves/m19/controller/key.pem": "denied",
+   "private/identity_ca.key.pem": "denied",
+   "private/permissions_ca.key.pem": "denied",
+   "private/ca.key.pem": "denied"
+  },
+  "app_permissions_sha16": "d8962c9963135ddb",
+  "publisher": [
+   {
+    "k": "create_publisher_ok",
+    "topic": "/m19/app_cmd"
+   },
+   {
+    "k": "published",
+    "topic": "/m19/app_cmd",
+    "matched": 2,
+    "sent": 20
+   }
+  ],
+  "on_app_topic": true,
+  "on_ctl_topic": true,
+  "ctl_reference": true,
+  "joints_moved": true,
+  "reached_controller": true,
+  "pan_before": -2.8652,
+  "pan_final": -2.6652
+ }
+]
