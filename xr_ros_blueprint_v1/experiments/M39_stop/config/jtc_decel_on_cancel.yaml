@@ -1,0 +1,12 @@
+# R10 1B standalone action verification only: enable JTC 4.42.1 decelerate_on_cancel with the deployment's
+# joint_limits.yaml max_acceleration (3.0 rad/s^2) as max_deceleration_on_cancel. Not used in any XR trial.
+ur5_arm_controller:
+  ros__parameters:
+    constraints:
+      decelerate_on_cancel: true
+      shoulder_pan_joint: {max_deceleration_on_cancel: 3.0}
+      shoulder_lift_joint: {max_deceleration_on_cancel: 3.0}
+      elbow_joint: {max_deceleration_on_cancel: 3.0}
+      wrist_1_joint: {max_deceleration_on_cancel: 3.0}
+      wrist_2_joint: {max_deceleration_on_cancel: 3.0}
+      wrist_3_joint: {max_deceleration_on_cancel: 3.0}
