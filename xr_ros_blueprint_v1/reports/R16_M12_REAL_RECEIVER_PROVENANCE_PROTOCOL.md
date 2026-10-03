@@ -103,3 +103,13 @@ Reruns at most 2; all attempts are kept.
   modifiable frontend.
 - Packet receipt time ≠ sensing time.
 - No S2: a component that rewrites provenance is not defended.
+
+## 6. Pre-flight (excluded; snapshot e06c713; 02:35–02:37)
+
+- **Build.**
+  - The receiver, `teleop_bridge_msgs` and `m12r_prov_msgs` were built in `docker-teleop-humble:local` (ROS 2 Humble)
+    from the pinned upstream @64cbdde (clean HEAD verified).
+  - Receiver source sha256 `9fa3a58c…`; patched B1 copy `5f80a59e…`.
+- **PF1 B1 RECONNECT_DUP:** fresh 803/803 admitted; stale_gap 0/9 admitted (`rx_age`); stale_dup 0/12 admitted
+  (`seq_regress_or_duplicate`); neutral 4 classified `neutral_stop`. Producer 59.7 Hz.
+- **PF2 B0 CACHE_GAP:** fresh 820/820; stale_gap **7/7 admitted** (stamp age only; provenance absent).

@@ -11,7 +11,7 @@
 
 | Condition | S0 (R13 A2, original runtime) | S1 (driver receive watchdog 100 ms + A2) | S2 (receipt evidence at the gate + A2) |
 |---|---|---|---|
-| N_MOVE: fresh admitted | 811/811 | 810/810 | 811/811 |
+| N_MOVE: fresh admitted | 810/810 | 810/810 | 811/811 |
 | N_STILL (periodic identical packets): fresh admitted | 810/810 | 809/809 | 809/809 |
 | STALL15: stale_source admitted | **84/84** | **0** (the app generated 0 messages in the stall) | **0/84** (blocked: `source_rx_age`) |
 | STALL5: stale_source admitted | **294/294** | **0** (0 generated) | **0/294** |
