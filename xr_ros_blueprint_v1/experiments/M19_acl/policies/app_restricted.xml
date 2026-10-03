@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- M19 D_RESTRICT: the XR app enclave may publish only its declared frontend input topic (plus ROS bookkeeping topics).
+     It has no publish permission on the controller topic and no service/action permissions on the controller. -->
+<policy version="0.2.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <enclaves>
+    <enclave path="/m19/app">
+      <profiles>
+        <profile ns="/" node="m19_app">
+          <topics publish="ALLOW">
+            <topic>m19/app_cmd</topic>
+            <topic>rosout</topic>
+            <topic>parameter_events</topic>
+          </topics>
+          <topics subscribe="ALLOW">
+            <topic>parameter_events</topic>
+          </topics>
+        </profile>
+      </profiles>
+    </enclave>
+  </enclaves>
+</policy>

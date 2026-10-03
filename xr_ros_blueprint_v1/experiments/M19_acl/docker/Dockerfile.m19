@@ -1,0 +1,4 @@
+# M19 image: the existing research image (m3-ordering-mux:v1 = trial image + ros-jazzy-topic-tools) plus the ROS 2
+# security CLI if missing. Packages are installed inside the image only (no host change).
+FROM m3-ordering-mux:v1
+RUN apt-get update && apt-get install -y --no-install-recommends ros-jazzy-sros2 ros-jazzy-sros2-cmake ros-jazzy-joint-trajectory-controller ros-jazzy-joint-state-broadcaster ros-jazzy-controller-manager ros-jazzy-ros2-control util-linux && rm -rf /var/lib/apt/lists/*

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="m19_mock_ur">
+<link name="base_link"/>
+<link name="l0"/>
+<link name="l1"/>
+<link name="l2"/>
+<link name="l3"/>
+<link name="l4"/>
+<link name="l5"/>
+<joint name="shoulder_pan_joint" type="revolute"><parent link="base_link"/><child link="l0"/><origin xyz="0 0 0.1"/><axis xyz="0 0 1"/><limit lower="-6.28" upper="6.28" effort="100" velocity="3.14"/></joint>
+<joint name="shoulder_lift_joint" type="revolute"><parent link="l0"/><child link="l1"/><origin xyz="0 0 0.1"/><axis xyz="0 0 1"/><limit lower="-6.28" upper="6.28" effort="100" velocity="3.14"/></joint>
+<joint name="elbow_joint" type="revolute"><parent link="l1"/><child link="l2"/><origin xyz="0 0 0.1"/><axis xyz="0 0 1"/><limit lower="-6.28" upper="6.28" effort="100" velocity="3.14"/></joint>
+<joint name="wrist_1_joint" type="revolute"><parent link="l2"/><child link="l3"/><origin xyz="0 0 0.1"/><axis xyz="0 0 1"/><limit lower="-6.28" upper="6.28" effort="100" velocity="3.14"/></joint>
+<joint name="wrist_2_joint" type="revolute"><parent link="l3"/><child link="l4"/><origin xyz="0 0 0.1"/><axis xyz="0 0 1"/><limit lower="-6.28" upper="6.28" effort="100" velocity="3.14"/></joint>
+<joint name="wrist_3_joint" type="revolute"><parent link="l4"/><child link="l5"/><origin xyz="0 0 0.1"/><axis xyz="0 0 1"/><limit lower="-6.28" upper="6.28" effort="100" velocity="3.14"/></joint>
+<ros2_control name="mock" type="system"><hardware><plugin>mock_components/GenericSystem</plugin></hardware>
+<joint name="shoulder_pan_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">-2.865212</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="shoulder_lift_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">-0.02629</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="elbow_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">-1.853711</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="wrist_1_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">-1.261592</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="wrist_2_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">-2.865212</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="wrist_3_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">-1.571593</param></state_interface><state_interface name="velocity"/></joint>
+</ros2_control>
+</robot>
