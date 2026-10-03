@@ -87,9 +87,31 @@
   - Quest2ROS2는 frontend가 비공개이고 consumer가 없습니다.
   - wire의 버튼 level은 세 후보 모두에서 가짜 해제→누름을 만들 수 있습니다(stale neutral, toggle, 비활성 전환).
 
+## 2026-10-03 부재 중 승인 작업: 감속 계측·정지 방법·M12 (R09–R13, A02)
+
+- **신규 formal trial 150회**(예산 상한): 1A 30, 1C 36, JTC action 6, M12 72, follow-up 6. 모두 유효였고 재실행은 0회입니다. probe·pre-flight 14회는 별도입니다. 진행 기록은 `RUN_STATE_2026-10-03_UNATTENDED.md`에 있습니다.
+- **충돌 감속(R09→R12 A).** 정책은 바꾸지 않고 로그만 추가한 Servo build로 scale을 직접 기록했습니다.
+  - 적용 scale: 0.8945–1.0
+  - B0 절대 재기준 뒤 증분 구간에서 0.9 미만 cycle: 13–20%. B1/C1은 0%입니다.
+  - pause 중에는 monitor가 멈춥니다.
+  - 인과 효과는 추정하지 않았습니다.
+- **정지 방법(R10→R12 B·C).** 시계를 맞추고 두 속도에서 비교했습니다. JTC 고유 `decelerate_on_cancel`은 action cancel로만 동작하고, Servo topic 경로에서는 쓸 수 없습니다.
+  - HOLD: P_stop 6/6
+  - DECEL_TOPIC(JTC 수식 외부 재현): 6/6
+  - B0_CLOCK: 0/6(10–12 mm, 절반 속도 5–6 mm)
+- **M12(R11/R11a→R13).** 명령 수준 비교입니다.
+  - stamp age 검사: 전송 지연만 차단했습니다.
+  - 앱이 획득 시각·seq·유효성을 함께 보내는 수정: 지연·캐시 재발행·비활성 재사용을 255/255 차단, 정상 오차단 0/4508
+  - runtime 상태 검사: 비활성 재사용만 차단했습니다.
+  - 원천 정지: 모든 arm이 통과시켰습니다. 5초 정지 동안 유효성·tracking result·runtime 상태 모두 변화가 없었습니다(정보 부재).
+- **M7/M8/M9 감사(A02).**
+  - M7: 이 경로에서는 발생하지 않습니다.
+  - M8/M9: root fix가 적용되지 않았고 upstream도 변하지 않았습니다(Spes #14 사용자 보고는 열린 상태).
+- checkpoint: e3091fd, 26ddc16, f3b26bb, d9770a9, 7388f4d, 6afeadc, d4b2fc0 및 최종 정리 commit.
+
 ## 현재 판단
 
-독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. 이 판정은 원본 앱 명령 기준의 추종 평가에 의존하고, status 4 감속량은 정량화되지 않았다(R05). 잔여 이동은 시계를 맞춰도 남았다(R07). 두 번째 실제 경로는 Quest 부재로 확보하지 못했다(R08). stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
+독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. 이 판정은 원본 앱 명령 기준의 추종 평가에 의존하고, status 4 감속량은 정량화되지 않았다(R05). 잔여 이동은 시계를 맞춰도 남았다(R07). 두 번째 실제 경로는 Quest 부재로 확보하지 못했다(R08). 이 경로의 정지(M3)와 묵은 입력(M12)은 기존 방법(측정 상태 hold·감속 정지, 획득 시각 provenance)으로 해결됐다(R12/R13). 원천 정지 구분은 정보가 없어 남았다. stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
 
 ## R01 방법 검토와 아직 미실행인 단계
 
@@ -103,7 +125,7 @@ R02_METHOD_REVIEW_R01.md에 B1의 완전한 기존 수정, C1의 부분/전체 �
 
 실제 headset/물리 로봇/두 번째 실제 앱 경로는 확보되지 않았다(R08: Quest 없음, Unity OpenXR Linux 미지원). F3의 35 mm는 목표 점프였고, R04에서 같은 경로(다른 시작 자세)의 재개 점프가 Gazebo에서 물리적으로 실행됨을 확인했다(실제 로봇 아님). F1의 비교 교란은 F2 해석과 함께 읽어야 한다. 저자 limitation의 후속 해결 확인이 끝나지 않은 항목은 UNKNOWN으로 유지한다.
 
-원격 checkpoint는 이 파일의 자기 commit SHA를 본문에 쓰는 대신 Git commit 이력으로 확인한다. 직전 확인 checkpoint: 4f83672 (local=remote). Claude 실행 이후에는 검증한 이전 checkpoint와 local/remote 상태를 기록한다.
+원격 checkpoint는 이 파일의 자기 commit SHA를 본문에 쓰는 대신 Git commit 이력으로 확인한다. 직전 확인 checkpoint: d4b2fc0 (local=remote). Claude 실행 이후에는 검증한 이전 checkpoint와 local/remote 상태를 기록한다.
 
 ## 2026-10-03 R05–R08 검토 후 후속 판단
 
