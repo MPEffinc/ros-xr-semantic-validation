@@ -10,12 +10,13 @@
 # must not read the mux / controller private keys or the CA private keys.
 set -o pipefail; R=/results; mkdir -p $R; source /opt/ros/jazzy/setup.bash
 export ROS_DOMAIN_ID=0 ROS_LOCALHOST_ONLY=1   # sros2 permissions are generated for domain 0; container has --network none RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export FASTDDS_BUILTIN_TRANSPORTS=UDPv4   # SHM segments are not shared across the per-process uids
 export ROS_SECURITY_KEYSTORE=/keys/$DEPLOY/ks ROS_SECURITY_ENABLE=true ROS_SECURITY_STRATEGY=Enforce
 log(){ echo "{\"wall\":$(date +%s.%N),\"ev\":\"$1\"$2}" >> $R/harness.jsonl; }
 pids=(); cleanup(){ for p in "${pids[@]}"; do kill -INT -- "-$p" 2>/dev/null; done; sleep 1; for p in "${pids[@]}"; do kill -KILL -- "-$p" 2>/dev/null; done; }
 trap cleanup EXIT
 as(){ local u=$1 e=$2; shift 2; mkdir -p /tmp/h$u && chown $u /tmp/h$u; setpriv --reuid=$u --regid=$u --clear-groups env HOME=/tmp/h$u ROS_LOG_DIR=/tmp/h$u/log ROS_SECURITY_ENCLAVE_OVERRIDE=/m19/$e "$@"; }
-log start ",\"deploy\":\"$DEPLOY\",\"check\":\"$CHECK\",\"trial\":\"$TRIAL\",\"rmw\":\"$RMW_IMPLEMENTATION\",\"strategy\":\"$ROS_SECURITY_STRATEGY\""
+log start ",\"deploy\":\"$DEPLOY\",\"check\":\"$CHECK\",\"trial\":\"$TRIAL\",\"rmw\":\"$RMW_IMPLEMENTATION\",\"strategy\":\"$ROS_SECURITY_STRATEGY\",\"transports\":\"$FASTDDS_BUILTIN_TRANSPORTS\""
 # probe 1: enforcement (no enclave for this name -> node creation must fail)
 timeout 20 setpriv --reuid=2005 --regid=2005 --clear-groups env HOME=/tmp ROS_LOG_DIR=/tmp/p5 ROS_SECURITY_ENCLAVE_OVERRIDE=/m19/none python3 -c "import rclpy; rclpy.init(); rclpy.create_node('probe'); print('NODE_CREATED')" > $R/probe_enforce.log 2>&1; rc=$?
 log probe_enforce ",\"rc\":$rc,\"node_created\":$(grep -q NODE_CREATED $R/probe_enforce.log && echo true || echo false)"

@@ -14,6 +14,10 @@
           <topics subscribe="ALLOW">
             <topic>parameter_events</topic>
           </topics>
+          <!-- rclpy (Jazzy) always creates the node's own type-description service -->
+          <services reply="ALLOW">
+            <service>m19_app/get_type_description</service>
+          </services>
         </profile>
       </profiles>
     </enclave>
