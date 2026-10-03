@@ -9,8 +9,8 @@
 # Probes before the payload: (1) a node with security enabled but no enclave must fail under Enforce; (2) uid 2001
 # must not read the mux / controller private keys or the CA private keys.
 set -o pipefail; R=/results; mkdir -p $R; source /opt/ros/jazzy/setup.bash
-export ROS_DOMAIN_ID=0 ROS_LOCALHOST_ONLY=1   # sros2 permissions are generated for domain 0; container has --network none RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-export FASTDDS_BUILTIN_TRANSPORTS=UDPv4   # SHM segments are not shared across the per-process uids
+export ROS_DOMAIN_ID=0 ROS_LOCALHOST_ONLY=0 ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET   # sros2 permissions are for domain 0; --network none leaves only loopback RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export FASTDDS_BUILTIN_TRANSPORTS=UDPv4   # pre-flight probe: the default SHM transport delivered 0 messages across different uids
 export ROS_SECURITY_KEYSTORE=/keys/$DEPLOY/ks ROS_SECURITY_ENABLE=true ROS_SECURITY_STRATEGY=Enforce
 log(){ echo "{\"wall\":$(date +%s.%N),\"ev\":\"$1\"$2}" >> $R/harness.jsonl; }
 pids=(); cleanup(){ for p in "${pids[@]}"; do kill -INT -- "-$p" 2>/dev/null; done; sleep 1; for p in "${pids[@]}"; do kill -KILL -- "-$p" 2>/dev/null; done; }
