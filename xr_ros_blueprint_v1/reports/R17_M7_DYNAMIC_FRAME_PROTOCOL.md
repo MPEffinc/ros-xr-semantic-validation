@@ -98,3 +98,15 @@ Reruns at most 2; all attempts are kept.
 - One translation-only frame motion.
 - Generation-time semantics only. No real source sample time exists on this path.
 - tf from a scripted broadcaster on the same host clock: no tf transport loss or clock-skew study.
+
+## 7. Pre-flight (excluded; snapshot 2d46a49; 02:49–02:53)
+
+m7_msgs built (colcon) in the trial image. Errors in mm:
+
+| Run | H error (median / max) | F error (median / max) | Notes |
+|---|---|---|---|
+| PF1 R DYN | 0.002 / 0.009 | 4.11 / 6.81 | adapter representation error ≤ 0.009 mm; 2 adapter tf failures at start; flagged `joint_state_gap` |
+| PF2 L DYN_RESTAMP | 3.46 / **81.6** (window median 13.8) | 0.41 / 1.55 | 26 restamped messages had `represented_at` > 100 ms old |
+| PF3 S STATIC | 0 / 0 | 0 / 0 | — |
+
+All arms waited ≤ 0.2 ms (p95) for tf. **No rule changed after the pre-flight.**
