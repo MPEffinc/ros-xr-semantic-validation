@@ -25,7 +25,7 @@ This file is the progress log of the approved unattended round, not research con
 - 14:40–14:47 probes; 14:48–15:16 1A formal; 15:17–15:20 1C pre-flight; 15:21 1C formal started.
 - 15:21–15:58 1C + action formal; 16:00–16:04 M12 pre-flight; 16:05 M12 formal started (freeze 7388f4d).
 - 16:15 incident: frozen M12 run_m12.py was edited by mistake (one dict entry) while the formal run was in progress; reverted within minutes. The running process had loaded the file at start (no effect on trials); sha256 re-verified against FREEZE_SHA256.txt (all code files OK); follow-up uses a separate copy run_m12_followup.py.
-- 17:13 M12 formal done (72/72); 17:19–17:25 R11a follow-up (6/6); 17:30–17:45 R12/R13, DB, STATUS, CONTEXT.
+- 17:01 M12 formal done (72/72); 17:07–17:13 R11a follow-up (6/6); 17:13–17:23 R12/R13, DB, STATUS, CONTEXT (final commit 509e3c7).
 - Correction: commit 6afeadc message says A2 false blocks 0/4851; correct is 0/4508 (R13).
 - End state: budget reached (150 trials); no containers of this round running (all `--rm`); kept local, ignored: raw dirs
   (M39_decel 137 MB, M39_stop 141 MB, M12_stamp 265 MB) and M39_decel/build_ws (instrumented Servo build, kept for
