@@ -1,0 +1,4 @@
+# M3_ordering: trial image + the existing ROS 2 topic multiplexer (ros-jazzy-topic-tools) used as the exclusive writer.
+FROM f3-xrizer-bgpump:0989a7f-v3
+RUN apt-get update && apt-get install -y --no-install-recommends ros-jazzy-topic-tools && rm -rf /var/lib/apt/lists/* && \
+    dpkg -l ros-jazzy-topic-tools | tail -1
