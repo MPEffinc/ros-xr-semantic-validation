@@ -107,7 +107,7 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
 - 경로 사실(code·관측):
   - Servo는 sim time을 쓰고 앱은 wall stamp를 써서, 이 경로에서는 incoming_command_timeout이 동작하지 않는다. Servo는 마지막 목표를 계속 추종한다.
   - xrizer raw pose는 Monado grip pose에서 offset된 값이라, 손을 회전하면 앱의 위치 목표도 움직인다.
-  - 앱의 고정 engage 자세에 대한 모든 IK branch에서 forearm–wrist_2가 근접해 Servo 충돌 감속(status 4)이 나타난다. 선정된 자세에서 그 영향은 0.33 mm 이하였다.
+  - 앱의 고정 engage 자세에 대한 모든 IK branch에서 forearm–wrist_2가 근접해 Servo 충돌 감속(status 4)이 나타난다. Pre-flight에서 서로 다른 구간의 추종 지연 차이는 최대 0.33 mm로 관측됐다. 동일 동작의 감속 유무를 짝지어 비교한 인과 추정은 아니므로, 모든 정식 trial에서 감속의 영향이 0.33 mm 이하라고 보장하지 않는다.
 - B1 감지 관측(probe):
   - IO 비활성화가 한 tick 이상이면 그다음 tick부터 pose-invalid와 grip false로 보인다.
   - 30 ms 비활성화는 앱이 보지 못한다.
@@ -133,6 +133,6 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
 
 ## 7. context와 실행 지시의 관리
 
-사용자는 ChatGPT가 결과를 검토한 뒤 매회 구체적인 Claude Code 프롬프트를 작성하는 방식으로 연구를 진행한다. 저장소에는 사실·근거·결정·질문·현재 상태가 누적된다. 한 회차의 명령문, 승인된 실행 범위와 완료 조건은 별도 사용자 프롬프트에 있다.
+사용자는 ChatGPT의 회차별 지시 → Claude Code 수행 및 기술 보고 → ChatGPT의 보고·GitHub 근거 검토 → ChatGPT의 쉬운 설명 → 다음 판단·이유 설명·별도 Claude Code 프롬프트 제공 순서로 연구를 진행한다. Claude Code는 기술 보고를 담당하고, 사용자에게 쉽게 설명하며 다음 회차를 판단하고 지시하는 역할은 ChatGPT가 맡는다. 저장소에는 사실·근거·결정·질문·현재 상태가 누적된다. 한 회차의 명령문, 승인된 실행 범위와 완료 조건은 별도 사용자 프롬프트에 있다.
 
 STATUS의 다음 후보는 추천/backlog이며 실행 명령으로 해석되지 않는다. 새 결과가 나오면 현재 상태와 context를 Git으로 갱신하고, 완료한 작업의 범위와 checkpoint는 이력으로 추적된다. 과거 독립 gate에 대한 보류 판단이나 실행 계획은 새로운 결과 없이 자동으로 확대되지 않는다.
