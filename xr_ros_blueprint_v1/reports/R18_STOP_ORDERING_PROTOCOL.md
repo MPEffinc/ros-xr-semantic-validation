@@ -61,3 +61,12 @@ Validity: R03 rules.
   removes it **for writers that go through the boundary**.
 - If neither moves, the late message is not harmful in this configuration; report why.
 - **Out of scope:** no action-path conversion and no general stop framework.
+
+## 6. Pre-flight (excluded; snapshot 0e73ba2; 03:28–03:30)
+
+| Run | Mux / pause | Result |
+|---|---|---|
+| PF1 MUX LATE | `/m3_mux/select` present; select acknowledged at +4.6 ms after the trigger; pause ack at +26 ms | 0 Servo trajectories reached the controller after the first hold; the injected trajectory **did not reach** the controller topic; P_stop pass (0.01 mm after onset + 0.1 s) |
+| PF2 CUR LATE | pause ack at +9.8 ms | the injected trajectory **reached** the controller topic at +150 ms and was the last trajectory received; EE travel after the injection 0.07 mm. Its target was close to the stop pose, because the pre-stop trajectory was built near the onset. |
+
+No rule changed after the pre-flight.
