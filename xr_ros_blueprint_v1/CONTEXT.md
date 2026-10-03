@@ -193,6 +193,17 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
 - **기여 판단.** 이번 회차의 네 결과는 모두 기존 방법(watchdog, provenance 보존, 시각별 tf, 단일 writer)이 각 전제를 충족할 때 해결된다는 것이다. method 기여의 근거는 늘지 않았다. 시스템 기여 쪽에서는 해결책이 hop마다 다른 정보를 보존·검사해야 한다는 반복 비용이 확인됐다(driver patch, receiver schema, 표현 시각 필드, writer 경계). 다만 공통 구성요소가 이 비용을 줄이는지는 두 번째 실제 경로 없이 입증되지 않았다.
 - **남은 UNKNOWN.** 실제 headset의 sample 시각·손실 신호, provenance 위조(S2), 오래된 내용을 계속 보내는 source, 실제 Unity sender의 sequence, mapper/bridge hop, 허용된 지연에서의 M7, 먼 목표의 late message, controller topic 직접 publish 권한.
 
+## 5k. 2026-10-04 R19–R22 검토 후 판단
+
+검토 문서는 `reports/R23_REVIEW_R19_R22.md`다. 새 실험은 아니다.
+
+- 네 결과는 기존 해법이 정보·task 의미·writer 전제를 충족하면 작동한다는 범위다. 수신 watchdog은 sensing을 증명하지 않고, receiver 결과는 실제 frontend가 없는 component 검증이다.
+- R20의 13/14591 오차단은 provenance 누락 구간을 제외한 값이다. 누락 구간의 정상 명령 506건 차단을 함께 보고해야 현재 Unity sender에 대한 적용 비용을 이해할 수 있다.
+- R21의 최대 81 mm는 변환 target 오차이며 robot 이동량이 아니다. 허용 지연 조건은 모든 메시지가 age 검사에서 차단되어 미검증으로 남는다. 시간에 맞게 변환한 결과와 입력 신선도·계속된 승인도 구분한다.
+- R22의 CUR는 hold가 대체됐지만 목표가 가까워 관측 이동은 0 mm였다. MUX 결과는 그 경계를 통과한 writer에 한정하며 직접 controller 접근은 남은 전제다.
+- 반복 요구는 공통 의미 계약의 필요성을 뒷받침하지만 공통 구현의 비용 이득은 아직 측정되지 않았다. 두 이질적 실제 경로 조건은 넓은 system 주장에 유지한다.
+- 작은 미완료 조건을 보완한 다음 M12D/M17/M18/M19의 신뢰·권한·우회 축으로 이동하는 것이 후속 판단이다. 강한 기존 comparator에는 앱 밖 trusted mapper/검증, 실제 IPC 권한과 최종 writer 접근 제어가 포함돼야 한다. 구체적 작업은 별도 프롬프트에서 정한다.
+
 ## 6. 근거 해석의 공통 기준
 
 - SDK 제공 가능성, 앱의 실제 읽기, wire 전달, ROS 소비는 각각 다른 확인 단계다. 검색에서 못 찾은 경우는 부재 증명과 구분된다.

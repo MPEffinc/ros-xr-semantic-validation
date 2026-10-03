@@ -154,3 +154,7 @@ R02_METHOD_REVIEW_R01.md에 B1의 완전한 기존 수정, C1의 부분/전체 �
 ## 2026-10-03 R12/R13 검토
 
 `reports/R14_REVIEW_R12_R13.md`에 성공 범위와 남은 전제를 기록했다. B1의 I3 replication에는 실제 속도 기준 실패 1건이 있다. pause 요청과 완료, 앱 read와 source update, 실험 frame_id carrier와 실제 schema 보존을 구분한다. 후속 후보는 원천 증거 확보, 실제 재발행 코드, M7 동적 frame 검증이다. 현재 DB는 출처 61건·한계 59건·prior experiments 13건이다. 이전 150-trial 회차는 종료됐으며 후속 실행은 별도 프롬프트를 따른다.
+
+## 2026-10-04 R19–R22 검토
+
+`reports/R23_REVIEW_R19_R22.md`에 성공 범위와 미검증 조건을 정리했다. 이전 120-trial 회차는 종료됐다. M7의 admitted-delay, 먼 목표의 late trajectory, R20 provenance 누락 비용은 기존 결과와 구분한다. 후속 연구 축은 M12D/M17/M18/M19의 신뢰·권한·우회다. 현재 DB는 기본 사례 40개와 M12 child 5개(총 45), matrix 항목 101개, 출처 66개, 한계 65개, prior experiments 17개다. child case를 독립 발견 수로 더하지 않는다. 실행 범위와 예산은 별도 프롬프트를 따른다.
