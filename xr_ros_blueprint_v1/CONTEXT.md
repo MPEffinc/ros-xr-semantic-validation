@@ -184,6 +184,15 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
 - pause 확인 전에 hold가 발행됐고 뒤늦은 trajectory가 이를 덮을 수 있다. 현재 통과 결과에는 writer·queue 전제가 남는다.
 - 다음 검증 축은 source 증거 확보, 실제 재발행 코드의 provenance 보존, M7의 동적 frame 시간 정합성이다. 구체적인 실행 범위는 별도 프롬프트에서 정한다.
 
+## 5j. 2026-10-04 정보 확보·전달·집행 전제 검증의 사실과 판단
+
+- **원천 정지.** Monado remote driver는 수신 시각 없이 최신 값을 tracked로 보고한다. driver에 수신 시각을 보존하고 주기 watchdog을 적용하면 정지를 60–67 ms 안에 차단하고, 정지한 손을 오차단하지 않는다. 정보는 driver에 있었고 보존만 하면 됐다. method gap이 아니다. 패킷 수신은 sensing이 아니므로, 오래된 내용을 계속 보내는 source와 실제 headset의 손실 의미는 열린 질문이다. gate 쪽 수신 증거는 pose와 시간 순서로만 짝지어진다.
+- **실제 재발행자.** Docker_Teleop receiver는 packet timestamp를 읽지 않고, 수신 시각·횟수를 내부에서만 쓰며, 매 publish마다 새 stamp를 찍는다. 출력만으로는 검사가 불가능하다(검사 실패와는 다르다). typed schema로 payload와 provenance를 한 메시지에 담으면 해결된다. 다만 producer sequence가 없으면 fail-closed와 fail-open 중 하나를 택해야 한다. 실제 Unity frontend는 sequence를 보내지 않는다. neutral은 새 관측이 아니므로 정지로만 허용한다.
+- **M7.** 올바른 변환 시각은 작업 의미에 따라 다르다. world target 유지라면 표현 시각, 현재 frame 추종이라면 latest다. 표현 시각은 transport stamp와 별도로 보존해야 재발행자의 재stamp를 견딘다. 남은 위험은 의미 선언과 시각 보존이며, 방법 부재가 아니다. 허용된 지연에서의 효과는 기본 stamp 나이 때문에 측정되지 않았다.
+- **정지 순서.** Servo pause 확인은 이후 출력이 없음을 보장하지 않는다. JTC는 topic trajectory마다 hold를 대체한다. 직접 hold 방식은 늦게 도착한 메시지가 마지막 명령이 될 수 있는 구조다. 이번에는 내용이 정지 자세 근처라 피해가 없었다. 최종 경계의 단일 writer(mux)는 경계를 지나는 writer에 대해 이 전제를 제거한다. 직접 publish 권한, action 경로, 재허가 전환은 별도 전제다.
+- **기여 판단.** 이번 회차의 네 결과는 모두 기존 방법(watchdog, provenance 보존, 시각별 tf, 단일 writer)이 각 전제를 충족할 때 해결된다는 것이다. method 기여의 근거는 늘지 않았다. 시스템 기여 쪽에서는 해결책이 hop마다 다른 정보를 보존·검사해야 한다는 반복 비용이 확인됐다(driver patch, receiver schema, 표현 시각 필드, writer 경계). 다만 공통 구성요소가 이 비용을 줄이는지는 두 번째 실제 경로 없이 입증되지 않았다.
+- **남은 UNKNOWN.** 실제 headset의 sample 시각·손실 신호, provenance 위조(S2), 오래된 내용을 계속 보내는 source, 실제 Unity sender의 sequence, mapper/bridge hop, 허용된 지연에서의 M7, 먼 목표의 late message, controller topic 직접 publish 권한.
+
 ## 6. 근거 해석의 공통 기준
 
 - SDK 제공 가능성, 앱의 실제 읽기, wire 전달, ROS 소비는 각각 다른 확인 단계다. 검색에서 못 찾은 경우는 부재 증명과 구분된다.

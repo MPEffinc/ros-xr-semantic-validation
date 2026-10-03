@@ -109,9 +109,29 @@
   - M8/M9: root fix가 적용되지 않았고 upstream도 변하지 않았습니다(Spes #14 사용자 보고는 열린 상태).
 - checkpoint: e3091fd, 26ddc16, f3b26bb, d9770a9, 7388f4d, 6afeadc, d4b2fc0 및 최종 정리 commit.
 
+## 2026-10-04 정보 확보·전달·집행 전제 검증 (R15–R22, A03)
+
+- **신규 formal trial 120회**(예산 상한): watchdog 36, receiver 36, M7 36, 정지 순서 12. 모두 유효였고 재실행은 0회입니다. pre-flight는 별도이며(R15 3, R16 2+build, R17 3, R18 2), 각 campaign은 freeze commit의 `git archive` snapshot에서 해시를 확인하며 실행했습니다. 진행 기록은 `RUN_STATE_2026-10-04.md`에 있습니다.
+- **이전 frozen 파일 편집 사고(A03).** runner는 자기 source를 다시 읽지 않고, container도 그 파일을 실행하지 않습니다. 영향받은 trial은 없습니다.
+- **원천 정지(R15→R19).** 주기 source(10 ms)에 수신 watchdog(100 ms)을 적용했습니다. driver 안(S1)과 gate의 수신 증거(S2) 두 위치 모두에서 정지 명령을 0건 통과시켰습니다.
+  - 감지 60–67 ms, 복귀 1 tick 이내, 정지한 손 포함 오차단 0
+  - 원본(S0)은 84/84, 294/294를 통과시켰습니다.
+  - 재개 점프(47.9/67.9 mm)는 그대로입니다.
+  - 수신 ≠ sensing입니다. 오래된 내용을 계속 보내는 source와 event 기반 source는 다루지 않습니다.
+- **실제 receiver(R16→R20).** Docker_Teleop receiver @64cbdde를 backend/component 수준에서 시험했습니다.
+  - 원본 출력은 packet 시각·수신 시각·순서를 버려 검사가 불가능합니다. stamp age 검사가 cache·중복·neutral을 모두 통과시켰습니다.
+  - typed provenance(+21줄, producer seq/session)는 모든 stale 유형을 차단했고, 정상 오차단은 13/14 591입니다.
+  - producer seq가 없으면 fail-closed는 정상 506건을 차단하고 fail-open은 중복 35/35를 통과시킵니다.
+- **M7(R17→R21).** 설정한 동적 frame을 명령 수준에서 시험했습니다.
+  - hold 의미: 표현 시각 tf는 오차 0.01 mm 이하, latest tf는 약 3 mm입니다. 재stamp가 있으면 header.stamp 방식은 최대 81 mm까지 틀어지고, 별도로 보존한 represented_at만 정확했습니다.
+  - follow 의미: 순위가 반대로 latest tf가 가장 정확했습니다.
+  - 지연 조건은 전제가 실패해 지연 메시지가 나이 검사로 전부 차단되었습니다.
+- **정지 순서(R18→R22).** 직접 hold 방식에서는 뒤늦은 pre-stop trajectory가 hold를 대체했습니다(3/3). 목표가 정지 자세 근처라 실제 이동은 0 mm였습니다. mux를 단일 writer로 두면 0/3이었습니다. P_stop은 12/12입니다.
+- **DB 변경.** M12를 M12A–M12E로 분리했습니다. KNOWN_METHOD는 A·B·C에만 해당하고, D(provenance 신뢰)와 E(실제 headset)는 UNKNOWN입니다. 출처는 I14–I18, 한계는 U60–U65, 실험은 E14–E17이며, matrix에 X101·X102를 추가했습니다. 현재 DB는 출처 66건, 사례 45건, 비교 101개, 한계 65건, prior experiments 17건입니다.
+
 ## 현재 판단
 
-독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. 이 판정은 원본 앱 명령 기준의 추종 평가에 의존한다. status 4 감속량은 R12에서 직접 기록했지만 물리 결과에 대한 인과 효과는 분리되지 않았다. 잔여 이동은 시계를 맞춰도 남았다(R07). 두 번째 실제 경로는 Quest 부재로 확보하지 못했다(R08). 이 경로의 정지(M3)는 두 속도에서 기존 방법으로 해결됐다. M12는 앱 read 시각·seq 보존으로 전송 지연·bridge 캐시·비활성 재사용을 해결한 범위에 한정한다(R12/R13). 원천 정지는 해결되지 않았고, source 수신 시각을 보존하는 기존 root fix는 아직 시험하지 않았다. stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
+독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. 이 판정은 원본 앱 명령 기준의 추종 평가에 의존한다. status 4 감속량은 R12에서 직접 기록했지만 물리 결과에 대한 인과 효과는 분리되지 않았다. 잔여 이동은 시계를 맞춰도 남았다(R07). 두 번째 실제 경로는 Quest 부재로 확보하지 못했다(R08). 이 경로의 정지(M3)는 두 속도에서 기존 방법으로 해결됐다. M12는 앱 read 시각·seq 보존으로 전송 지연·bridge 캐시·비활성 재사용을 해결한 범위에 한정한다(R12/R13). 원천 정지는 주기 source에 대해 driver 수신 watchdog이라는 기존 root fix로 해결됐다(R19). 물리 sensing 신선도, provenance 신뢰(S2), 실제 headset은 UNKNOWN이다. 실제 receiver hop의 provenance 손실은 typed schema 보존이라는 기존 수정으로 해결되지만 upstream에는 배치되지 않았다(R20). M7은 작업 의미를 선언하고 표현 시각을 보존하면 기존 tf2 시각 조회로 해결된다(R21). 정지 순서는 최종 경계의 단일 writer로 해결되며, 직접 publish 권한은 별도 전제다(R22). stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
 
 ## R01 방법 검토와 아직 미실행인 단계
 
