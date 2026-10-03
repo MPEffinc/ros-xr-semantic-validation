@@ -1,0 +1,99 @@
+diff -ruN /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_orig/include/moveit_servo/m39_log.hpp /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_instr/include/moveit_servo/m39_log.hpp
+--- /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_orig/include/moveit_servo/m39_log.hpp	1970-01-01 09:00:00.000000000 +0900
++++ /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_instr/include/moveit_servo/m39_log.hpp	2026-10-03 14:38:46.767267569 +0900
+@@ -0,0 +1,39 @@
++// M39 instrumentation (logging only; no behaviour change). Writes one line per call to the file named by the
++// environment variable M39_SERVO_LOG (if unset, nothing is written). Times: CLOCK_REALTIME and CLOCK_MONOTONIC ns.
++#pragma once
++#include <cstdarg>
++#include <cstdio>
++#include <cstdlib>
++#include <ctime>
++#include <mutex>
++namespace moveit_servo
++{
++inline void m39Log(const char* kind, const char* fmt, ...)
++{
++  static std::mutex mtx;
++  static FILE* f = nullptr;
++  static bool tried = false;
++  std::lock_guard<std::mutex> lock(mtx);
++  if (!tried)
++  {
++    tried = true;
++    const char* path = std::getenv("M39_SERVO_LOG");
++    if (path)
++      f = std::fopen(path, "a");
++  }
++  if (!f)
++    return;
++  timespec rt, mt;
++  clock_gettime(CLOCK_REALTIME, &rt);
++  clock_gettime(CLOCK_MONOTONIC, &mt);
++  std::fprintf(f, "{\"k\":\"%s\",\"wall_ns\":%lld,\"mono_ns\":%lld,", kind,
++               static_cast<long long>(rt.tv_sec) * 1000000000LL + rt.tv_nsec,
++               static_cast<long long>(mt.tv_sec) * 1000000000LL + mt.tv_nsec);
++  va_list ap;
++  va_start(ap, fmt);
++  std::vfprintf(f, fmt, ap);
++  va_end(ap);
++  std::fprintf(f, "}\n");
++  std::fflush(f);
++}
++}  // namespace moveit_servo
+diff -ruN /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_orig/src/collision_monitor.cpp /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_instr/src/collision_monitor.cpp
+--- /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_orig/src/collision_monitor.cpp	2026-10-03 14:38:26.291285101 +0900
++++ /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_instr/src/collision_monitor.cpp	2026-10-03 14:38:46.774015692 +0900
+@@ -38,6 +38,7 @@
+  */
+ 
+ #include <moveit_servo/collision_monitor.hpp>
++#include <moveit_servo/m39_log.hpp>
+ #include <rclcpp/rclcpp.hpp>
+ #include <moveit/utils/logger.hpp>
+ 
+@@ -68,6 +69,7 @@
+ void CollisionMonitor::start()
+ {
+   stop_requested_ = false;
++  m39Log("cm_start", "\"scale_at_start\":%.6f", collision_velocity_scale_.load());
+   if (!monitor_thread_.joinable())
+   {
+     monitor_thread_ = std::thread(&CollisionMonitor::checkCollisions, this);
+@@ -82,6 +84,7 @@
+ void CollisionMonitor::stop()
+ {
+   stop_requested_ = true;
++  m39Log("cm_stop", "\"scale_at_stop\":%.6f", collision_velocity_scale_.load());
+   if (monitor_thread_.joinable())
+   {
+     monitor_thread_.join();
+@@ -164,6 +167,9 @@
+         // Use the scaling factor with lower value, i.e maximum scale down.
+         collision_velocity_scale_ = std::min(scene_collision_scale, self_collision_scale);
+       }
++      m39Log("cm", "\"scale\":%.6f,\"self_d\":%.6f,\"scene_d\":%.6f,\"self_c\":%d,\"scene_c\":%d",
++             collision_velocity_scale_.load(), self_collision_result_.distance, scene_collision_result_.distance,
++             self_collision_result_.collision ? 1 : 0, scene_collision_result_.collision ? 1 : 0);
+     }
+     else
+     {
+diff -ruN /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_orig/src/servo.cpp /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_instr/src/servo.cpp
+--- /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_orig/src/servo.cpp	2026-10-03 14:38:26.291298011 +0900
++++ /tmp/claude-1000/-home-cclab-ros-xr/bfdd3efa-d5bc-481e-9c52-247de570dccc/scratchpad/moveit_servo_instr/src/servo.cpp	2026-10-03 14:38:46.774107003 +0900
+@@ -38,6 +38,7 @@
+  */
+ 
+ #include <moveit_servo/servo.hpp>
++#include <moveit_servo/m39_log.hpp>
+ #include <moveit_servo/utils/command.hpp>
+ #include <moveit_servo/utils/common.hpp>
+ #include <rclcpp/rclcpp.hpp>
+@@ -501,6 +502,7 @@
+     servo_status_ = StatusCode::HALT_FOR_COLLISION;
+   }
+ 
++  m39Log("apply", "\"scale\":%.6f,\"status\":%d", collision_velocity_scale_.load(), static_cast<int>(servo_status_));
+   // Continue rest of the computations only if the command is valid
+   // The computations can be skipped also in case we are halting.
+   if (servo_status_ != StatusCode::INVALID && servo_status_ != StatusCode::HALT_FOR_COLLISION)
