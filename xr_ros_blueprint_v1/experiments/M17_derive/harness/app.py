@@ -43,5 +43,8 @@ def on_src(s):
     out.write(json.dumps({"t": t, "cmd_id": st["id"], "label": label if (label == "normal" or dev > 0.001) else "forged_equivalent", "cond": COND,
                           "src_seq": prov.seq, "target": tgt, "honest_target": honest, "dev_m": dev}) + "\n")
 n.create_subscription(SourceSample, "/m17/source", on_src, 50)
+def tick():
+    if time.time() - T0 > END: raise SystemExit(0)
+n.create_timer(0.05, tick)
 try: rclpy.spin(n)
 except (SystemExit, KeyboardInterrupt, rclpy.executors.ExternalShutdownException): pass
