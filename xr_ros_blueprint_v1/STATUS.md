@@ -129,9 +129,34 @@
 - **정지 순서(R18→R22).** 직접 hold 방식에서는 뒤늦은 pre-stop trajectory가 hold를 대체했습니다(3/3). 목표가 정지 자세 근처라 실제 이동은 0 mm였습니다. mux를 단일 writer로 두면 0/3이었습니다. P_stop은 12/12입니다.
 - **DB 변경.** M12를 M12A–M12E로 분리했습니다. KNOWN_METHOD는 A·B·C에만 해당하고, D(provenance 신뢰)와 E(실제 headset)는 UNKNOWN입니다. 출처는 I14–I18, 한계는 U60–U65, 실험은 E14–E17이며, matrix에 X101·X102를 추가했습니다. 현재 DB는 출처 66건, 사례 45건, 비교 101개, 한계 65건, prior experiments 17건입니다.
 
+## 2026-10-04 신뢰·권한·우회 축 (R24–R31, A04–A05)
+
+- **신규 formal trial 66회**(예산 상한 66, 시도 66): M7 허용 지연 18, 먼 목표 late trajectory 6, M19 접근 제어 18, M12D/M17 24. 모두 유효였고 재실행은 0회입니다. pre-flight·probe는 별도 ledger(`RUN_STATE_2026-10-04b.md`)에 있습니다. M17 첫 pre-flight 4회의 raw는 정리 중 삭제했고, 이 사실을 R28에 기록했습니다.
+- **M7 허용 지연(R24→R26).** 30 ms 지연에서 지연 메시지가 arm마다 90/90 통과했습니다.
+  - hold 의미: latest tf 오차 중앙값 6.4–6.8 mm(최대 10.3), 시각별 tf는 0.01 mm 이하
+  - 신선도 허용과 올바른 변환 시각은 별개의 요구입니다.
+- **먼 목표 late trajectory(R25→R26).**
+  - 원래 stamp를 유지하면 JTC가 "ends in the past"로 거부했습니다(pre-flight).
+  - 즉시 시작 stamp로 바꾸면 CUR에서 hold를 대체하고 22.5–23.2 mm 이동했습니다(P_stop 0/3). MUX는 0/3이었습니다.
+- **M18(A04).** Monado 045931d 코드와 probe로 확인했습니다.
+  - client 이름·pid는 자기보고이고 kernel peer 확인이 없습니다.
+  - 관측·제어 호출이 앱 socket을 공유하며 권한 검사가 없습니다.
+  - 읽기 전용 mount는 연결을 막지 못합니다. 막는 것은 uid와 socket mode입니다.
+  - remote driver TCP는 인증이 없습니다.
+- **M19(R27→R29).** SROS2 Enforce와 제한 권한에서 앱 키로 controller topic writer를 만들 수 없었습니다(3/3).
+  - 승인 경로와 trusted writer는 각각 3/3 동작했습니다.
+  - 기본 권한에서는 앱 키가 2/3 도달했습니다. 1회는 discovery 시점 문제로 미도달했습니다.
+  - 앱 uid는 trusted 키와 CA 키를 읽지 못했습니다.
+- **M12D/M17(R28→R30).** 앱 제공 provenance 검사는 위조 450/450을 통과시켰습니다.
+  - 앱 밖 trusted verifier는 0/450, 정상 오차단 0이었습니다(synthetic 수준).
+  - 정당한 smoothing은 95%가 차단됐습니다(probe).
+- **Docker_Teleop(A05, 감사만).** mapper가 시각·seq·neutral 사유를 버리고 재stamp합니다. controller topic마다 writer가 여럿입니다.
+- **공통 계약(R31).** 반복 요구 10개를 생성·보존·검사·집행 위치로 정리했습니다. 공통 구현의 비용 이득은 측정하지 않았습니다.
+- **DB.** 출처 73, 사례 45, 비교 103, 한계 71, 실험 21입니다. M17은 KNOWN_METHOD(synthetic 범위), M18은 IMPLEMENTATION_GAP으로 바꿨고, M19에는 topic 범위 실행 근거를 추가했습니다.
+
 ## 현재 판단
 
-독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. 이 판정은 원본 앱 명령 기준의 추종 평가에 의존한다. status 4 감속량은 R12에서 직접 기록했지만 물리 결과에 대한 인과 효과는 분리되지 않았다. 잔여 이동은 시계를 맞춰도 남았다(R07). 두 번째 실제 경로는 Quest 부재로 확보하지 못했다(R08). 이 경로의 정지(M3)는 두 속도에서 기존 방법으로 해결됐다. M12는 앱 read 시각·seq 보존으로 전송 지연·bridge 캐시·비활성 재사용을 해결한 범위에 한정한다(R12/R13). 원천 정지는 주기 source에 대해 driver 수신 watchdog이라는 기존 root fix로 해결됐다(R19). 물리 sensing 신선도, provenance 신뢰(S2), 실제 headset은 UNKNOWN이다. 실제 receiver hop의 provenance 손실은 typed schema 보존이라는 기존 수정으로 해결되지만 upstream에는 배치되지 않았다(R20). M7은 작업 의미를 선언하고 표현 시각을 보존하면 기존 tf2 시각 조회로 해결된다(R21). 정지 순서는 최종 경계의 단일 writer로 해결되며, 직접 publish 권한은 별도 전제다(R22). stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
+독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. 이 판정은 원본 앱 명령 기준의 추종 평가에 의존한다. status 4 감속량은 R12에서 직접 기록했지만 물리 결과에 대한 인과 효과는 분리되지 않았다. 잔여 이동은 시계를 맞춰도 남았다(R07). 두 번째 실제 경로는 Quest 부재로 확보하지 못했다(R08). 이 경로의 정지(M3)는 두 속도에서 기존 방법으로 해결됐다. M12는 앱 read 시각·seq 보존으로 전송 지연·bridge 캐시·비활성 재사용을 해결한 범위에 한정한다(R12/R13). 원천 정지는 주기 source에 대해 driver 수신 watchdog이라는 기존 root fix로 해결됐다(R19). 물리 sensing 신선도, provenance 신뢰(S2), 실제 headset은 UNKNOWN이다. 실제 receiver hop의 provenance 손실은 typed schema 보존이라는 기존 수정으로 해결되지만 upstream에는 배치되지 않았다(R20). M7은 작업 의미를 선언하고 표현 시각을 보존하면 기존 tf2 시각 조회로 해결된다(R21). 정지 순서는 최종 경계의 단일 writer로 해결되고, 그 writer 권한은 SROS2 topic 권한으로 강제할 수 있다(R25/R29). action·service·runtime IPC 경로는 미검증이다. 손상 앱(A-app)에 대해 앱 제공 provenance는 근거가 되지 않으며, 독립 source와 재현 가능한 mapping을 가진 trusted verifier만 동작했다(synthetic, R30). Monado 045931d에서는 그 독립 source 전제가 성립하지 않는다(A04). stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
 
 ## R01 방법 검토와 아직 미실행인 단계
 

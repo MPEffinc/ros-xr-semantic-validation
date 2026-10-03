@@ -204,6 +204,17 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
 - 반복 요구는 공통 의미 계약의 필요성을 뒷받침하지만 공통 구현의 비용 이득은 아직 측정되지 않았다. 두 이질적 실제 경로 조건은 넓은 system 주장에 유지한다.
 - 작은 미완료 조건을 보완한 다음 M12D/M17/M18/M19의 신뢰·권한·우회 축으로 이동하는 것이 후속 판단이다. 강한 기존 comparator에는 앱 밖 trusted mapper/검증, 실제 IPC 권한과 최종 writer 접근 제어가 포함돼야 한다. 구체적 작업은 별도 프롬프트에서 정한다.
 
+## 5l. 2026-10-04 신뢰·권한·우회 축의 사실과 판단
+
+- **공격자 능력별 구분**(A04): 키 없는 네트워크 공격자(A-net), 정상 키와 앱 프로세스 권한을 가진 손상 앱(A-app), 손상 runtime/driver(A-rt). 한 결과를 세 능력 모두로 확대하지 않는다. R19의 arm 이름 "S2"는 위협 등급 S2가 아니다.
+- **인증과 의미.** SROS2는 누가 어디에 쓸 수 있는지를 정한다(R29). A-app이 자기 허용 topic으로 보내는 내용의 진실은 보장하지 않는다. 앱이 정한 stamp·seq·session·provenance는 주장일 뿐이다(R30). 이를 인증 기술의 실패로 분류하지 않는다.
+- **명령 유래 검증.** 앱 밖 trusted verifier가 동작하려면 세 가지가 필요하다: 앱과 독립된 source, verifier가 소유한 calibration·task 상태, 재현 가능한 mapping. 실제 Monado/xrizer 경로에는 sample 식별자가 없고, 독립 tap도 인증 없는 runtime IPC를 거쳐야 하므로 이 전제가 무수정으로는 성립하지 않는다. 정당한 앱 기능은 TCB 안으로 옮기거나 포기해야 한다.
+- **runtime 권한(M18).** 무수정 Monado에서 관측·제어가 같은 socket에 있고 peer identity를 쓰지 않는다. trusted runtime 증거 가정은 A-app 아래에서 성립하지 않는다. 알려진 해법(별도 admin endpoint, SO_PEERCRED)이 배치되지 않은 구현 공백이다.
+- **최종 writer.** JTC는 stamped trajectory가 끝난 뒤 도착하면 거부한다. 그 밖의 늦은 메시지는 writer 매개가 없으면 hold를 대체하고 팔을 움직인다(R26). SROS2 권한과 uid 분리로 app writer를 막을 수 있다. 다만 uid 분리 배포에서는 기본 SHM 전송이 동작하지 않는다.
+- **M7.** 허용된 지연에서도 시각별 tf는 정확했다. latest tf 오차는 지연만큼 커졌다. configured command-level 근거이며 frontend 사건이 아니다.
+- **공통 계약.** 반복 요구의 필요성은 뒷받침된다(R31). 공통 구현이 strongest per-app / trusted-mapper / ACL baseline보다 비용을 줄이는지는 측정되지 않았다. 두 이질적 실제 경로 조건은 유지한다.
+- **남은 UNKNOWN.** A-rt 아래의 provenance, 실제 경로의 독립 source tap, action·service·parameter·IPC·driver 포트 매개, 인증된 runtime 제어 변형의 비용, 실제 headset.
+
 ## 6. 근거 해석의 공통 기준
 
 - SDK 제공 가능성, 앱의 실제 읽기, wire 전달, ROS 소비는 각각 다른 확인 단계다. 검색에서 못 찾은 경우는 부재 증명과 구분된다.
