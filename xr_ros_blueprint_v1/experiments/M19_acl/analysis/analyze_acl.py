@@ -30,7 +30,7 @@ def trial(d, deploy, check):
     pre = [pan(o) for o in js if t_pay and o["wall"] < t_pay and pan(o) is not None]
     out.update(enforced=enforced, probe_rc=pe and pe["rc"], key_access={h["file"]: h["result"] for h in H if h["ev"] == "key_access"},
                app_permissions_sha16=next((h["sha16"] for h in H if h["ev"] == "app_permissions"), None),
-               publisher=[{k: v for k, v in p.items() if k in ("k", "topic", "matched", "err")} for p in P],
+               publisher=[{k: v for k, v in p.items() if k in ("k", "topic", "matched", "sent", "err")} for p in P],
                on_app_topic=on_app, on_ctl_topic=on_ctl, ctl_reference=ref, joints_moved=moved, reached_controller=ref or moved,
                pan_before=round(pre[-1], 4) if pre else None, pan_final=round(pan(js[-1]), 4) if js else None)
     return out
