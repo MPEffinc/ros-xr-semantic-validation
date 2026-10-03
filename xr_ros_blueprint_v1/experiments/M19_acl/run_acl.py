@@ -4,7 +4,7 @@ snapshot (run_snapshot/<sha>/keys, ignored, never printed), verifies the snapsho
   run_acl.py <sha> one <out> <tid> <deploy> <check>  |  run_acl.py <sha> schedule <out> <schedule.csv>"""
 import csv, hashlib, json, shlex, subprocess, sys, time
 from pathlib import Path
-HERE = Path(__file__).resolve().parent; REPO = HERE.parents[2]; SUB = "xr_ros_blueprint_v1/experiments"; IMAGE = 'm19-sros2:v1'
+HERE = Path(__file__).resolve().parent; REPO = HERE.parents[2]; SUB = "xr_ros_blueprint_v1/experiments"; IMAGE = 'm3-ordering-mux:v1'
 def docker(a, timeout): return subprocess.run(['sg', 'docker', '-c', shlex.join(['docker', *a])], capture_output=True, text=True, timeout=timeout)
 def snapshot(sha):
     root = HERE / "run_snapshot" / sha
