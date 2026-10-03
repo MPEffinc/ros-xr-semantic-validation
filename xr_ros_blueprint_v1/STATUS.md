@@ -68,9 +68,28 @@
   - 공유 core 181줄
 - **판정.** 이 경로에서는 기존 per-app 수정으로 해결됩니다. 공통 구성요소의 이득은 두 번째 실제 경로가 없어 미입증입니다.
 
+## 2026-10-03 M39 해석 보강·시계 분리·두 번째 경로 확인 (R05–R08)
+
+- **사후 민감도(R05).** 기존 raw만 다시 분석했습니다. 1149개 파일이 존재하고 해시가 일치합니다.
+  - 판정에 영향 없음: L3 0.5 s와 1.0 s, 정착 시각 변경(checker 오류 수정)
+  - 원래 status 4 기준을 적용했다면 BLOCKED_ENV였습니다.
+  - 원래 feeder 기반 mapping 기준에서는 모든 arm(B0 정상 운전 포함)의 Normal과 Live가 실패합니다. 원인은 xrizer raw pose offset입니다. 따라서 R04의 B1/C1 결론은 원본 앱 명령 기준이라는 조건에서만 성립합니다.
+  - status 4 감속량은 현재 데이터로 알 수 없습니다. 노출은 arm마다 다르며, B0는 절대 재기준 뒤 판정 구간 노출이 B1/C1의 약 10배입니다.
+  - checkpoint b80dc8f
+- **B0_clock(R06/R07).** 앱 코드는 0줄 바꾸고 `use_sim_time:=true`만 줬습니다(upstream launch에 정의된 값). freeze e98e513, 결과 4f83672.
+  - 시계가 일치했고(중앙값 −36 ms), Servo timeout이 3/3 동작했습니다.
+  - 그래도 I3 잔여 이동은 10.1–12.6 mm로 남았습니다(P_stop 0/3, 원본 B0와 같은 수준). N0는 3/3 정상입니다.
+  - 잔여 이동은 시계 설정 탓이 아니라 controller 수준의 catch-up입니다.
+- **두 번째 실제 경로(R08).** 현재 호스트에서는 실행 불가입니다. 실제 frontend가 실행되지 않아 smoke는 하지 않았고, 대역 앱이나 backend 합성 입력으로 대체하지 않았습니다.
+  - Quest headset이 없습니다.
+  - PickNik Linux 빌드를 실제로 시도했으나, Unity OpenXR 1.14.3에 Linux plugin이 없어 실패했습니다. command 경로도 비공개 MoveIt Pro에 있습니다.
+  - Docker_Teleop은 Quest와 Meta XR SDK가 필요합니다.
+  - Quest2ROS2는 frontend가 비공개이고 consumer가 없습니다.
+  - wire의 버튼 level은 세 후보 모두에서 가짜 해제→누름을 만들 수 있습니다(stale neutral, toggle, 비활성 전환).
+
 ## 현재 판단
 
-독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
+독립 수신 gate의 확대는 보류 상태다. 확정 method gap은 0건이다. M39 pilot(R04)에서 stop/resume 결합은 이 실제 경로에서 기존 per-app 수정으로 해결됐고, 앱 밖 구성요소는 버튼 정보가 없어 부분 계약까지만 충족했다. 이 판정은 원본 앱 명령 기준의 추종 평가에 의존하고, status 4 감속량은 정량화되지 않았다(R05). 잔여 이동은 시계를 맞춰도 남았다(R07). 두 번째 실제 경로는 Quest 부재로 확보하지 못했다(R08). stop/resume 결합, 명령 출처·신뢰·집행, 화면·승인의 연결은 추가 검증할 질문이며 발견된 새 gap으로 세지 않는다. 방법이 있어도 공통 시스템이 통합 비용을 줄이는지 평가할 여지는 있다.
 
 ## R01 방법 검토와 아직 미실행인 단계
 
@@ -82,6 +101,6 @@ R02_METHOD_REVIEW_R01.md에 B1의 완전한 기존 수정, C1의 부분/전체 �
 
 ## 알려진 제약
 
-실제 headset/물리 로봇/두 번째 실제 앱 경로는 확보되지 않았다. F3의 35 mm는 목표 점프였고, R04에서 같은 경로(다른 시작 자세)의 재개 점프가 Gazebo에서 물리적으로 실행됨을 확인했다(실제 로봇 아님). F1의 비교 교란은 F2 해석과 함께 읽어야 한다. 저자 limitation의 후속 해결 확인이 끝나지 않은 항목은 UNKNOWN으로 유지한다.
+실제 headset/물리 로봇/두 번째 실제 앱 경로는 확보되지 않았다(R08: Quest 없음, Unity OpenXR Linux 미지원). F3의 35 mm는 목표 점프였고, R04에서 같은 경로(다른 시작 자세)의 재개 점프가 Gazebo에서 물리적으로 실행됨을 확인했다(실제 로봇 아님). F1의 비교 교란은 F2 해석과 함께 읽어야 한다. 저자 limitation의 후속 해결 확인이 끝나지 않은 항목은 UNKNOWN으로 유지한다.
 
-원격 checkpoint는 이 파일의 자기 commit SHA를 본문에 쓰는 대신 Git commit 이력으로 확인한다. 직전 확인 checkpoint: b490661 (local=remote). Claude 실행 이후에는 검증한 이전 checkpoint와 local/remote 상태를 기록한다.
+원격 checkpoint는 이 파일의 자기 commit SHA를 본문에 쓰는 대신 Git commit 이력으로 확인한다. 직전 확인 checkpoint: 4f83672 (local=remote). Claude 실행 이후에는 검증한 이전 checkpoint와 local/remote 상태를 기록한다.

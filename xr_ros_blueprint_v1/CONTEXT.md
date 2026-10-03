@@ -46,7 +46,7 @@ DB의 검증과 CSV 재생성 도구는 scripts/refresh_views.py다. 실제 새 
 - F1: 대역 앱 27회. 독립 runtime 상태 경로 feasibility는 보였지만 timestamp 전제와 비교군 freshness 교란이 있었다. 고정 protocol/raw/result는 그대로 보존하고 사후 해석은 별도 문서에 둔다.
 - F2: 대역 앱 27회, 동일 freshness로 비교. interval 검사의 필요성은 중간 중단도 금지하는 정책을 선택할 때에만 추가된다. 상태 검사와 중복·역순 검사 효과는 구분한다. 5 ms 전환과 증거 지연에서 누출이 있었으므로 경계를 제외해 성공을 주장하지 않는다.
 - F3: 원본 OpenVR UR5e 앱 1개 + 수정 xrizer + Monado/Servo/Gazebo, 6회. runtime 비활성 구간에 앱이 스스로 명령을 멈춰 수신 gate의 추가 차단 0건. 재개 시 목표가 35 mm 점프했으나 물리적 결과는 특이점 정지에 가렸다. 앱은 무수정이어도 배포 구성요소는 3가지 수정됐고 주기도 50→20 Hz로 변했다.
-- M39 pilot(R04): 같은 실제 앱 경로, 45회, masked 0. 원본 재개 점프가 물리 실행됨(I1 47.9 mm/11.5°, 300 ms에 EE 20–23 mm; N1 절대 재기준 40 mm; 움직이는 중 정지 잔여 10–14 mm). 가장 강한 개별 수정 B1이 전체 계약 충족. 앱 무수정 ROS-side C1은 부분 계약 충족, 새 누름 재허가 0/9.
+- M39 pilot(R04; 해석 보강 R05, 시계 분리 R07): 같은 실제 앱 경로, 45회, masked 0. 원본 재개 점프가 물리 실행됨(I1 47.9 mm/11.5°, 300 ms에 EE 20–23 mm; N1 절대 재기준 40 mm; 움직이는 중 정지 잔여 10–14 mm). 가장 강한 개별 수정 B1이 전체 계약 충족. 앱 무수정 ROS-side C1은 부분 계약 충족, 새 누름 재허가 0/9.
 - 실제 앱에서 `명령 stamp = 입력 sample 시각`은 무수정 상태로 확인되지 않았다. 수신 시점 상태 보호와 sample-to-command 출처 보장은 다르다. runtime token만으로 앱의 명령 계산이 올바르다고 증명되지 않는다.
 - 손상 앱 방어는 미완성이다. IPC 제어 권한, 비위조 client 연결, 증거 신뢰, 모든 실행 경로의 매개, 명령 유래를 함께 확인해야 하며 인증 패치 하나로 완료되지 않는다.
 - 실제 headset·Quest runtime·물리 로봇, 닫힌 frontend의 내부 읽기는 확인 범위 밖이다. 실제 앱, 대역 앱, 합성 입력, 시뮬레이션, 물리 로봇을 별도 표시한다.
@@ -121,6 +121,26 @@ R02_METHOD_REVIEW_R01.md의 검토는 문서 분석이며 새 실행 결과가 �
   - 버튼이 wire에 실리는 두 번째 실제 경로에서도 같은 구성요소가 전체 계약을 충족하는가? adapter 비용은 per-app 수정보다 작은가?
   - 실제 headset 전환(focus·menu·tracking loss)도 한 tick 안에 pose-invalid로 전달되는가?
   - 다른 자세·속도·하중과 드문 race에서는 어떤가? 3회 반복으로는 알 수 없다.
+
+## 5f. 2026-10-03 M39 해석 보강과 두 번째 경로 확인의 사실
+
+- **R05 사후 분석.** M39의 B1 전체 계약·C1 부분 계약 판정은, freeze 전에 바꾼 추종 기준(원본 앱의 명령 증분)에서 성립한다.
+  - 원래 기준(feeder 손 pose)으로는 원본 앱의 정상 운전도 실패한다. 이 기준은 xrizer raw pose offset을 재고 있었다.
+  - 최종 기준은 앱 자신의 mapping과의 일관성을 확인할 뿐, 조작자 의도나 좌표계의 정확성을 독립적으로 검증하지 않는다.
+  - L3 임계값과 정착 시각 변경은 판정을 바꾸지 않았다.
+  - status 4는 감속 크기를 담지 않고, pause 중에는 발행되지 않는다. 판정 구간의 노출은 arm마다 다르다. "hard stop에 가려지지 않음"과 "감속 영향 제거"는 다르다.
+- **R07 B0_clock.** 앱을 upstream launch 값인 `use_sim_time:=true`로 실행하면 앱과 Servo의 시계가 일치하고 Servo timeout도 동작한다.
+  - 그래도 움직이는 중 중단의 잔여 이동(10–13 mm)은 그대로다. 마지막 JTC 목표가 이미 EE보다 앞서 있기 때문이다.
+  - 따라서 이 잔여 이동은 배포 시계 문제가 아니라 controller 수준(M3)의 문제다. 시계 불일치가 만드는 것은 "Servo가 마지막 목표를 끝없이 추종함"이다.
+- **R08 두 번째 경로.** 감사한 세 후보는 모두 Quest가 필요하거나(Docker_Teleop, Quest2ROS2, PickNik), Linux에서 실행되지 않거나(Unity OpenXR 1.14.3), consumer가 비공개 또는 부재다(PickNik MoveIt Pro, Quest2ROS2 Cartesian controller). 환경 차단이며 공백의 증거가 아니다.
+- **wire 버튼과 새 누름.** wire에 버튼이 있다는 것만으로 새 누름이 보장되지는 않는다.
+  - Docker_Teleop: stale neutral이 `teleop_enable=false`를 만든다. `source` 필드로만 구분할 수 있다.
+  - Quest2ROS2: 버튼 level을 toggle edge로 쓴다.
+  - PickNik: 비활성 전환에서 false→true와 press event가 함께 생길 수 있다(미검증).
+  - Quest에서는 libmonado 같은 독립 runtime 증거도 없다.
+- **미해결 질문.**
+  - Quest 확보 시, Docker_Teleop에서 stale을 구분하는 버튼 adapter를 쓴 공통 구성요소가 앱 수정 없이 전체 계약을 충족하는가? 그 비용은 per-app 수정보다 작은가?
+  - 현 경로에서 status 4 감속량은 얼마인가? `decelerate_to_hold_position`은 잔여 이동에 어떤 효과가 있는가?
 
 ## 6. 근거 해석의 공통 기준
 
