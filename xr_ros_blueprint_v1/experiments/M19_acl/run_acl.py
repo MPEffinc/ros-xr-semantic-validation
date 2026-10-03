@@ -5,7 +5,14 @@ snapshot (run_snapshot/<sha>/keys, ignored, never printed), verifies the snapsho
 import csv, hashlib, json, shlex, subprocess, sys, time
 from pathlib import Path
 HERE = Path(__file__).resolve().parent; REPO = HERE.parents[2]; SUB = "xr_ros_blueprint_v1/experiments"; IMAGE = 'm3-ordering-mux:v1'
-def docker(a, timeout): return subprocess.run(['sg', 'docker', '-c', shlex.join(['docker', *a])], capture_output=True, text=True, timeout=timeout)
+def docker(a, timeout):
+    # named containers are killed on timeout so that no trial container outlives its slot
+    name = f"m19_{int(time.time() * 1000)}" if a and a[0] == 'run' else None
+    if name: a = [a[0], '--name', name, *a[1:]]
+    try: return subprocess.run(['sg', 'docker', '-c', shlex.join(['docker', *a])], capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        subprocess.run(['sg', 'docker', '-c', shlex.join(['docker', 'kill', name])], capture_output=True, text=True)
+        return subprocess.CompletedProcess(a, 124, "", "timeout_killed")
 def snapshot(sha):
     root = HERE / "run_snapshot" / sha
     if not root.exists():
